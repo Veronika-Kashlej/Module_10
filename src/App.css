@@ -1,6 +1,42 @@
 main {
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 85px;
+  padding: 24px;
+}
+
+.main-content {
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 26px;
+  gap: 26px;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+section {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: start;
+  background-color: rgba(14, 18, 35, 1);
+  border: 2px solid rgba(56, 65, 98, 1);
+}
+
+.section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
