@@ -1,0 +1,26 @@
+.create-post-section {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 700px;
+    width: 44%;
+    background-color: rgba(14, 18, 35, 1);
+}
+
+.create-post-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.create-post-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.create-post-info p {
+    font-size: 14px;
+}
