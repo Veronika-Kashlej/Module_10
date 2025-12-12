@@ -3,32 +3,24 @@ import { LikeIcon } from "./LikeIcon/LikeIcon";
 import commentIcon from "../../assets/icons/message-square.png";
 import editCommentIcon from "../../assets/icons/fi-rr-pencil.png";
 import ToggleCommentIcon from "../../assets/icons/toggle-comment-icon.png";
+import DeleteCommentIcon from "../../assets/icons/delete-comment-icon.png";
 import "./PostCard.css";
 import { useState } from "react";
-
-interface Post {
-  id: number;
-  username: string;
-  timeAgo: string;
-  description: string;
-  likes: number;
-  comments: Comment[];
-  isLiked: boolean;
-}
-
-interface Comment {
-  id: number;
-  text: string;
-  author: string;
-}
+import { Post } from "../../store/types";
 
 interface PostCardProps {
   post: Post;
   onLike: () => void;
   onAddComment: (comment: string) => void;
+  onDeleteComment: (commentId: number) => void;
 }
 
-export function PostCard({ post, onLike, onAddComment }: PostCardProps) {
+export function PostCard({
+  post,
+  onLike,
+  onAddComment,
+  onDeleteComment,
+}: PostCardProps) {
   const [commentText, setCommentText] = useState("");
   const [shouldShowComments, setShouldShowComments] = useState(false);
 
@@ -65,11 +57,22 @@ export function PostCard({ post, onLike, onAddComment }: PostCardProps) {
           />
         </div>
       </div>
-      <div className="all-comments">
+      <div className="comments-list">
         {post.comments.map((comment) => (
-          <p style={{ display: shouldShowComments ? "flex" : "none" }}>
-            #{comment.id}. {comment.text}
-          </p>
+          <div
+            className="comment-item"
+            style={{ display: shouldShowComments ? "flex" : "none" }}
+          >
+            <p>
+              #{comment.id}. {comment.text}
+            </p>
+            <img
+              className="delete-comment-btn"
+              onClick={() => onDeleteComment(comment.id)}
+              src={DeleteCommentIcon}
+              alt="delete comment"
+            />
+          </div>
         ))}
       </div>
       <label htmlFor="comment">

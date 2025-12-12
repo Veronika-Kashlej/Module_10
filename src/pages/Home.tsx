@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { CommunitiesSection } from "../components/CommunitiesSection/CommunitiesSection";
 import { CreatePostSection } from "../components/CreatePostSection/CreatePostSection";
 import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import { PostCard } from "../components/PostCard/PostCard";
 import { SuggestedPeopleSection } from "../components/SuggestedPeopleSection/SuggestedPeopleSection";
+import { postsReducer } from "../store/postsReducer";
 
 const initialPosts = [
   {
@@ -42,40 +43,28 @@ const initialPosts = [
 ];
 
 export function Home() {
-  const [posts, setPosts] = useState(initialPosts);
+  const [posts, dispatch] = useReducer(postsReducer, initialPosts);
 
   function handleLikePost(postId: number) {
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          const likesCount = post.isLiked ? --post.likes : ++post.likes;
-          return { ...post, isLiked: !post.isLiked, likes: likesCount };
-        }
-        return post;
-      })
-    );
+    dispatch({
+      type: "LIKE_POST",
+      payload: { postId },
+    });
   }
 
   function handleAddComment(postId: number, commentText: string) {
     if (!commentText.trim()) return;
+    dispatch({
+      type: "ADD_COMMENT",
+      payload: { postId, commentText },
+    });
+  }
 
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          const newComment = {
-            id: post.comments.length + 1,
-            text: commentText,
-            author: "You",
-          };
-          return {
-            ...post,
-            comments: [...post.comments, newComment],
-            showComments: true,
-          };
-        }
-        return post;
-      })
-    );
+  function handleDeleteComment(postId: number, commentId: number) {
+    dispatch({
+      type: "DELETE_COMMENT",
+      payload: { postId, commentId },
+    });
   }
 
   return (
@@ -91,6 +80,9 @@ export function Home() {
                 post={post}
                 onLike={() => handleLikePost(post.id)}
                 onAddComment={(comment) => handleAddComment(post.id, comment)}
+                onDeleteComment={(commentId) =>
+                  handleDeleteComment(post.id, commentId)
+                }
               ></PostCard>
             ))}
           </div>

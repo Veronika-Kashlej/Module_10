@@ -45,8 +45,19 @@
     align-items: center;
 }
 
-.all-comments {
+.comments-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
+}
+
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-comment-btn {
+    cursor: pointer;
 }
