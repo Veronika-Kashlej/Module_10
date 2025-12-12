@@ -1,12 +1,25 @@
+import { useState } from "react";
 import "./CreatePostSection.css";
+import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
 export function CreatePostSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function openCreatePostModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeCreatePostModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <article className="create-post-section">
       <div className="create-post-info">
         <div className="create-post-image"></div>
         <p>What's happening?</p>
       </div>
-      <button>Tell everyone</button>
+      <button onClick={openCreatePostModal}>Tell everyone</button>
+      {isModalOpen && <CreatePostModal onClose={closeCreatePostModal} />}
     </article>
   );
 }

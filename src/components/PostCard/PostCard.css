@@ -20,19 +20,6 @@
     line-height: 150%;
 }
 
-.post-card textarea {
-    padding: 14px;
-    height: 58px;
-    align-self: stretch;
-    border: 1px solid rgba(56, 65, 98, 1);
-    background-color: rgba(21, 26, 45, 1);
-    color: rgba(135, 145, 183, 1);
-}
-
-.post-card textarea::placeholder {
-    color: rgba(135, 145, 183, 1);
-}
-
 .likes-block, .comments-block {
     display: flex;
     gap: 8px;

@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import { CommunitiesSection } from "../components/CommunitiesSection/CommunitiesSection";
 import { CreatePostSection } from "../components/CreatePostSection/CreatePostSection";
 import { Footer } from "../components/Footer/Footer";

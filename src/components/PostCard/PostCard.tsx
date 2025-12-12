@@ -58,8 +58,9 @@ export function PostCard({
         </div>
       </div>
       <div className="comments-list">
-        {post.comments.map((comment) => (
+        {post.comments.map((comment, index) => (
           <div
+            key={index}
             className="comment-item"
             style={{ display: shouldShowComments ? "flex" : "none" }}
           >
@@ -75,13 +76,13 @@ export function PostCard({
           </div>
         ))}
       </div>
-      <label htmlFor="comment">
+      <label htmlFor={`comment-${post.id}`}>
         <img src={editCommentIcon} alt="edit comment" />
-        Add a comment
+        <span>Add a comment</span>
       </label>
       <textarea
         name="comment"
-        id="comment"
+        id={`comment-${post.id}`}
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
         placeholder="Write description here..."

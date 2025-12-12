@@ -23,13 +23,12 @@ button {
   color: rgba(255, 255, 255, 1);
   font-size: 14px;
   line-height: 20px;
-  cursor: pointer;
 }
 
 p {
   margin: 0;
 }
 
-svg {
+svg, label, button {
   cursor: pointer;
 }
