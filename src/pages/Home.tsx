@@ -75,31 +75,27 @@ export function Home() {
   }
 
   return (
-    <>
-      <Header></Header>
-      <main>
-        <div className="main-content">
-          <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
-          <div className="posts-list">
-            {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                onLike={() => handleLikePost(post.id)}
-                onAddComment={(comment) => handleAddComment(post.id, comment)}
-                onDeleteComment={(commentId) =>
-                  handleDeleteComment(post.id, commentId)
-                }
-              ></PostCard>
-            ))}
-          </div>
+    <main>
+      <div className="main-content">
+        <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
+        <div className="posts-list">
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              onLike={() => handleLikePost(post.id)}
+              onAddComment={(comment) => handleAddComment(post.id, comment)}
+              onDeleteComment={(commentId) =>
+                handleDeleteComment(post.id, commentId)
+              }
+            ></PostCard>
+          ))}
         </div>
-        <div className="sections">
-          <SuggestedPeopleSection></SuggestedPeopleSection>
-          <CommunitiesSection></CommunitiesSection>
-        </div>
-      </main>
-      <Footer></Footer>
-    </>
+      </div>
+      <div className="sections">
+        <SuggestedPeopleSection></SuggestedPeopleSection>
+        <CommunitiesSection></CommunitiesSection>
+      </div>
+    </main>
   );
 }

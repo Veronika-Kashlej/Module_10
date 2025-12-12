@@ -4,6 +4,7 @@ header {
     align-items: center;
     padding: 12px 24px;
     background-color: rgba(14, 18, 35, 1);
+    font-size: 18px;
 }
 
 .profile-info {
