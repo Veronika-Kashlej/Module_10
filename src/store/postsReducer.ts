@@ -6,7 +6,8 @@ type Action =
   | {
       type: "DELETE_COMMENT";
       payload: { postId: number; commentId: number };
-    };
+    }
+  | { type: "ADD_POST"; payload: { description: string; imageUrl?: string } };
 
 type State = Post[];
 
@@ -61,6 +62,24 @@ export function postsReducer(state: State, action: Action) {
         }
         return post;
       });
+    }
+    case "ADD_POST": {
+      const { description, imageUrl } = action.payload;
+      const newPost = {
+        id: 1,
+        username: "You",
+        timeAgo: "3 min ago",
+        description: description,
+        likes: 0,
+        comments: [],
+        isLiked: false,
+        imageUrl: imageUrl,
+      };
+      const updatedState = [newPost, ...state];
+      return updatedState.map((post, index) => ({
+        ...post,
+        id: index,
+      }));
     }
     default:
       return state;

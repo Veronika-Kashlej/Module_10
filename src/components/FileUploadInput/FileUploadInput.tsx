@@ -2,14 +2,18 @@ import { useRef, useState } from "react";
 import FileDownloadIcon from "../../assets/icons/file-download.png";
 import "./FileUploadInput.css";
 
-export function FileUploadInput() {
+interface FileUploadInputProps {
+  onFileSelect: (file: File) => void;
+}
+
+export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
-  const ACCEPTED_TYPES = [".jpg", ".jpeg", ".png", ".pdf"];
+  const ACCEPTED_TYPES = [".jpg", ".jpeg", ".png"];
 
   function handleClick() {
     setError(null);
@@ -40,6 +44,7 @@ export function FileUploadInput() {
       return;
     }
     setSelectedFile(file);
+    onFileSelect(file);
   }
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {

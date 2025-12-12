@@ -6,12 +6,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    width: 700px;
 }
 
 .post-image {
-    width: 652px;
+    width: 100%;
     height: 458px;
-    background-color: white;
+    background-position: center;
+    object-fit: cover;
 }
 
 .post-description {

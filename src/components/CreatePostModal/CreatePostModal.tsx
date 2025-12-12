@@ -3,12 +3,53 @@ import PencilIcon from "../../assets/icons/fi-rr-pencil.png";
 import CrossIcon from "../../assets/icons/cross-icon.png";
 import "./CreatePostModal.css";
 import { FileUploadInput } from "../FileUploadInput/FileUploadInput";
+import { useEffect, useState } from "react";
 
 interface CreatePostModalProps {
   onClose: () => void;
+  onAddPost: (description: string, imageUrl?: string) => void;
 }
 
-export function CreatePostModal({ onClose }: CreatePostModalProps) {
+export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
+  const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setImagePreview(null);
+    }
+  }, [selectedFile]);
+
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+  };
+
+  function handleSubmit() {
+    if (!description.trim()) return;
+    let imageUrl = null;
+    if (selectedFile && imagePreview) {
+      imageUrl = imagePreview;
+      console.log(imageUrl);
+    }
+
+    if (imageUrl) {
+      onAddPost(description, imageUrl);
+    } else {
+      onAddPost(description);
+    }
+    onClose();
+    setDescription("");
+    setSelectedFile(null);
+    setImagePreview(null);
+  }
+
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -43,11 +84,14 @@ export function CreatePostModal({ onClose }: CreatePostModalProps) {
               name="post-description"
               id="post-description"
               placeholder="Write description here..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
             />
           </fieldset>
-          <FileUploadInput></FileUploadInput>
+          <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
         </form>
-        <button>Create</button>
+        <button onClick={handleSubmit}>Create</button>
       </div>
     </div>
   );

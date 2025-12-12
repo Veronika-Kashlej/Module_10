@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "./CreatePostSection.css";
 import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
-export function CreatePostSection() {
+
+interface CreatePostSectionProps {
+  onAddPost: (description: string, imageUrl?: string) => void;
+}
+
+export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function openCreatePostModal() {
@@ -19,7 +24,9 @@ export function CreatePostSection() {
         <p>What's happening?</p>
       </div>
       <button onClick={openCreatePostModal}>Tell everyone</button>
-      {isModalOpen && <CreatePostModal onClose={closeCreatePostModal} />}
+      {isModalOpen && (
+        <CreatePostModal onClose={closeCreatePostModal} onAddPost={onAddPost} />
+      )}
     </article>
   );
 }

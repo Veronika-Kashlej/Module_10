@@ -67,12 +67,19 @@ export function Home() {
     });
   }
 
+  function handleAddPost(description: string, imageUrl?: string) {
+    dispatch({
+      type: "ADD_POST",
+      payload: { description: description, imageUrl: imageUrl },
+    });
+  }
+
   return (
     <>
       <Header></Header>
       <main>
         <div className="main-content">
-          <CreatePostSection></CreatePostSection>
+          <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
           <div className="posts-list">
             {posts.map((post) => (
               <PostCard
