@@ -14,3 +14,11 @@ export interface Comment {
   text: string;
   author: string;
 }
+
+export interface User {
+  email: string;
+  password: string;
+  description: string;
+  profilePhoto: string;
+  username: string;
+}

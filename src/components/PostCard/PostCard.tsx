@@ -5,8 +5,9 @@ import editCommentIcon from "../../assets/icons/fi-rr-pencil.png";
 import ToggleCommentIcon from "../../assets/icons/toggle-comment-icon.png";
 import DeleteCommentIcon from "../../assets/icons/delete-comment-icon.png";
 import "./PostCard.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Post } from "../../store/types";
+import { AuthContext } from "../../store/contexts/AuthContext";
 
 interface PostCardProps {
   post: Post;
@@ -23,6 +24,7 @@ export function PostCard({
 }: PostCardProps) {
   const [commentText, setCommentText] = useState("");
   const [shouldShowComments, setShouldShowComments] = useState(false);
+  const { isAuthenticated } = useContext(AuthContext);
 
   function handleSubmitCommit() {
     onAddComment(commentText);
@@ -45,49 +47,59 @@ export function PostCard({
         </div>
         <div className="comments-block">
           <img src={commentIcon} alt="comment" />
-          <p>{post.comments.length} comments</p>
-          <img
-            style={{
-              cursor: "pointer",
-              transform: shouldShowComments ? "none" : "rotate(180deg)",
-            }}
-            onClick={handleToggleComments}
-            src={ToggleCommentIcon}
-            alt="toggle comment"
-          />
+          {isAuthenticated ? (
+            <>
+              <p>{post.comments.length} comments</p>
+              <img
+                style={{
+                  cursor: "pointer",
+                  transform: shouldShowComments ? "none" : "rotate(180deg)",
+                }}
+                onClick={handleToggleComments}
+                src={ToggleCommentIcon}
+                alt="toggle comment"
+              />
+            </>
+          ) : (
+            <p>You have to login to see the comments</p>
+          )}
         </div>
       </div>
-      <div className="comments-list">
-        {post.comments.map((comment, index) => (
-          <div
-            key={index}
-            className="comment-item"
-            style={{ display: shouldShowComments ? "flex" : "none" }}
-          >
-            <p>
-              #{comment.id}. {comment.text}
-            </p>
-            <img
-              className="delete-comment-btn"
-              onClick={() => onDeleteComment(comment.id)}
-              src={DeleteCommentIcon}
-              alt="delete comment"
-            />
+      {isAuthenticated && (
+        <>
+          <div className="comments-list">
+            {post.comments.map((comment, index) => (
+              <div
+                key={index}
+                className="comment-item"
+                style={{ display: shouldShowComments ? "flex" : "none" }}
+              >
+                <p>
+                  #{comment.id}. {comment.text}
+                </p>
+                <img
+                  className="delete-comment-btn"
+                  onClick={() => onDeleteComment(comment.id)}
+                  src={DeleteCommentIcon}
+                  alt="delete comment"
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <label htmlFor={`comment-${post.id}`}>
-        <img src={editCommentIcon} alt="edit comment" />
-        <span>Add a comment</span>
-      </label>
-      <textarea
-        name="comment"
-        id={`comment-${post.id}`}
-        value={commentText}
-        onChange={(e) => setCommentText(e.target.value)}
-        placeholder="Write description here..."
-      ></textarea>
-      <button onClick={handleSubmitCommit}>Add a comment</button>
+          <label htmlFor={`comment-${post.id}`}>
+            <img src={editCommentIcon} alt="edit comment" />
+            <span>Add a comment</span>
+          </label>
+          <textarea
+            name="comment"
+            id={`comment-${post.id}`}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Write description here..."
+          ></textarea>
+          <button onClick={handleSubmitCommit}>Add a comment</button>
+        </>
+      )}
     </div>
   );
 }

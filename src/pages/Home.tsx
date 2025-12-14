@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useContext, useReducer } from "react";
 import { CommunitiesSection } from "../components/CommunitiesSection/CommunitiesSection";
 import { CreatePostSection } from "../components/CreatePostSection/CreatePostSection";
 import { Footer } from "../components/Footer/Footer";
@@ -6,6 +6,7 @@ import { Header } from "../components/Header/Header";
 import { PostCard } from "../components/PostCard/PostCard";
 import { SuggestedPeopleSection } from "../components/SuggestedPeopleSection/SuggestedPeopleSection";
 import { postsReducer } from "../store/postsReducer";
+import { AuthContext } from "../store/contexts/AuthContext";
 
 const initialPosts = [
   {
@@ -44,6 +45,7 @@ const initialPosts = [
 
 export function Home() {
   const [posts, dispatch] = useReducer(postsReducer, initialPosts);
+  const { isAuthenticated } = useContext(AuthContext);
 
   function handleLikePost(postId: number) {
     dispatch({
@@ -75,9 +77,11 @@ export function Home() {
   }
 
   return (
-    <main>
+    <main style={{ justifyContent: isAuthenticated ? "flex-end" : "center" }}>
       <div className="main-content">
-        <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
+        {isAuthenticated && (
+          <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
+        )}
         <div className="posts-list">
           {posts.map((post) => (
             <PostCard
@@ -92,10 +96,12 @@ export function Home() {
           ))}
         </div>
       </div>
-      <div className="sections">
-        <SuggestedPeopleSection></SuggestedPeopleSection>
-        <CommunitiesSection></CommunitiesSection>
-      </div>
+      {isAuthenticated && (
+        <div className="sections">
+          <SuggestedPeopleSection></SuggestedPeopleSection>
+          <CommunitiesSection></CommunitiesSection>
+        </div>
+      )}
     </main>
   );
 }

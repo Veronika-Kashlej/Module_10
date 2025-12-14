@@ -1,17 +1,36 @@
+import { createContext, useContext, useState } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { Home } from "./pages/Home";
-import { SignIn } from "./pages/SignIn";
+import { Route, Routes } from "react-router";
 import { SignUp } from "./pages/SignUp";
+import { SignIn } from "./pages/SignIn";
+import { authService } from "./api/authService";
+import { AuthContext } from "./store/contexts/AuthContext";
 
 function App() {
-  // return <Home></Home>;
+  const [isAuthenticated, setIsAuthenticated] = useState(() =>
+    authService.isAuthenticated()
+  );
+
   return (
     <>
-      <Header></Header>
-      <SignUp></SignUp>
-      <Footer></Footer>
+      <AuthContext value={{ isAuthenticated, setIsAuthenticated }}>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route
+            path="/sign-up"
+            element={isAuthenticated ? <Home /> : <SignUp />}
+          ></Route>
+          <Route
+            path="/sign-in"
+            element={isAuthenticated ? <Home /> : <SignIn />}
+          ></Route>
+        </Routes>
+        <Footer />
+      </AuthContext>
     </>
   );
 }

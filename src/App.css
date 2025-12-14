@@ -1,7 +1,6 @@
 main {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-end;
   gap: 85px;
   padding: 24px;
 }
@@ -60,23 +59,28 @@ section {
   gap: 8px;
 }
 
-textarea, input[type="text"] {
-  padding: 0 14px;
+textarea, input[type="text"],
+input[type="email"],
+input[type="password"] {
   border: 1px solid rgba(56, 65, 98, 1);
   background-color: rgba(21, 26, 45, 1);
   color: rgba(135, 145, 183, 1);
 }
 
-textarea::placeholder, input[type="text"]::placeholder {
+textarea::placeholder, input::placeholder {
   color: rgba(135, 145, 183, 1);
 }
 
 textarea {
+  padding: 14px 14px;
   height: 58px;
   align-self: stretch;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 0 14px;
   width: 327px;
   height: 48px;
 }

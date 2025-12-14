@@ -1,14 +1,44 @@
+import { useContext, useEffect, useState } from "react";
 import MailIcon from "../assets/icons/mail-icon.png";
 import PasswordIcon from "../assets/icons/password-icon.png";
+import { Link, useNavigate } from "react-router";
+import { Notification } from "../components/Notification/Notification";
+import { authService } from "../api/authService";
+import { AuthContext } from "../store/contexts/AuthContext";
 
 export function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (error) {
+      setError(null);
+    }
+  }, [email, password]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      await authService.signUp(email, password);
+      setIsAuthenticated(true);
+      navigate("/");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+    }
+  }
+
   return (
     <div className="auth-form-content">
       <div className="form-caption">
         <h1>Create an account</h1>
         <h3>Enter your email and password to sign up for this app</h3>
       </div>
-      <form action="#">
+      <form>
         <fieldset>
           <label htmlFor="email">
             <img src={MailIcon} alt="mail icon" />
@@ -18,6 +48,8 @@ export function SignUp() {
             type="text"
             name="email"
             id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter email"
             required
           />
@@ -31,13 +63,15 @@ export function SignUp() {
             type="text"
             name="password"
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
             required
           />
         </fieldset>
-        <button>Sign Up</button>
+        <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       </form>
-      <small className="">
+      <small>
         By clicking continue, you agree to our
         <a rel="noreffer" href="#">
           &nbsp;Terms of Service&nbsp;
@@ -49,8 +83,12 @@ export function SignUp() {
       </small>
       <p>
         Already have an account?
-        <span className="helper-link"> Sign in</span>
+        <Link to={"/sign-in"} className="helper-link">
+          {" "}
+          Sign in
+        </Link>
       </p>
+      {error && <Notification message={error} />}
     </div>
   );
 }

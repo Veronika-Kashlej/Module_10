@@ -7,6 +7,12 @@ header {
     font-size: 18px;
 }
 
+nav ul {
+    display: flex;
+    gap: 24px;
+    font-size: 18px;
+}
+
 .profile-info {
     display: flex;
     gap: 8px;
