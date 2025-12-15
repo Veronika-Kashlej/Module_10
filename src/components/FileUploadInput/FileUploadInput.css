@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     gap: 24px;
-    border: 1px dotted rgba(56, 65, 98, 1);
+    border: 1px dotted var(--border-color);
     cursor: pointer;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .file-upload-text-subtitle {
-    color: rgba(135, 145, 183, 1);
+    color: var(--small-text-color);
 }
 
 .file-upload-dropzone.dragging {

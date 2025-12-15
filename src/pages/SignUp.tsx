@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import MailIcon from "../assets/icons/mail-icon.png";
-import PasswordIcon from "../assets/icons/password-icon.png";
 import { Link, useNavigate } from "react-router";
 import { Notification } from "../components/Notification/Notification";
 import { authService } from "../api/authService";
 import { AuthContext } from "../store/contexts/AuthContext";
+import { EmailIcon } from "../assets/icons/email-icon";
+import { PasswordIcon } from "../assets/icons/password-icon";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ export function SignUp() {
       <form>
         <fieldset>
           <label htmlFor="email">
-            <img src={MailIcon} alt="mail icon" />
+            <EmailIcon />
             <span>Email</span>
           </label>
           <input
@@ -56,7 +56,7 @@ export function SignUp() {
         </fieldset>
         <fieldset>
           <label htmlFor="password">
-            <img src={PasswordIcon} alt="pencil icon" />
+            <PasswordIcon />
             <span>Password</span>
           </label>
           <input

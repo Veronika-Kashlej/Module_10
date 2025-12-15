@@ -2,7 +2,7 @@ footer {
     display: flex;
     justify-content: center;
     padding: 20px;
-    background-color: #0E1223;
-    color: rgba(255, 136, 17, 1);
+    background-color: var(--bg-primary-color);
+    color: var(--primary-color);
     font-size: 18px;
 }

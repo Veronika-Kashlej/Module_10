@@ -1,10 +1,20 @@
 import { useState } from "react";
 import "./Switcher.css";
 
-export function Switcher() {
+interface SwitcherProps {
+  onClick: () => void;
+}
+
+export function Switcher({ onClick }: SwitcherProps) {
   const [isActive, setIsActive] = useState(false);
+
+  function handleSwitch() {
+    setIsActive(!isActive);
+    onClick();
+  }
+
   return (
-    <button onClick={() => setIsActive(!isActive)} className="switcher">
+    <button onClick={handleSwitch} className="switcher">
       <div className={`circle ${isActive ? "active" : ""}`}></div>
     </button>
   );

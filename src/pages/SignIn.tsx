@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import MailIcon from "../assets/icons/mail-icon.png";
-import PasswordIcon from "../assets/icons/password-icon.png";
 import { Link, useNavigate } from "react-router";
 import { Notification } from "../components/Notification/Notification";
 import { authService } from "../api/authService";
 import { AuthContext } from "../store/contexts/AuthContext";
+import { PasswordIcon } from "../assets/icons/password-icon";
+import { EmailIcon } from "../assets/icons/email-icon";
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,7 +41,7 @@ export function SignIn() {
         <form>
           <fieldset>
             <label htmlFor="email">
-              <img src={MailIcon} alt="mail icon" />
+              <EmailIcon />
               <span>Email</span>
             </label>
             <input
@@ -56,7 +56,7 @@ export function SignIn() {
           </fieldset>
           <fieldset>
             <label htmlFor="password">
-              <img src={PasswordIcon} alt="pencil icon" />
+              <PasswordIcon />
               <span>Password</span>
             </label>
             <input

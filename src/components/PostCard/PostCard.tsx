@@ -1,13 +1,13 @@
 import { SectionItem } from "../SectionItem/SectionItem";
 import { LikeIcon } from "./LikeIcon/LikeIcon";
-import commentIcon from "../../assets/icons/message-square.png";
-import editCommentIcon from "../../assets/icons/fi-rr-pencil.png";
-import ToggleCommentIcon from "../../assets/icons/toggle-comment-icon.png";
-import DeleteCommentIcon from "../../assets/icons/delete-comment-icon.png";
 import "./PostCard.css";
 import { useContext, useState } from "react";
 import { Post } from "../../store/types";
 import { AuthContext } from "../../store/contexts/AuthContext";
+import { PencilIcon } from "../../assets/icons/pencil-icon";
+import { MessageIcon } from "../../assets/icons/message-square";
+import { TrashIcon } from "../../assets/icons/trash-icon";
+import { ShowCommentIcon } from "../../assets/icons/show-comment-icon";
 
 interface PostCardProps {
   post: Post;
@@ -46,18 +46,13 @@ export function PostCard({
           <p>{post.likes} likes</p>
         </div>
         <div className="comments-block">
-          <img src={commentIcon} alt="comment" />
+          <MessageIcon />
           {isAuthenticated ? (
             <>
               <p>{post.comments.length} comments</p>
-              <img
-                style={{
-                  cursor: "pointer",
-                  transform: shouldShowComments ? "none" : "rotate(180deg)",
-                }}
+              <ShowCommentIcon
+                shouldShowComments={shouldShowComments}
                 onClick={handleToggleComments}
-                src={ToggleCommentIcon}
-                alt="toggle comment"
               />
             </>
           ) : (
@@ -77,17 +72,12 @@ export function PostCard({
                 <p>
                   #{comment.id}. {comment.text}
                 </p>
-                <img
-                  className="delete-comment-btn"
-                  onClick={() => onDeleteComment(comment.id)}
-                  src={DeleteCommentIcon}
-                  alt="delete comment"
-                />
+                <TrashIcon onClick={() => onDeleteComment(comment.id)} />
               </div>
             ))}
           </div>
           <label htmlFor={`comment-${post.id}`}>
-            <img src={editCommentIcon} alt="edit comment" />
+            <PencilIcon />
             <span>Add a comment</span>
           </label>
           <textarea

@@ -1,3 +1,7 @@
-.logout-btn {
-    margin-top: 44px;
+.actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
 }

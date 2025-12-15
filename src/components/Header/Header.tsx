@@ -1,15 +1,16 @@
 import { useContext } from "react";
-import logo from "../../assets/logo/logo.png";
 import "./Header.css";
 import { Link } from "react-router";
 import { AuthContext } from "../../store/contexts/AuthContext";
+import { SidekickLogo } from "../../assets/logo/sidekick-logo";
 
 export function Header() {
   const { isAuthenticated } = useContext(AuthContext);
+
   return (
     <header>
       <Link to={"/"}>
-        <img src={logo} alt="sidekick logo" />
+        <SidekickLogo />
       </Link>
       {isAuthenticated ? (
         <Link className="profile-info" to={"/profile"}>

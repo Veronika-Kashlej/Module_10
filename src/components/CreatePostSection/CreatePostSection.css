@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(14, 18, 35, 1);
-    border: 2px solid rgba(56, 65, 98, 1);
+    background-color: var(--bg-primary-color);
+    border: 2px solid var(--border-color);
 }
 
 .create-post-info {
@@ -17,7 +17,7 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background-color: white;
+    background-color: red;
 }
 
 .create-post-info p {
