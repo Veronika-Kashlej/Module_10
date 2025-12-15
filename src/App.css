@@ -19,12 +19,6 @@ main {
   align-self: center;
 }
 
-h1 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 28px;
-}
-
 h2 {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -32,6 +26,20 @@ h2 {
 }
 
 h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 110%;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+h5 {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

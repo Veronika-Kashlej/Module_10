@@ -12,10 +12,10 @@ export function Header() {
         <img src={logo} alt="sidekick logo" />
       </Link>
       {isAuthenticated ? (
-        <div className="profile-info">
+        <Link className="profile-info" to={"/profile"}>
           <div className="profile-image"></div>
           <p>Name Surname</p>
-        </div>
+        </Link>
       ) : (
         <nav>
           <ul>

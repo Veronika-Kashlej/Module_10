@@ -8,6 +8,7 @@ import { SignUp } from "./pages/SignUp";
 import { SignIn } from "./pages/SignIn";
 import { authService } from "./api/authService";
 import { AuthContext } from "./store/contexts/AuthContext";
+import { Profile } from "./pages/Profile/Profile";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() =>
@@ -27,6 +28,10 @@ function App() {
           <Route
             path="/sign-in"
             element={isAuthenticated ? <Home /> : <SignIn />}
+          ></Route>
+          <Route
+            path="/profile"
+            element={isAuthenticated ? <Profile /> : <Home />}
           ></Route>
         </Routes>
         <Footer />

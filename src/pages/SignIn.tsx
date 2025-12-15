@@ -35,8 +35,8 @@ export function SignIn() {
     <>
       <div className="auth-form-content">
         <div className="form-caption">
-          <h1>Sign in into an account</h1>
-          <h3>Enter your email and password to sign in into this app</h3>
+          <h4>Sign in into an account</h4>
+          <h5>Enter your email and password to sign in into this app</h5>
         </div>
         <form>
           <fieldset>
