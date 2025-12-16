@@ -2,7 +2,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 24px;
+    padding: 10px 24px;
     background-color: var(--bg-primary-color);
     font-size: 18px;
 }
@@ -25,4 +25,15 @@ nav ul {
     height: 24px;
     border-radius: 50%;
     background-color: red;
+}
+
+@media(max-width: 400px) {
+    header {
+        padding: 0px 12px;
+    }
+
+    header svg {
+        width: 48px;
+        height: 12px;
+    }
 }

@@ -1,0 +1,12 @@
+.auth-form-content.sign-up {
+    margin-top: 20px;
+}
+
+small {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    line-height: 150%;
+    text-align: center;
+    color: var(--small-text-color);
+    max-width: 330px;
+}

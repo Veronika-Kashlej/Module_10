@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Notification } from "../components/Notification/Notification";
-import { authService } from "../api/authService";
-import { AuthContext } from "../store/contexts/AuthContext";
-import { PasswordIcon } from "../assets/icons/password-icon";
-import { EmailIcon } from "../assets/icons/email-icon";
+import { Notification } from "../../components/Notification/Notification";
+import { authService } from "../../api/authService";
+import { AuthContext } from "../../store/contexts/AuthContext";
+import { PasswordIcon } from "../../assets/icons/password-icon";
+import { EmailIcon } from "../../assets/icons/email-icon";
+import "./SignIn.css";
+
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +35,7 @@ export function SignIn() {
 
   return (
     <>
-      <div className="auth-form-content">
+      <div className="auth-form-content sign-in">
         <div className="form-caption">
           <h4>Sign in into an account</h4>
           <h5>Enter your email and password to sign in into this app</h5>
@@ -69,8 +71,8 @@ export function SignIn() {
               required
             />
           </fieldset>
-          <button onClick={(e) => handleSubmit(e)}>Sign In</button>
         </form>
+        <button onClick={(e) => handleSubmit(e)}>Sign In</button>
         <p>
           Forgot to create an account?
           <Link className="helper-link" to={"/sign-up"}>

@@ -1,12 +1,13 @@
 import { useContext, useReducer } from "react";
-import { CommunitiesSection } from "../components/CommunitiesSection/CommunitiesSection";
-import { CreatePostSection } from "../components/CreatePostSection/CreatePostSection";
-import { Footer } from "../components/Footer/Footer";
-import { Header } from "../components/Header/Header";
-import { PostCard } from "../components/PostCard/PostCard";
-import { SuggestedPeopleSection } from "../components/SuggestedPeopleSection/SuggestedPeopleSection";
-import { postsReducer } from "../store/postsReducer";
-import { AuthContext } from "../store/contexts/AuthContext";
+import { CommunitiesSection } from "../../components/CommunitiesSection/CommunitiesSection";
+import { CreatePostSection } from "../../components/CreatePostSection/CreatePostSection";
+import { Footer } from "../../components/Footer/Footer";
+import { Header } from "../../components/Header/Header";
+import { PostCard } from "../../components/PostCard/PostCard";
+import { SuggestedPeopleSection } from "../../components/SuggestedPeopleSection/SuggestedPeopleSection";
+import { postsReducer } from "../../store/postsReducer";
+import { AuthContext } from "../../store/contexts/AuthContext";
+import "./Home.css";
 
 const initialPosts = [
   {

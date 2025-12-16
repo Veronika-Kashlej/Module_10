@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Notification } from "../components/Notification/Notification";
-import { authService } from "../api/authService";
-import { AuthContext } from "../store/contexts/AuthContext";
-import { EmailIcon } from "../assets/icons/email-icon";
-import { PasswordIcon } from "../assets/icons/password-icon";
+import { Notification } from "../../components/Notification/Notification";
+import { authService } from "../../api/authService";
+import { AuthContext } from "../../store/contexts/AuthContext";
+import { EmailIcon } from "../../assets/icons/email-icon";
+import { PasswordIcon } from "../../assets/icons/password-icon";
+import "./SignUp.css";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ export function SignUp() {
   }
 
   return (
-    <div className="auth-form-content">
+    <div className="auth-form-content sign-up">
       <div className="form-caption">
         <h4>Create an account</h4>
         <h5>Enter your email and password to sign up for this app</h5>
@@ -69,16 +70,18 @@ export function SignUp() {
             required
           />
         </fieldset>
-        <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       </form>
+      <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       <small>
         By clicking continue, you agree to our
         <a rel="noreffer" href="#">
-          &nbsp;Terms of Service&nbsp;
+          {" "}
+          Terms of Service{" "}
         </a>
         and
         <a rel="noreffer" href="#">
-          &nbsp;Privacy Policy
+          {" "}
+          Privacy Policy
         </a>
       </small>
       <p>

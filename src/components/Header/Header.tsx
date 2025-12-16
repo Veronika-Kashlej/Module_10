@@ -1,11 +1,15 @@
 import { useContext } from "react";
 import "./Header.css";
-import { Link } from "react-router";
 import { AuthContext } from "../../store/contexts/AuthContext";
 import { SidekickLogo } from "../../assets/logo/sidekick-logo";
+import { Link, useLocation } from "react-router";
 
 export function Header() {
   const { isAuthenticated } = useContext(AuthContext);
+  const location = useLocation();
+
+  const isAuthPage =
+    location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
   return (
     <header>
@@ -18,16 +22,18 @@ export function Header() {
           <p>Name Surname</p>
         </Link>
       ) : (
-        <nav>
-          <ul>
-            <li>
-              <Link to={"/sign-up"}>Sign Up</Link>
-            </li>
-            <li>
-              <Link to={"/sign-in"}>Sign In</Link>
-            </li>
-          </ul>
-        </nav>
+        !isAuthPage && (
+          <nav>
+            <ul>
+              <li>
+                <Link to={"/sign-up"}>Sign Up</Link>
+              </li>
+              <li>
+                <Link to={"/sign-in"}>Sign In</Link>
+              </li>
+            </ul>
+          </nav>
+        )
       )}
     </header>
   );
