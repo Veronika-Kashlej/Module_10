@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     gap: 24px;
-    border: 1px dotted var(--border-color);
+    border: 1px dashed var(--border-color);
     cursor: pointer;
 }
 
@@ -29,4 +29,11 @@
 
 .file-upload-dropzone.error {
     border-color: #ef4444;
+}
+
+@media(max-width: 768px) {
+    .file-upload-dropzone {
+        padding: 8px 12px;
+        text-align: center;
+    }
 }

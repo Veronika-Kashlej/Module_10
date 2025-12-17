@@ -10,6 +10,7 @@ export function TrashIcon({ onClick }: TrashIconProps) {
   return (
     <svg
       onClick={onClick}
+      className="trash-icon"
       width="24"
       height="24"
       viewBox="0 0 24 24"

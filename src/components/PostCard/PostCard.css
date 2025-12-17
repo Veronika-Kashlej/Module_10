@@ -9,11 +9,16 @@
     width: 700px;
 }
 
+.post-card .section-item {
+    padding: 0;
+}
+
 .post-image {
     width: 100%;
     height: 458px;
     background-position: center;
     object-fit: cover;
+    border-radius: 4px;
 }
 
 .post-description {
@@ -26,12 +31,14 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    font-size: 16px;
 }
 
 .likes-and-comments-block {
     display: flex;
-    gap: 16px;
+    gap: 22px;
     align-items: center;
+    font-family: "Inter", sans-serif;
 }
 
 .comments-list {
@@ -49,4 +56,35 @@
 
 .delete-comment-btn {
     cursor: pointer;
+}
+
+@media(max-width: 768px) {
+    .post-card {
+        background-color: var(--bg-secondary-color);
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .post-image {
+        height: 150px;
+    }
+
+    .post-description {
+        font-size: 14px;
+        line-height: 150%;
+    }
+
+    .likes-and-comments-block {
+        gap: 16px;
+    }
+
+    .likes-block, .comments-block {
+        font-size: 12px;
+    }
+
+    .trash-icon {
+        display: none;
+    }
 }

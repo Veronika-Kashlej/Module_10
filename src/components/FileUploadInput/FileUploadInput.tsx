@@ -100,7 +100,7 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
                 Select a file or drag and drop here
               </p>
               <p className="file-upload-text-subtitle">
-                {error ? error : "JPG, PNG or PDF, file size no more than 10MB"}
+                {error ? error : "JPG, or PNG, no more than 10MB"}
               </p>
             </>
           )}

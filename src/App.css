@@ -32,7 +32,6 @@ h3 {
   font-family: "Inter", sans-serif;
   font-size: 28px;
   font-weight: 600;
-  letter-spacing: -2%;
   line-height: 110%;
 }
 
@@ -125,8 +124,12 @@ a {
   text-decoration: none;
 }
 
-@media(max-width: 400px) {
+@media(max-width: 768px) {
   button {
-    padding: 8px;
+    padding: 8px 24px;
+  }
+
+  h3 {
+    font-size: 18px;
   }
 }

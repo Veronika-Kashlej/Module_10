@@ -1,7 +1,8 @@
 .profile-page {
-    gap: 24px;
-    padding: 24px 190px;
+    display: flex;
     flex-direction: column;
+    padding: 24px;
+    gap: 24px;
 }
 
 .tabs-container {
@@ -15,6 +16,7 @@ button.tab {
     font-family: "Inter", sans-serif;
     font-weight: 500;
     font-size: 16px;
+    line-height: 150%;
     background-color: var(--bg-primary-color);
     transition: all 0.3s ease-in;
 }
@@ -25,8 +27,22 @@ button.tab:hover, button.tab.active {
 
 .tab-profile-info {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, auto);
     grid-template-rows: repeat(2, auto);
+    justify-content: center;
     column-gap: 50px;
     row-gap: 24px;
+}
+
+@media(max-width: 768px) {
+    .profile-page {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .tab-profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+    }
 }

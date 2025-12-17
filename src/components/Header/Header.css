@@ -2,15 +2,37 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 24px;
     background-color: var(--bg-primary-color);
     font-size: 18px;
+    padding: 12px 24px;
+    z-index: 1000;
 }
 
-nav ul {
+.burger {
+    display: none;
+    flex-direction: column;
+    width: 18px;
+    height: 18px;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-color);
+}
+
+.desktop-menu ul {
     display: flex;
-    gap: 24px;
+    gap: 45px;
     font-size: 18px;
+    padding: 10px 24px;
+}
+
+.mobile-menu {
+    display: none;
 }
 
 .profile-info {
@@ -27,13 +49,89 @@ nav ul {
     background-color: red;
 }
 
-@media(max-width: 400px) {
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--modal-bg-color);
+    backdrop-filter: blur(20px);
+    z-index: 998;
+}
+
+@media(max-width: 768px) {
     header {
-        padding: 0px 12px;
+        padding: 5px 12px;
     }
 
     header svg {
         width: 48px;
         height: 12px;
     }
+
+    .desktop-menu {
+        display: none;
+    }
+
+    .profile-info {
+        display: none;
+    }
+
+    header .user-name {
+        display: none;
+    }
+
+    .profile-image {
+        display: none;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .burger.open {
+        display: none;
+    }
+
+    .header.open {
+        width: 288px;
+        justify-self: end;
+    }
+
+    .header.open .profile-image, .header.open .profile-info {
+        display: block;
+    }
+
+    .mobile-menu.open {
+        display: block;
+    }
+
+    .mobile-menu.open ul {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 288px;
+        padding: 10px 12px;
+        background-color: var(--bg-secondary-color);
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        top: 31px;
+        z-index: 1000;
+    }
+
+    .mobile-menu.open ul li {
+        background-color: var(--bg-primary-color);
+        padding: 8px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .mobile-menu.open ul li a {
+        font-size: 18px;
+        color: var(--small-text-color);
+    }
+
 }

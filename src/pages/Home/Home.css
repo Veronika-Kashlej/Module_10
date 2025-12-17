@@ -1,4 +1,4 @@
-main {
+.home-page {
     display: flex;
     align-items: flex-start;
     gap: 85px;
@@ -31,4 +31,20 @@ section {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+@media(max-width: 1175px) {
+    .sections {
+        display: none;
+    }
+
+    .home-page {
+        justify-content: center;
+    }
+}
+
+@media(max-width: 768px) {
+    .home-page {
+        padding: 10px 0;
+    }
 }
