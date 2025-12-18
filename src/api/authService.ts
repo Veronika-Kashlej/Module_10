@@ -101,11 +101,11 @@ class AuthService {
   ) {
     await new Promise((resolve) => setTimeout(resolve, 1000)); //server request
 
-    const headers = {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    };
+    // const headers = {
+    //   "Content-Type": "application/json",
+    //   ...(token && { Authorization: `Bearer ${token}` }),
+    //   ...options.headers,
+    // };
 
     // Mock response
     return {

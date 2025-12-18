@@ -12,13 +12,13 @@ export function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     if (error) {
       setError(null);
     }
-  }, [email, password]);
+  }, [email, password, error]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

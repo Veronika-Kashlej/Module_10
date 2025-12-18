@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { Notification } from "../Notification/Notification";
 
 export function Actions() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 

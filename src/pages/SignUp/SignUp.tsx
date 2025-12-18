@@ -12,13 +12,13 @@ export function SignUp() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     if (error) {
       setError(null);
     }
-  }, [email, password]);
+  }, [email, password, error]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,12 +74,12 @@ export function SignUp() {
       <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       <small>
         By clicking continue, you agree to our
-        <a rel="noreffer" href="#">
+        <a rel="noreffer" href="https://www.google.com/">
           {" "}
           Terms of Service{" "}
         </a>
         and
-        <a rel="noreffer" href="#">
+        <a rel="noreffer" href="https://www.google.com/">
           {" "}
           Privacy Policy
         </a>

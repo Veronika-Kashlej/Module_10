@@ -38,7 +38,9 @@ export function PostCard({
   return (
     <div className="post-card">
       <SectionItem title={post.username} subtitle={post.timeAgo}></SectionItem>
-      {post.imageUrl && <img src={post.imageUrl} className="post-image"></img>}
+      {post.imageUrl && (
+        <img src={post.imageUrl} className="post-image" alt="post-image"></img>
+      )}
       <p className="post-description">{post.description}</p>
       <div
         className="likes-and-comments-block"
