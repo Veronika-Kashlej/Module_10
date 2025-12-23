@@ -23,9 +23,9 @@ export function PostCard({
   const [shouldShowComments, setShouldShowComments] = useState(false);
   const { isAuthenticated } = useAuth();
 
-  function handleToggleComments() {
+  const handleToggleComments = () => {
     setShouldShowComments(!shouldShowComments);
-  }
+  };
 
   return (
     <div className="post-card">

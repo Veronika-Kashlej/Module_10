@@ -15,19 +15,19 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const ACCEPTED_TYPES = [".jpg", ".jpeg", ".png"];
 
-  function handleClick() {
+  const handleClick = () => {
     setError(null);
     fileInputRef.current?.click();
-  }
+  };
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       validateAndSetFile(file);
     }
-  }
+  };
 
-  function validateAndSetFile(file: File) {
+  const validateAndSetFile = (file: File) => {
     setError(null);
 
     const fileExtension = "." + file.name.split(".").pop()?.toLowerCase();
@@ -45,9 +45,9 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
     }
     setSelectedFile(file);
     onFileSelect(file);
-  }
+  };
 
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     setError(null);
@@ -63,16 +63,16 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
         fileInputRef.current.files = dataTransfer.files;
       }
     }
-  }
+  };
 
-  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
-  }
+  };
 
-  function handleDragLeave() {
+  const handleDragLeave = () => {
     setIsDragging(false);
-  }
+  };
 
   return (
     <div className="file-upload-container">

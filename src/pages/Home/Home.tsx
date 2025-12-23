@@ -69,34 +69,34 @@ export function Home() {
   const [posts, dispatch] = useReducer(postsReducer, initialPosts);
   const { isAuthenticated } = useAuth();
 
-  function handleLikePost(postId: number) {
+  const handleLikePost = (postId: number) => {
     dispatch({
       type: "LIKE_POST",
       payload: { postId },
     });
-  }
+  };
 
-  function handleAddComment(postId: number, commentText: string) {
+  const handleAddComment = (postId: number, commentText: string) => {
     if (!commentText.trim()) return;
     dispatch({
       type: "ADD_COMMENT",
       payload: { postId, commentText },
     });
-  }
+  };
 
-  function handleDeleteComment(postId: number, commentId: number) {
+  const handleDeleteComment = (postId: number, commentId: number) => {
     dispatch({
       type: "DELETE_COMMENT",
       payload: { postId, commentId },
     });
-  }
+  };
 
-  function handleAddPost(description: string, imageUrl?: string) {
+  const handleAddPost = (description: string, imageUrl?: string) => {
     dispatch({
       type: "ADD_POST",
       payload: { description: description, imageUrl: imageUrl },
     });
-  }
+  };
 
   return (
     <main

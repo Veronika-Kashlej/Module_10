@@ -24,7 +24,7 @@ export function SignUp() {
     }
   }, [isAuthenticated, navigate]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signUp(email, password);
@@ -34,7 +34,15 @@ export function SignUp() {
         setError(err.message);
       }
     }
-  }
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
 
   return (
     <div className="auth-form-content sign-up">
@@ -53,7 +61,7 @@ export function SignUp() {
             name="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             placeholder="Enter email"
             required
           />
@@ -68,12 +76,12 @@ export function SignUp() {
             name="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             placeholder="Enter password"
             required
           />
         </fieldset>
-        <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
+        <button onClick={handleSubmit}>Sign Up</button>
       </form>
       <small>
         By clicking continue, you agree to our

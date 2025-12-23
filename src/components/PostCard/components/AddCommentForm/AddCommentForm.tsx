@@ -10,12 +10,18 @@ interface AddCommentFormProps {
 export function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
   const [commentText, setCommentText] = useState("");
 
-  function handleSubmitComment() {
+  const handleSubmitComment = () => {
     if (commentText.trim()) {
       onAddComment(commentText);
       setCommentText("");
     }
-  }
+  };
+
+  const handleCommentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentText(event.target.value);
+  };
 
   return (
     <>
@@ -27,7 +33,7 @@ export function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
         name="comment"
         id={`comment-${postId}`}
         value={commentText}
-        onChange={(e) => setCommentText(e.target.value)}
+        onChange={handleCommentChange}
         placeholder="Write description here..."
       ></textarea>
       <button onClick={handleSubmitComment}>Add a comment</button>

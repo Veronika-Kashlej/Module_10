@@ -8,10 +8,10 @@ interface SwitcherProps {
 export function Switcher({ onClick }: SwitcherProps) {
   const [isActive, setIsActive] = useState(false);
 
-  function handleSwitch() {
+  const handleSwitch = () => {
     setIsActive(!isActive);
     onClick();
-  }
+  };
 
   return (
     <button onClick={handleSwitch} className="switcher">

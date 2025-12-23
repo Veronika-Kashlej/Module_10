@@ -12,19 +12,19 @@ export function Header() {
   const isAuthPage =
     location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
-  function closeMenu() {
+  const closeMenu = () => {
     setIsMenuOpen(false);
     document.body.style.overflow = "";
     document.body.removeEventListener("click", closeMenu);
-  }
+  };
 
-  function openMenu(e: React.MouseEvent) {
+  const openMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(true);
     window.scrollTo(0, 0);
     document.body.style.overflow = "hidden";
     document.body.addEventListener("click", closeMenu);
-  }
+  };
 
   return (
     <>

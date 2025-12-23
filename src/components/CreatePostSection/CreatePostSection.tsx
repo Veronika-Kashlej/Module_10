@@ -9,13 +9,13 @@ interface CreatePostSectionProps {
 export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function openCreatePostModal() {
+  const openCreatePostModal = () => {
     setIsModalOpen(true);
-  }
+  };
 
-  function closeCreatePostModal() {
+  const closeCreatePostModal = () => {
     setIsModalOpen(false);
-  }
+  };
 
   return (
     <article className="create-post-section">

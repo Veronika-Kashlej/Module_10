@@ -24,7 +24,7 @@ export function SignIn() {
     }
   }, [isAuthenticated, navigate]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await signIn(email, password);
@@ -34,7 +34,15 @@ export function SignIn() {
         setError(err.message);
       }
     }
-  }
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
 
   return (
     <>
@@ -53,7 +61,7 @@ export function SignIn() {
               type="email"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               id="email"
               placeholder="Enter email"
               required
@@ -69,12 +77,12 @@ export function SignIn() {
               name="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="Enter password"
               required
             />
           </fieldset>
-          <button onClick={(e) => handleSubmit(e)}>Sign In</button>
+          <button onClick={handleSubmit}>Sign In</button>
         </form>
         <p>
           Forgot to create an account?

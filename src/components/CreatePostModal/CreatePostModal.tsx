@@ -29,7 +29,13 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
     setSelectedFile(file);
   };
 
-  function handleSubmit() {
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(event.target.value);
+  };
+
+  const handleSubmit = () => {
     if (!description.trim()) return;
     let imageUrl = null;
     if (selectedFile && imagePreview) {
@@ -46,7 +52,7 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
     setDescription("");
     setSelectedFile(null);
     setImagePreview(null);
-  }
+  };
 
   return (
     <div className="modal-overlay">
@@ -78,7 +84,7 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
               id="post-description"
               placeholder="Write description here..."
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={handleDescriptionChange}
               required
             />
           </fieldset>
