@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Notification } from "../../components/Notification/Notification";
-import { authService } from "../../api/authService";
-import { AuthContext } from "../../store/contexts/AuthContext";
+import { useAuth } from "../../store/contexts/AuthContext";
 import "./SignUp.css";
 import { Icons } from "../../components/Icons/Icons";
 
@@ -11,7 +10,7 @@ export function SignUp() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, signUp } = useAuth();
 
   useEffect(() => {
     if (error) {
@@ -19,11 +18,16 @@ export function SignUp() {
     }
   }, [email, password, error]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await authService.signUp(email, password);
-      setIsAuthenticated(true);
+      await signUp(email, password);
       navigate("/");
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -60,7 +64,7 @@ export function SignUp() {
             <span>Password</span>
           </label>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             value={password}

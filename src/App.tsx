@@ -6,15 +6,11 @@ import { Home } from "./pages/Home/Home";
 import { Route, Routes } from "react-router";
 import { SignUp } from "./pages/SignUp/SignUp";
 import { SignIn } from "./pages/SignIn/SignIn";
-import { authService } from "./api/authService";
-import { AuthContext } from "./store/contexts/AuthContext";
+import { AuthProvider } from "./store/contexts/AuthContext";
 import { Profile } from "./pages/Profile/Profile";
 import { ThemeContext } from "./store/contexts/ThemeContext";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() =>
-    authService.isAuthenticated()
-  );
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "dark";
   });
@@ -26,25 +22,16 @@ function App() {
   return (
     <>
       <ThemeContext value={{ theme, setTheme }}>
-        <AuthContext value={{ isAuthenticated, setIsAuthenticated }}>
+        <AuthProvider>
           <Header />
           <Routes>
             <Route path="/" element={<Home />}></Route>
-            <Route
-              path="/sign-up"
-              element={isAuthenticated ? <Home /> : <SignUp />}
-            ></Route>
-            <Route
-              path="/sign-in"
-              element={isAuthenticated ? <Home /> : <SignIn />}
-            ></Route>
-            <Route
-              path="/profile"
-              element={isAuthenticated ? <Profile /> : <Home />}
-            ></Route>
+            <Route path="/sign-up" element={<SignUp />}></Route>
+            <Route path="/sign-in" element={<SignIn />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
           </Routes>
           <Footer />
-        </AuthContext>
+        </AuthProvider>
       </ThemeContext>
     </>
   );

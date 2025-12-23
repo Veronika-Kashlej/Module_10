@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Notification } from "../../components/Notification/Notification";
-import { authService } from "../../api/authService";
-import { AuthContext } from "../../store/contexts/AuthContext";
+import { useAuth } from "../../store/contexts/AuthContext";
 import "./SignIn.css";
 import { Icons } from "../../components/Icons/Icons";
 
@@ -11,7 +10,7 @@ export function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, signIn } = useAuth();
 
   useEffect(() => {
     if (error) {
@@ -19,11 +18,16 @@ export function SignIn() {
     }
   }, [email, password, error]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await authService.signIn(email, password);
-      setIsAuthenticated(true);
+      await signIn(email, password);
       navigate("/");
     } catch (err: unknown) {
       if (err instanceof Error) {

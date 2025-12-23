@@ -1,10 +1,10 @@
-import { useContext, useReducer } from "react";
+import { useReducer } from "react";
 import { CommunitiesSection } from "../../components/CommunitiesSection/CommunitiesSection";
 import { CreatePostSection } from "../../components/CreatePostSection/CreatePostSection";
 import { PostCard } from "../../components/PostCard/PostCard";
 import { SuggestedPeopleSection } from "../../components/SuggestedPeopleSection/SuggestedPeopleSection";
 import { postsReducer } from "../../store/postsReducer";
-import { AuthContext } from "../../store/contexts/AuthContext";
+import { useAuth } from "../../store/contexts/AuthContext";
 import img1 from "../../assets/images/img-1.png";
 import img2 from "../../assets/images/img-2.png";
 import "./Home.css";
@@ -67,7 +67,7 @@ const initialPosts = [
 
 export function Home() {
   const [posts, dispatch] = useReducer(postsReducer, initialPosts);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useAuth();
 
   function handleLikePost(postId: number) {
     dispatch({

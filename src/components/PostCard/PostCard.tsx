@@ -1,8 +1,8 @@
 import { SectionItem } from "../SectionItem/SectionItem";
 import "./PostCard.css";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Post } from "../../store/types";
-import { AuthContext } from "../../store/contexts/AuthContext";
+import { useAuth } from "../../store/contexts/AuthContext";
 import { AddCommentForm } from "./components/AddCommentForm/AddCommentForm";
 import { CommentList } from "./components/CommentList/CommentList";
 import { Icons } from "../Icons/Icons";
@@ -21,7 +21,7 @@ export function PostCard({
   onDeleteComment,
 }: PostCardProps) {
   const [shouldShowComments, setShouldShowComments] = useState(false);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useAuth();
 
   function handleToggleComments() {
     setShouldShowComments(!shouldShowComments);

@@ -1,19 +1,17 @@
-import { useContext, useState } from "react";
-import { authService } from "../../api/authService";
+import { useState } from "react";
 import "./Actions.css";
-import { AuthContext } from "../../store/contexts/AuthContext";
+import { useAuth } from "../../store/contexts/AuthContext";
 import { useNavigate } from "react-router";
 import { Notification } from "../Notification/Notification";
 
 export function Actions() {
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   async function handleLogout() {
     try {
-      await authService.signOut();
-      setIsAuthenticated(false);
+      await signOut();
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {

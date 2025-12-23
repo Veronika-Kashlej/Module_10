@@ -3,27 +3,27 @@ import "./Profile.css";
 import { EditProfile } from "../../components/EditProfile/EditProfile";
 import { Preferences } from "../../components/Preferences/Preferences";
 import { Actions } from "../../components/Actions/Actions";
+const tabs = [
+  {
+    id: 0,
+    label: "Profile info",
+    content: (
+      <div className="tab-profile-info">
+        <EditProfile />
+        <Preferences />
+        <Actions />
+      </div>
+    ),
+  },
+  {
+    id: 1,
+    label: "Statistics",
+    content: <div className="tab-content"></div>,
+  },
+];
 
 export function Profile() {
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = [
-    {
-      id: 0,
-      label: "Profile info",
-      content: (
-        <div className="tab-profile-info">
-          <EditProfile />
-          <Preferences />
-          <Actions />
-        </div>
-      ),
-    },
-    {
-      id: 1,
-      label: "Statistics",
-      content: <div className="tab-content"></div>,
-    },
-  ];
   return (
     <main className="profile-page">
       <div className="tabs-container">
