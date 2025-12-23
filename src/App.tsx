@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
@@ -8,20 +7,12 @@ import { SignUp } from "./pages/SignUp/SignUp";
 import { SignIn } from "./pages/SignIn/SignIn";
 import { AuthProvider } from "./store/contexts/AuthContext";
 import { Profile } from "./pages/Profile/Profile";
-import { ThemeContext } from "./store/contexts/ThemeContext";
+import { ThemeProvider } from "./store/contexts/ThemeContext";
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "dark";
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
-
   return (
     <>
-      <ThemeContext value={{ theme, setTheme }}>
+      <ThemeProvider>
         <AuthProvider>
           <Header />
           <Routes>
@@ -32,7 +23,7 @@ function App() {
           </Routes>
           <Footer />
         </AuthProvider>
-      </ThemeContext>
+      </ThemeProvider>
     </>
   );
 }

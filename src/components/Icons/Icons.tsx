@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { ThemeContext } from "../../store/contexts/ThemeContext";
+import { useTheme } from "../../store/contexts/ThemeContext";
 
 interface LikeIconProps {
   onClick: () => void;
@@ -7,7 +6,7 @@ interface LikeIconProps {
 }
 
 function LikeIcon({ onClick, isLiked }: LikeIconProps) {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
 
   return (
     <svg
@@ -34,7 +33,8 @@ interface CrossIconProps {
 }
 
 function CrossIcon({ onClick }: CrossIconProps) {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       onClick={onClick}
@@ -65,7 +65,8 @@ function CrossIcon({ onClick }: CrossIconProps) {
 }
 
 function EmailIcon() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="16"
@@ -83,7 +84,8 @@ function EmailIcon() {
 }
 
 function MessageIcon() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="24"
@@ -104,7 +106,8 @@ function MessageIcon() {
 }
 
 function PasswordIcon() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="16"
@@ -133,7 +136,8 @@ function PasswordIcon() {
 }
 
 function PencilIcon() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="16"
@@ -170,7 +174,8 @@ function ShowCommentIcon({
   shouldShowComments,
   onClick,
 }: ShowCommentIconProps) {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       onClick={onClick}
@@ -196,7 +201,8 @@ interface TrashIconProps {
 }
 
 function TrashIcon({ onClick }: TrashIconProps) {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       onClick={onClick}
@@ -216,7 +222,8 @@ function TrashIcon({ onClick }: TrashIconProps) {
 }
 
 function FileDownloadIcon() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="36"
@@ -234,7 +241,8 @@ function FileDownloadIcon() {
 }
 
 function SidekickLogo() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
+
   return (
     <svg
       width="96"
