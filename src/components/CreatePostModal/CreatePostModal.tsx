@@ -85,8 +85,8 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
             />
           </fieldset>
           <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
+          <button onClick={handleSubmit}>Create</button>
         </form>
-        <button onClick={handleSubmit}>Create</button>
       </div>
     </div>
   );

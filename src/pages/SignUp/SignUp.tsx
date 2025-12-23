@@ -70,8 +70,8 @@ export function SignUp() {
             required
           />
         </fieldset>
+        <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       </form>
-      <button onClick={(e) => handleSubmit(e)}>Sign Up</button>
       <small>
         By clicking continue, you agree to our
         <a rel="noreffer" href="https://www.google.com/">

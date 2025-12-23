@@ -71,8 +71,8 @@ export function SignIn() {
               required
             />
           </fieldset>
+          <button onClick={(e) => handleSubmit(e)}>Sign In</button>
         </form>
-        <button onClick={(e) => handleSubmit(e)}>Sign In</button>
         <p>
           Forgot to create an account?
           <Link className="helper-link" to={"/sign-up"}>
