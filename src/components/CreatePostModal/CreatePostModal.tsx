@@ -1,9 +1,7 @@
 import "./CreatePostModal.css";
 import { FileUploadInput } from "../FileUploadInput/FileUploadInput";
 import { useEffect, useState } from "react";
-import { EmailIcon } from "../../assets/icons/email-icon";
-import { CrossIcon } from "../../assets/icons/cross-icon";
-import { PencilIcon } from "../../assets/icons/pencil-icon";
+import { Icons } from "../Icons/Icons";
 
 interface CreatePostModalProps {
   onClose: () => void;
@@ -55,12 +53,12 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
       <div className="modal">
         <div className="modal-header">
           <p className="modal-title">Create a new post</p>
-          <CrossIcon onClick={onClose} />
+          <Icons.CrossIcon onClick={onClose} />
         </div>
         <form action="#">
           <fieldset>
             <label htmlFor="post-title">
-              <EmailIcon />
+              <Icons.EmailIcon />
               <span>Post Title</span>
             </label>
             <input
@@ -72,7 +70,7 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
           </fieldset>
           <fieldset>
             <label htmlFor="post-description">
-              <PencilIcon />
+              <Icons.PencilIcon />
               <span>Description</span>
             </label>
             <textarea

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import "./FileUploadInput.css";
-import { FileDownloadIcon } from "../../assets/icons/file-download";
+import { Icons } from "../Icons/Icons";
 
 interface FileUploadInputProps {
   onFileSelect: (file: File) => void;
@@ -90,7 +90,7 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
         onDragLeave={handleDragLeave}
         onClick={handleClick}
       >
-        <FileDownloadIcon />
+        <Icons.FileDownloadIcon />
         <div className="file-upload-text">
           {selectedFile ? (
             <p>{selectedFile.name}</p>

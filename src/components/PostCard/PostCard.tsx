@@ -1,13 +1,11 @@
 import { SectionItem } from "../SectionItem/SectionItem";
-import { LikeIcon } from "./LikeIcon/LikeIcon";
 import "./PostCard.css";
 import { useContext, useState } from "react";
 import { Post } from "../../store/types";
 import { AuthContext } from "../../store/contexts/AuthContext";
-import { PencilIcon } from "../../assets/icons/pencil-icon";
-import { MessageIcon } from "../../assets/icons/message-square";
-import { TrashIcon } from "../../assets/icons/trash-icon";
-import { ShowCommentIcon } from "../../assets/icons/show-comment-icon";
+import { AddCommentForm } from "./components/AddCommentForm/AddCommentForm";
+import { CommentList } from "./components/CommentList/CommentList";
+import { Icons } from "../Icons/Icons";
 
 interface PostCardProps {
   post: Post;
@@ -22,14 +20,8 @@ export function PostCard({
   onAddComment,
   onDeleteComment,
 }: PostCardProps) {
-  const [commentText, setCommentText] = useState("");
   const [shouldShowComments, setShouldShowComments] = useState(false);
   const { isAuthenticated } = useContext(AuthContext);
-
-  function handleSubmitCommit() {
-    onAddComment(commentText);
-    setCommentText("");
-  }
 
   function handleToggleComments() {
     setShouldShowComments(!shouldShowComments);
@@ -47,15 +39,15 @@ export function PostCard({
         style={{ marginBottom: shouldShowComments ? "" : "-12px" }}
       >
         <div className="likes-block">
-          <LikeIcon onClick={onLike} isLiked={post.isLiked} />
+          <Icons.LikeIcon onClick={onLike} isLiked={post.isLiked} />
           <p>{post.likes} likes</p>
         </div>
         <div className="comments-block">
-          <MessageIcon />
+          <Icons.MessageIcon />
           {isAuthenticated ? (
             <>
               <p>{post.comments.length} comments</p>
-              <ShowCommentIcon
+              <Icons.ShowCommentIcon
                 shouldShowComments={shouldShowComments}
                 onClick={handleToggleComments}
               />
@@ -67,32 +59,12 @@ export function PostCard({
       </div>
       {isAuthenticated && (
         <>
-          <div className="comments-list">
-            {post.comments.map((comment, index) => (
-              <div
-                key={index}
-                className="comment-item"
-                style={{ display: shouldShowComments ? "flex" : "none" }}
-              >
-                <p>
-                  #{comment.id}. {comment.text}
-                </p>
-                <TrashIcon onClick={() => onDeleteComment(comment.id)} />
-              </div>
-            ))}
-          </div>
-          <label htmlFor={`comment-${post.id}`}>
-            <PencilIcon />
-            <span>Add a comment</span>
-          </label>
-          <textarea
-            name="comment"
-            id={`comment-${post.id}`}
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            placeholder="Write description here..."
-          ></textarea>
-          <button onClick={handleSubmitCommit}>Add a comment</button>
+          <CommentList
+            comments={post.comments}
+            shouldShowComments={shouldShowComments}
+            onDeleteComment={onDeleteComment}
+          />
+          <AddCommentForm postId={post.id} onAddComment={onAddComment} />
         </>
       )}
     </div>

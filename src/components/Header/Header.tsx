@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import "./Header.css";
 import { AuthContext } from "../../store/contexts/AuthContext";
-import { SidekickLogo } from "../../assets/logo/sidekick-logo";
 import { Link, useLocation } from "react-router";
+import { Icons } from "../Icons/Icons";
 
 export function Header() {
   const { isAuthenticated } = useContext(AuthContext);
@@ -31,7 +31,7 @@ export function Header() {
       {isMenuOpen && <div className="menu-overlay" />}
       <header className={`header ${isMenuOpen ? "open" : ""}`}>
         <Link to={"/"}>
-          <SidekickLogo />
+          <Icons.SidekickLogo />
         </Link>
         {!isAuthPage && (
           <>

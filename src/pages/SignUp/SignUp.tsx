@@ -3,9 +3,8 @@ import { Link, useNavigate } from "react-router";
 import { Notification } from "../../components/Notification/Notification";
 import { authService } from "../../api/authService";
 import { AuthContext } from "../../store/contexts/AuthContext";
-import { EmailIcon } from "../../assets/icons/email-icon";
-import { PasswordIcon } from "../../assets/icons/password-icon";
 import "./SignUp.css";
+import { Icons } from "../../components/Icons/Icons";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
@@ -42,7 +41,7 @@ export function SignUp() {
       <form>
         <fieldset>
           <label htmlFor="email">
-            <EmailIcon />
+            <Icons.EmailIcon />
             <span>Email</span>
           </label>
           <input
@@ -57,7 +56,7 @@ export function SignUp() {
         </fieldset>
         <fieldset>
           <label htmlFor="password">
-            <PasswordIcon />
+            <Icons.PasswordIcon />
             <span>Password</span>
           </label>
           <input
