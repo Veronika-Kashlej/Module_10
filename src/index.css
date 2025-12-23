@@ -20,7 +20,6 @@ html {
 }
 
 #root {
-  max-width: 1600px;
   display: grid;
   margin: 0 auto;
   grid-template-rows: auto 1fr auto;

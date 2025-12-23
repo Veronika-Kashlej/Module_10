@@ -33,6 +33,12 @@ section {
     gap: 8px;
 }
 
+@media(max-width: 1600px) {
+    .home-page {
+        margin: unset;
+    }
+}
+
 @media(max-width: 1175px) {
     .sections {
         display: none;

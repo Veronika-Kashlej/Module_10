@@ -30,39 +30,41 @@ export function Header() {
     <>
       {isMenuOpen && <div className="menu-overlay" />}
       <header className={`header ${isMenuOpen ? "open" : ""}`}>
-        <Link to={"/"}>
-          <Icons.SidekickLogo />
-        </Link>
-        {!isAuthPage && (
-          <>
-            <div
-              className={`burger ${isMenuOpen ? "open" : ""}`}
-              onClick={openMenu}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            {!isAuthenticated && (
-              <nav className="desktop-menu">
-                <ul>
-                  <li>
-                    <Link to={"/sign-up"}>Sign Up</Link>
-                  </li>
-                  <li>
-                    <Link to={"/sign-in"}>Sign In</Link>
-                  </li>
-                </ul>
-              </nav>
-            )}
-            {isAuthenticated && (
-              <Link className="profile-info" to={"/profile"}>
-                <div className="profile-image"></div>
-                <p className="user-name">Name Surname</p>
-              </Link>
-            )}
-          </>
-        )}
+        <div className="header-content">
+          <Link to={"/"}>
+            <Icons.SidekickLogo />
+          </Link>
+          {!isAuthPage && (
+            <>
+              <div
+                className={`burger ${isMenuOpen ? "open" : ""}`}
+                onClick={openMenu}
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              {!isAuthenticated && (
+                <nav className="desktop-menu">
+                  <ul>
+                    <li>
+                      <Link to={"/sign-up"}>Sign Up</Link>
+                    </li>
+                    <li>
+                      <Link to={"/sign-in"}>Sign In</Link>
+                    </li>
+                  </ul>
+                </nav>
+              )}
+              {isAuthenticated && (
+                <Link className="profile-info" to={"/profile"}>
+                  <div className="profile-image"></div>
+                  <p className="user-name">Name Surname</p>
+                </Link>
+              )}
+            </>
+          )}
+        </div>
       </header>
       <nav className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
         {isAuthenticated ? (
