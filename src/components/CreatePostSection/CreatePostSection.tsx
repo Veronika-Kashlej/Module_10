@@ -18,7 +18,7 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
   };
 
   return (
-    <article className="create-post-section">
+    <section className="create-post-section">
       <div className="create-post-info">
         <div className="create-post-image"></div>
         <p>What's happening?</p>
@@ -27,6 +27,6 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
       {isModalOpen && (
         <CreatePostModal onClose={closeCreatePostModal} onAddPost={onAddPost} />
       )}
-    </article>
+    </section>
   );
 }

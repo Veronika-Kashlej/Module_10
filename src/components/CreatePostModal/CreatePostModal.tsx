@@ -56,7 +56,7 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <dialog className="modal">
         <div className="modal-header">
           <p className="modal-title">Create a new post</p>
           <Icons.CrossIcon onClick={onClose} />
@@ -91,7 +91,7 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
           <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
           <button onClick={handleSubmit}>Create</button>
         </form>
-      </div>
+      </dialog>
     </div>
   );
 }

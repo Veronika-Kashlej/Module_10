@@ -21,12 +21,12 @@ export function Actions() {
   }
 
   return (
-    <div className="actions-section">
+    <section className="actions-section">
       <h3>Actions</h3>
       <button onClick={handleLogout} className="logout-btn">
         Logout
       </button>
       {error && <Notification message={error} />}
-    </div>
+    </section>
   );
 }

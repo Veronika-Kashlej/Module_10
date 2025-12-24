@@ -18,9 +18,11 @@
     width: 800px;
     background-color: var(--bg-primary-color);
     border: 1px solid var(--border-color);
+    color: var(--primary-text-color);
     display: flex;
     flex-direction: column;
     gap: 24px;
+    margin: auto;
 }
 
 .modal-header {
@@ -45,6 +47,7 @@
 @media(max-width: 768px) {
     .modal {
         padding: 12px;
+        width: unset;
     }
 
     .modal-title {

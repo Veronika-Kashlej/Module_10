@@ -10,13 +10,13 @@ const suggestedPeople = [
 
 export function SuggestedPeopleSection() {
   return (
-    <section>
+    <aside>
       <h2>Suggested people</h2>
-      <div className="section-list">
+      <div className="aside-list">
         {suggestedPeople.map((user, index) => (
           <SectionItem key={index} title={user.name} subtitle={user.link} />
         ))}
       </div>
-    </section>
+    </aside>
   );
 }

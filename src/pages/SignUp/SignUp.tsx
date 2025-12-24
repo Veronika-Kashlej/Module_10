@@ -45,7 +45,7 @@ export function SignUp() {
   };
 
   return (
-    <div className="auth-form-content sign-up">
+    <main className="auth-form-content sign-up">
       <div className="form-caption">
         <h4>Create an account</h4>
         <h5>Enter your email and password to sign up for this app</h5>
@@ -103,6 +103,6 @@ export function SignUp() {
         </Link>
       </p>
       {error && <Notification message={error} />}
-    </div>
+    </main>
   );
 }

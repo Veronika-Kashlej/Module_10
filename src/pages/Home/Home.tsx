@@ -125,7 +125,7 @@ export function Home() {
         </div>
       </div>
       {isAuthenticated && (
-        <div className="sections">
+        <div className="asides">
           <SuggestedPeopleSection></SuggestedPeopleSection>
           <CommunitiesSection></CommunitiesSection>
         </div>

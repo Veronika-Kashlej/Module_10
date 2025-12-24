@@ -22,6 +22,7 @@ export function Profile() {
       <div className="tabs-container">
         {tabs.map((tab) => (
           <button
+            key={tab.id}
             className={`tab ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => setActiveTab(tab.id)}
           >

@@ -4,10 +4,10 @@ import { Preferences } from "./components/Preferences/Preferences";
 
 export function ProfileInfo() {
   return (
-    <div className="tab-profile-info">
+    <section className="tab-profile-info">
       <EditProfile />
       <Preferences />
       <Actions />
-    </div>
+    </section>
   );
 }

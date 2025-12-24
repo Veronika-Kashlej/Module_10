@@ -10,7 +10,7 @@ const Communities = [
 export class CommunitiesSection extends React.Component {
   render() {
     return (
-      <section>
+      <aside>
         <h2>Communities you might like</h2>
         <div className="section-list">
           {Communities.map((community, index) => (
@@ -21,7 +21,7 @@ export class CommunitiesSection extends React.Component {
             />
           ))}
         </div>
-      </section>
+      </aside>
     );
   }
 }

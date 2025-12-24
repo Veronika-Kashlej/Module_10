@@ -28,7 +28,7 @@ export function PostCard({
   };
 
   return (
-    <div className="post-card">
+    <article className="post-card">
       <SectionItem title={post.username} subtitle={post.timeAgo}></SectionItem>
       {post.imageUrl && (
         <img src={post.imageUrl} className="post-image" alt="post-image"></img>
@@ -67,6 +67,6 @@ export function PostCard({
           <AddCommentForm postId={post.id} onAddComment={onAddComment} />
         </>
       )}
-    </div>
+    </article>
   );
 }
