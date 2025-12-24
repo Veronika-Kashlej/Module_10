@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./Actions.css";
-import { useAuth } from "../../store/contexts/AuthContext";
 import { useNavigate } from "react-router";
-import { Notification } from "../Notification/Notification";
+import { useAuth } from "../../../../../../store/contexts/AuthContext";
+import { Notification } from "../../../../../../components/Notification/Notification";
 
 export function Actions() {
   const { signOut } = useAuth();

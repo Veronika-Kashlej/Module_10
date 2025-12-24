@@ -1,6 +1,6 @@
-import { Switcher } from "../Switcher/Switcher";
+import { Switcher } from "../../../../../../components/Switcher/Switcher";
+import { useTheme } from "../../../../../../store/contexts/ThemeContext";
 import "./Preferences.css";
-import { useTheme } from "../../store/contexts/ThemeContext";
 
 export function Preferences() {
   const { theme, toggleTheme } = useTheme();
