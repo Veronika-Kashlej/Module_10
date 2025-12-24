@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Notification } from "../../components/Notification/Notification";
 import { useAuth } from "../../store/contexts/AuthContext";
 import "./SignIn.css";
 import { Icons } from "../../components/Icons/Icons";
@@ -8,15 +7,8 @@ import { Icons } from "../../components/Icons/Icons";
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { isAuthenticated, signIn } = useAuth();
-
-  useEffect(() => {
-    if (error) {
-      setError(null);
-    }
-  }, [email, password, error]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,14 +18,8 @@ export function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await signIn(email, password);
-      navigate("/");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
-    }
+    await signIn(email, password);
+    navigate("/");
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +78,6 @@ export function SignIn() {
           </Link>
         </p>
       </main>
-      {error && <Notification message={error} />}
     </>
   );
 }

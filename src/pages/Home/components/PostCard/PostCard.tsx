@@ -1,11 +1,11 @@
-import { SectionItem } from "../SectionItem/SectionItem";
+import { SectionItem } from "../../../../components/SectionItem/SectionItem";
 import "./PostCard.css";
 import { useState } from "react";
-import { Post } from "../../store/types";
-import { useAuth } from "../../store/contexts/AuthContext";
+import { Post } from "../../../../store/types";
+import { useAuth } from "../../../../store/contexts/AuthContext";
 import { AddCommentForm } from "./components/AddCommentForm/AddCommentForm";
 import { CommentList } from "./components/CommentList/CommentList";
-import { Icons } from "../Icons/Icons";
+import { Icons } from "../../../../components/Icons/Icons";
 
 interface PostCardProps {
   post: Post;

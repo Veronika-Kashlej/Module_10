@@ -1,5 +1,5 @@
-import { Comment } from "../../../../store/types";
-import { Icons } from "../../../Icons/Icons";
+import { Comment } from "../../../../../../store/types";
+import { Icons } from "../../../../../../components/Icons/Icons";
 import "./CommentList.css";
 interface CommentListProps {
   comments: Comment[];

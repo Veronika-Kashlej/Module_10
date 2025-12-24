@@ -1,8 +1,8 @@
 import { useReducer } from "react";
-import { CommunitiesSection } from "../../components/CommunitiesSection/CommunitiesSection";
-import { CreatePostSection } from "../../components/CreatePostSection/CreatePostSection";
-import { PostCard } from "../../components/PostCard/PostCard";
-import { SuggestedPeopleSection } from "../../components/SuggestedPeopleSection/SuggestedPeopleSection";
+import { CommunitiesSection } from "./components/CommunitiesSection/CommunitiesSection";
+import { CreatePostSection } from "./components/CreatePostSection/CreatePostSection";
+import { PostCard } from "./components/PostCard/PostCard";
+import { SuggestedPeopleSection } from "./components/SuggestedPeopleSection/SuggestedPeopleSection";
 import { postsReducer } from "../../store/postsReducer";
 import { useAuth } from "../../store/contexts/AuthContext";
 import img1 from "../../assets/images/img-1.png";

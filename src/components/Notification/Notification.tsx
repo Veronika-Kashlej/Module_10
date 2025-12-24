@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Notification.css";
+import { Portal } from "../Portal/Portal";
 
 interface NotificationProps {
   message: string;
@@ -8,23 +9,20 @@ interface NotificationProps {
 export function Notification({ message }: NotificationProps) {
   const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(closeModal, 4000);
-    return () => clearTimeout(timer);
-  });
-
-  function closeModal() {
+  const closeModal = () => {
     setIsVisible(false);
-  }
+  };
 
   if (!isVisible) return null;
 
   return (
-    <div className="notification-container">
-      <p>{message}</p>
-      <p className="close-natification-btn" onClick={closeModal}>
-        ×
-      </p>
-    </div>
+    <Portal>
+      <div className="notification-container">
+        <p>{message}</p>
+        <p className="close-natification-btn" onClick={closeModal}>
+          ×
+        </p>
+      </div>
+    </Portal>
   );
 }

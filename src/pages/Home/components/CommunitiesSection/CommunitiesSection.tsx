@@ -1,5 +1,5 @@
 import React from "react";
-import { SectionItem } from "../SectionItem/SectionItem";
+import { SectionItem } from "../../../../components/SectionItem/SectionItem";
 
 const Communities = [
   { name: "Design Enthusiasts", membersCount: "13.2k members" },

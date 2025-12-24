@@ -1,4 +1,4 @@
-import { SectionItem } from "../SectionItem/SectionItem";
+import { SectionItem } from "../../../../components/SectionItem/SectionItem";
 
 const suggestedPeople = [
   { name: "Helena", link: "@helenahills" },
