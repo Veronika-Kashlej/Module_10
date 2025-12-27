@@ -1,0 +1,48 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+}
+
+.tabs-container {
+    padding: 4px;
+    background-color: var(--bg-primary-color);
+    align-self: center;
+}
+
+button.tab {
+    padding: 4px 12px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    background-color: var(--bg-primary-color);
+    transition: all 0.3s ease-in;
+}
+
+button.tab:hover, button.tab.active {
+    background-color: var(--primary-color);
+}
+
+.tab-profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
+    justify-content: center;
+    column-gap: 50px;
+    row-gap: 24px;
+}
+
+@media(max-width: 768px) {
+    .profile-page {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .tab-profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+    }
+}
