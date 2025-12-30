@@ -5,13 +5,13 @@ import { useAuth } from "../../../../../../store/contexts/AuthContext";
 import { Notification } from "../../../../../../components/Notification/Notification";
 
 export function Actions() {
-  const { signOut } = useAuth();
   const navigate = useNavigate();
+  const { signOut } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   async function handleLogout() {
     try {
-      await signOut();
+      await signOut;
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {

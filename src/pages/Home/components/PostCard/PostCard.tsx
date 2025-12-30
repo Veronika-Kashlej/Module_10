@@ -1,54 +1,49 @@
 import { SectionItem } from "../../../../components/SectionItem/SectionItem";
 import "./PostCard.css";
 import { useState } from "react";
-import { Post } from "../../../../store/types";
-import { useAuth } from "../../../../store/contexts/AuthContext";
-import { AddCommentForm } from "./components/AddCommentForm/AddCommentForm";
-import { CommentList } from "./components/CommentList/CommentList";
+import { LikedPost, Post } from "../../../../store/types";
 import { Icons } from "../../../../components/Icons/Icons";
+import { useAuth } from "../../../../store/contexts/AuthContext";
+import { Comments } from "./components/Comments/Comments";
+import { LikesSection } from "./components/Likes/LikesSection";
 
 interface PostCardProps {
   post: Post;
-  onLike: () => void;
-  onAddComment: (comment: string) => void;
-  onDeleteComment: (commentId: number) => void;
+  likedPosts: LikedPost[];
 }
 
-export function PostCard({
-  post,
-  onLike,
-  onAddComment,
-  onDeleteComment,
-}: PostCardProps) {
-  const [shouldShowComments, setShouldShowComments] = useState(false);
+export function PostCard({ post, likedPosts }: PostCardProps) {
+  const [areVisibleComments, setAreVisibleComments] = useState(false);
   const { isAuthenticated } = useAuth();
+  const [commentsCount, setCommentsCount] = useState(post.commentsCount + 1);
 
   const handleToggleComments = () => {
-    setShouldShowComments(!shouldShowComments);
+    setAreVisibleComments(!areVisibleComments);
+  };
+
+  const handleCommentsCountChange = (newCount: number) => {
+    setCommentsCount(newCount);
   };
 
   return (
     <article className="post-card">
-      <SectionItem title={post.username} subtitle={post.timeAgo}></SectionItem>
-      {post.imageUrl && (
-        <img src={post.imageUrl} className="post-image" alt="post-image"></img>
+      <SectionItem title={"Helena"} subtitle={"3 min ago"}></SectionItem>
+      {post.image && (
+        <img src={post.image} className="post-image" alt="post-image"></img>
       )}
-      <p className="post-description">{post.description}</p>
+      <p className="post-description">{post.content}</p>
       <div
         className="likes-and-comments-block"
-        style={{ marginBottom: shouldShowComments ? "" : "-12px" }}
+        style={{ marginBottom: areVisibleComments ? "" : "-12px" }}
       >
-        <div className="likes-block">
-          <Icons.LikeIcon onClick={onLike} isLiked={post.isLiked} />
-          <p>{post.likes} likes</p>
-        </div>
+        <LikesSection post={post} likedPosts={likedPosts} />
         <div className="comments-block">
           <Icons.MessageIcon />
           {isAuthenticated ? (
             <>
-              <p>{post.comments.length} comments</p>
+              <p>{commentsCount} comments</p>
               <Icons.ShowCommentIcon
-                shouldShowComments={shouldShowComments}
+                areVisibleComments={areVisibleComments}
                 onClick={handleToggleComments}
               />
             </>
@@ -58,14 +53,11 @@ export function PostCard({
         </div>
       </div>
       {isAuthenticated && (
-        <>
-          <CommentList
-            comments={post.comments}
-            shouldShowComments={shouldShowComments}
-            onDeleteComment={onDeleteComment}
-          />
-          <AddCommentForm postId={post.id} onAddComment={onAddComment} />
-        </>
+        <Comments
+          onChangeCommentsCount={handleCommentsCountChange}
+          postId={post.id}
+          areVisibleComments={areVisibleComments}
+        />
       )}
     </article>
   );

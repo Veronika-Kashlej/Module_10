@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./AddCommentForm.css";
-import { Icons } from "../../../../../../components/Icons/Icons";
+import { Icons } from "../../../../../../../../components/Icons/Icons";
 
 interface AddCommentFormProps {
   postId: number;

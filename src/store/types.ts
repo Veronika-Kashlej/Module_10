@@ -1,24 +1,44 @@
 export interface Post {
+  authorId: number;
+  authorPhoto: string;
+  commentsCount: number;
+  content: string;
+  creationDate: string;
   id: number;
-  username: string;
-  timeAgo: string;
-  description: string;
-  likes: number;
-  comments: Comment[];
-  isLiked: boolean;
-  imageUrl?: string;
+  image: string;
+  likesCount: number;
+  modifiedDate: string;
+  title: string;
+  likedByUsers: User[];
 }
 
-export interface Comment {
+export interface LikedPost {
   id: number;
-  text: string;
-  author: string;
+  postId: number;
+  userId: number;
+  creationDate: string;
 }
 
 export interface User {
+  creationDate: string;
+  description: string;
   email: string;
-  profilePhoto: string;
+  firstName: string;
+  id: number;
+  lastLogin: string;
+  modifiedDate: string;
+  profileImage: string;
+  secondName: string;
   username: string;
+}
+
+export interface Comment {
+  authorId: number;
+  creationDate: string;
+  id: number;
+  text: string;
+  modifiedDate: string;
+  postId: number;
 }
 
 export interface AuthResponse {

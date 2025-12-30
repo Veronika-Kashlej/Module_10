@@ -166,12 +166,12 @@ function PencilIcon() {
 }
 
 interface ShowCommentIconProps {
-  shouldShowComments: boolean;
+  areVisibleComments: boolean;
   onClick: () => void;
 }
 
 function ShowCommentIcon({
-  shouldShowComments,
+  areVisibleComments,
   onClick,
 }: ShowCommentIconProps) {
   const { theme } = useTheme();
@@ -180,7 +180,7 @@ function ShowCommentIcon({
     <svg
       onClick={onClick}
       style={{
-        transform: shouldShowComments ? "none" : "rotate(180deg)",
+        transform: areVisibleComments ? "none" : "rotate(180deg)",
       }}
       width="24"
       height="24"

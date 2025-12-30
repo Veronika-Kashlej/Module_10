@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router";
 import { Icons } from "../Icons/Icons";
 
 export function Header() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -58,8 +58,14 @@ export function Header() {
               )}
               {isAuthenticated && (
                 <Link className="profile-info" to={"/profile"}>
-                  <div className="profile-image"></div>
-                  <p className="user-name">Name Surname</p>
+                  <img
+                    className="profile-image"
+                    src={user?.profileImage}
+                    alt="profile"
+                  ></img>
+                  <p className="user-name">
+                    {user?.firstName} {user?.secondName}
+                  </p>
                 </Link>
               )}
             </>
