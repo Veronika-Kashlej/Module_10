@@ -11,7 +11,7 @@
     gap: 26px;
 }
 
-.sections {
+.asides {
     display: flex;
     flex-direction: column;
     gap: 12px;

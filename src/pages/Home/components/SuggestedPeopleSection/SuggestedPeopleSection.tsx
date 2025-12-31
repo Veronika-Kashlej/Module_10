@@ -1,20 +1,32 @@
+import { useEffect, useState } from "react";
 import { SectionItem } from "../../../../components/SectionItem/SectionItem";
-
-const suggestedPeople = [
-  { name: "Helena", link: "@helenahills" },
-  { name: "Charles", link: "@charles" },
-  { name: "Oscar Davis", link: "@oscardavis" },
-  { name: "Daniel Jay Park", link: "@danielj" },
-  { name: "Carlo Rojas", link: "@carlorojas" },
-];
+import { profileApi } from "../../../../store/api";
+import { SuggestedPeople } from "../../../../store/types";
 
 export function SuggestedPeopleSection() {
+  const [suggestedUsers, setSuggestedUsers] = useState<SuggestedPeople[]>([]);
+  useEffect(() => {
+    const fetchSuggestedUsers = async () => {
+      try {
+        const response = await profileApi.getSuggestedUsers();
+        setSuggestedUsers(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSuggestedUsers();
+  }, []);
   return (
     <aside>
       <h2>Suggested people</h2>
       <div className="aside-list">
-        {suggestedPeople.map((user, index) => (
-          <SectionItem key={index} title={user.name} subtitle={user.link} />
+        {suggestedUsers.map((user, index) => (
+          <SectionItem
+            key={user.id}
+            title={`${user.firstName} ${user.secondName}`}
+            subtitle={`@${user.username}`}
+            image={user.photo}
+          />
         ))}
       </div>
     </aside>

@@ -1,3 +1,4 @@
+import { getSuggestedQuery } from "@testing-library/dom";
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3000";
@@ -55,14 +56,18 @@ export const postsAPI = {
 
 export const authAPI = {
   login: (email: string, password: string) =>
-    api.post("/api/login", { email, password }),
+    api.post(`/api/login`, { email, password }),
 
   signup: (email: string, password: string) =>
-    api.post("/api/signup", { email, password }),
+    api.post(`/api/signup`, { email, password }),
 
-  logout: () => api.post("/api/logout"),
+  logout: () => api.post(`/api/logout`),
 
-  getMe: () => api.get("/api/me"),
+  getMe: () => api.get(`/api/me`),
+};
+
+export const profileApi = {
+  getSuggestedUsers: () => api.get(`/api/getSuggested`),
 };
 
 export default api;

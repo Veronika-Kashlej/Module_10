@@ -32,6 +32,15 @@ export interface User {
   username: string;
 }
 
+export interface SuggestedPeople {
+  description: string;
+  firstName: string;
+  secondName: string;
+  id: number;
+  photo: string;
+  username: string;
+}
+
 export interface Comment {
   authorId: number;
   creationDate: string;
