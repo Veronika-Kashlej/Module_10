@@ -3,14 +3,16 @@ import { FileUploadInput } from "../../../../../../components/FileUploadInput/Fi
 import { useEffect, useState } from "react";
 import { Icons } from "../../../../../../components/Icons/Icons";
 import { Portal } from "../../../../../../components/Portal/Portal";
+import { postsAPI } from "../../../../../../store/api";
 
 interface CreatePostModalProps {
   onClose: () => void;
-  onAddPost: (description: string, imageUrl?: string) => void;
+  onAddPost: () => void;
 }
 
 export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
   const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -36,23 +38,34 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
     setDescription(event.target.value);
   };
 
-  const handleSubmit = () => {
-    if (!description.trim()) return;
-    let imageUrl = null;
-    if (selectedFile && imagePreview) {
-      imageUrl = imagePreview;
-      console.log(imageUrl);
-    }
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
 
-    if (imageUrl) {
-      onAddPost(description, imageUrl);
-    } else {
-      onAddPost(description);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      let imageUrl: string | undefined = undefined;
+      if (imagePreview) {
+        imageUrl = imagePreview;
+      }
+
+      await postsAPI.createPost({
+        title,
+        content: description,
+        image: imageUrl,
+      });
+
+      onAddPost();
+
+      onClose();
+      setDescription("");
+      setSelectedFile(null);
+      setImagePreview(null);
+      setTitle("");
+    } catch (err) {
+      console.error(err);
     }
-    onClose();
-    setDescription("");
-    setSelectedFile(null);
-    setImagePreview(null);
   };
 
   return (
@@ -74,6 +87,8 @@ export function CreatePostModal({ onClose, onAddPost }: CreatePostModalProps) {
                 name="post-title"
                 id="post-title"
                 placeholder="Enter post title"
+                onChange={handleTitleChange}
+                required
               />
             </fieldset>
             <fieldset>

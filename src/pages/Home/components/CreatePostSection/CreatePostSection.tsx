@@ -4,7 +4,7 @@ import { CreatePostModal } from "./components/CreatePostModal/CreatePostModal";
 import { useAuth } from "../../../../store/contexts/AuthContext";
 
 interface CreatePostSectionProps {
-  onAddPost: (description: string, imageUrl?: string) => void;
+  onAddPost: () => void;
 }
 
 export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {

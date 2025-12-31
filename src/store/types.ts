@@ -5,7 +5,7 @@ export interface Post {
   content: string;
   creationDate: string;
   id: number;
-  image: string;
+  image?: string;
   likesCount: number;
   modifiedDate: string;
   title: string;

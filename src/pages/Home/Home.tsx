@@ -1,28 +1,20 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { CommunitiesSection } from "./components/CommunitiesSection/CommunitiesSection";
 import { CreatePostSection } from "./components/CreatePostSection/CreatePostSection";
 import { PostCard } from "./components/PostCard/PostCard";
 import { SuggestedPeopleSection } from "./components/SuggestedPeopleSection/SuggestedPeopleSection";
-import { postsReducer } from "../../store/postsReducer";
 import { useAuth } from "../../store/contexts/AuthContext";
 import "./Home.css";
 import { postsAPI } from "../../store/api";
-import { LikedPost } from "../../store/types";
+import { LikedPost, Post } from "../../store/types";
 
 export function Home() {
-  const [posts, dispatch] = useReducer(postsReducer, []);
+  const [posts, setPosts] = useState<Post[]>([]);
   const { isAuthenticated } = useAuth();
   const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await postsAPI.getPosts();
-        dispatch({ type: "SET_POSTS", payload: { posts: response.data } });
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    };
+    fetchPosts();
 
     const fetchLikedPosts = async () => {
       try {
@@ -39,11 +31,17 @@ export function Home() {
     }
   }, [isAuthenticated]);
 
-  const handleAddPost = (description: string, imageUrl?: string) => {
-    dispatch({
-      type: "ADD_POST",
-      payload: { description: description, imageUrl: imageUrl },
-    });
+  const fetchPosts = async () => {
+    try {
+      const response = await postsAPI.getPosts();
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    }
+  };
+
+  const handleAddPost = () => {
+    fetchPosts();
   };
 
   return (
@@ -59,7 +57,7 @@ export function Home() {
           <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
         )}
         <div className="posts-list">
-          {posts.map((post) => (
+          {[...posts].reverse().map((post) => (
             <PostCard
               key={post.id}
               post={post}

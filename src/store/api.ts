@@ -41,6 +41,12 @@ export const postsAPI = {
   createPost: (data: { title: string; content: string; image?: string }) =>
     api.post(`/api/posts`, data),
   getUser: (userId: number) => api.get(`/api/users/${userId}`),
+  uploadImage: (formData: FormData) =>
+    api.post(`/api/upload-image`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
 
   // Comments
   getComments: (postId: number) => api.get(`/api/posts/${postId}/comments`),

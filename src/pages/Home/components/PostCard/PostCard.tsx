@@ -52,6 +52,9 @@ export function PostCard({ post, likedPosts }: PostCardProps) {
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
 
+    if (isNaN(creationDate) || seconds === 0) {
+      return "Just now";
+    }
     if (seconds < 60) {
       return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
     } else if (minutes < 60) {
