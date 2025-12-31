@@ -68,6 +68,7 @@ export const authAPI = {
 
 export const profileApi = {
   getSuggestedUsers: () => api.get(`/api/getSuggested`),
+  getCommunities: () => api.get(`/api/groups`),
 };
 
 export default api;

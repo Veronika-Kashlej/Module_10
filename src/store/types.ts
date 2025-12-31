@@ -41,6 +41,13 @@ export interface SuggestedPeople {
   username: string;
 }
 
+export interface Community {
+  id: number;
+  photo: string;
+  title: string;
+  membersCount: number;
+}
+
 export interface Comment {
   authorId: number;
   creationDate: string;

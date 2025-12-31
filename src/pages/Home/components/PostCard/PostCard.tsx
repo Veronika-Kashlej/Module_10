@@ -27,7 +27,11 @@ export function PostCard({ post, likedPosts }: PostCardProps) {
 
   return (
     <article className="post-card">
-      <SectionItem title={"Helena"} subtitle={"3 min ago"}></SectionItem>
+      <SectionItem
+        title={"Helena"}
+        subtitle={"3 min ago"}
+        image={post.authorPhoto}
+      ></SectionItem>
       {post.image && (
         <img src={post.image} className="post-image" alt="post-image"></img>
       )}
