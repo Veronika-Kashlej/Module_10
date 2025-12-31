@@ -1,8 +1,8 @@
 import "./CreatePostModal.css";
-import { FileUploadInput } from "../../../../components/FileUploadInput/FileUploadInput";
+import { FileUploadInput } from "../../../../../../components/FileUploadInput/FileUploadInput";
 import { useEffect, useState } from "react";
-import { Icons } from "../../../../components/Icons/Icons";
-import { Portal } from "../../../../components/Portal/Portal";
+import { Icons } from "../../../../../../components/Icons/Icons";
+import { Portal } from "../../../../../../components/Portal/Portal";
 
 interface CreatePostModalProps {
   onClose: () => void;

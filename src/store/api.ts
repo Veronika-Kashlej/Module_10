@@ -40,6 +40,7 @@ export const postsAPI = {
   getPosts: () => api.get(`/api/posts`),
   createPost: (data: { title: string; content: string; image?: string }) =>
     api.post(`/api/posts`, data),
+  getUser: (userId: number) => api.get(`/api/users/${userId}`),
 
   // Comments
   getComments: (postId: number) => api.get(`/api/posts/${postId}/comments`),

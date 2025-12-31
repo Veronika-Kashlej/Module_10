@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./CreatePostSection.css";
-import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
+import { CreatePostModal } from "./components/CreatePostModal/CreatePostModal";
+import { useAuth } from "../../../../store/contexts/AuthContext";
 
 interface CreatePostSectionProps {
   onAddPost: (description: string, imageUrl?: string) => void;
@@ -8,6 +9,7 @@ interface CreatePostSectionProps {
 
 export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth();
 
   const openCreatePostModal = () => {
     setIsModalOpen(true);
@@ -20,7 +22,11 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
   return (
     <section className="create-post-section">
       <div className="create-post-info">
-        <div className="create-post-image"></div>
+        <img
+          src={user?.profileImage}
+          className="create-post-image"
+          alt="avatar"
+        ></img>
         <p>What's happening?</p>
       </div>
       <button onClick={openCreatePostModal}>Tell everyone</button>
