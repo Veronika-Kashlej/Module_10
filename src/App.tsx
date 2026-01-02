@@ -8,6 +8,7 @@ import { SignIn } from "./pages/SignIn/SignIn";
 import { AuthProvider } from "./store/contexts/AuthContext";
 import { Profile } from "./pages/Profile/Profile";
 import { ThemeProvider } from "./store/contexts/ThemeContext";
+import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 
 function App() {
   return (
@@ -19,7 +20,14 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/sign-up" element={<SignUp />}></Route>
             <Route path="/sign-in" element={<SignIn />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            ></Route>
           </Routes>
           <Footer />
         </AuthProvider>
