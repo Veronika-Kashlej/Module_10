@@ -1,17 +1,17 @@
 import { useState } from "react";
 import "./Actions.css";
-import { useNavigate } from "react-router";
-import { useAuth } from "../../../../../../store/contexts/AuthContext";
 import { Notification } from "../../../../../../components/Notification/Notification";
+import { useAuth } from "../../../../../../store/contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 export function Actions() {
-  const navigate = useNavigate();
-  const { signOut } = useAuth();
   const [error, setError] = useState<string | null>(null);
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   async function handleLogout() {
     try {
-      await signOut;
+      await signOut();
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {
