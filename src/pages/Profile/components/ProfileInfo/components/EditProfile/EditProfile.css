@@ -20,6 +20,10 @@
     height: 110px;
 }
 
+.edit-profile-form input:focus, .edit-profile-form textarea:focus {
+    color: var(--text-color);
+}
+
 .edit-profile-form button {
     width: 244px;
 }
@@ -28,4 +32,36 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.edit-profile-form .section-item {
+    padding: 0;
+}
+
+.edit-profile-form .section-item-image {
+    width: 64px;
+    height: 64px;
+}
+
+@media(max-width: 830px) {
+    .edit-profile-form textarea {
+        width: 400px;
+    }
+}
+
+@media(max-width: 768px) {
+    .edit-profile-form {
+        gap: 12px;
+        margin-top: 12px;
+    }
+}
+
+@media(max-width: 500px) {
+    .profile-page, .edit-profile-form input, .edit-profile-form textarea {
+        width: 100%;
+    }
+
+    .edit-profile-form button {
+        width: 196px;
+    }
 }

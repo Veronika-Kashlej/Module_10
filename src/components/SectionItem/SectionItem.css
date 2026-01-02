@@ -4,6 +4,7 @@
     display: flex;
     gap: 16px;
     width: 293px;
+    align-items: center;
 }
 
 .section-item-image {
@@ -11,12 +12,6 @@
     height: 48px;
     border-radius: 50%;
     background-color: black;
-}
-
-.section-item-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .section-item-title {

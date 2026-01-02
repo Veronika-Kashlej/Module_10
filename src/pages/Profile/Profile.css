@@ -39,7 +39,7 @@ button.tab:hover, button.tab.active {
 
     .tab-profile-info {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         gap: 36px;
     }
 }
