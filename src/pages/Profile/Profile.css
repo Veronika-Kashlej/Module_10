@@ -3,6 +3,7 @@
     flex-direction: column;
     padding: 24px;
     gap: 24px;
+    margin: 0 auto;
 }
 
 .tabs-container {
@@ -26,12 +27,8 @@ button.tab:hover, button.tab.active {
 }
 
 .tab-profile-info {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(2, auto);
-    justify-content: center;
-    column-gap: 50px;
-    row-gap: 24px;
+    display: flex;
+    gap: 50px;
 }
 
 @media(max-width: 768px) {

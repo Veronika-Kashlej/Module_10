@@ -6,8 +6,10 @@ export function ProfileInfo() {
   return (
     <section className="tab-profile-info">
       <EditProfile />
-      <Preferences />
-      <Actions />
+      <div>
+        <Preferences />
+        <Actions />
+      </div>
     </section>
   );
 }

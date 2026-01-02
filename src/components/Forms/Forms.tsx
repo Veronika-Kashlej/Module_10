@@ -5,7 +5,7 @@ import { Icons } from "../Icons/Icons";
 import { Input } from "./components/Input/Input";
 import { Label } from "./components/Label/Label";
 import { FileUploadInput } from "./components/FileUploadInput/FileUploadInput";
-import { postsAPI } from "../../store/api";
+import { postsAPI, profileApi } from "../../store/api";
 import { TextArea } from "./components/TextArea/TextArea";
 import { SectionItem } from "../SectionItem/SectionItem";
 
@@ -191,14 +191,57 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
 }
 
 function EditProfileForm() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const [profileImage, setProfileImage] = useState(user?.profileImage || "");
+  const usernameInput = useRef<HTMLInputElement>(null);
+  const emailInput = useRef<HTMLInputElement>(null);
+  const descriptionTextArea = useRef<HTMLTextAreaElement>(null);
+
+  const handleImageChange = async () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.display = "none";
+    document.body.appendChild(input);
+
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const previewUrl = reader.result as string;
+          setProfileImage(previewUrl);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    input.click();
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const newFormData = {
+        username: usernameInput.current?.value.slice(1),
+        email: emailInput.current?.value,
+        description: descriptionTextArea.current?.value,
+        profileImage: profileImage,
+      };
+      await profileApi.updateProfile(newFormData);
+      await refreshUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <form action="#">
+    <form className="edit-profile-form" action="#">
       <SectionItem
         title={`${user?.firstName} ${user?.secondName}`}
         subtitle="Change profile photo"
-        image={user!.profileImage}
+        image={profileImage}
+        onImageChange={handleImageChange}
       ></SectionItem>
       <fieldset>
         <Label
@@ -206,11 +249,16 @@ function EditProfileForm() {
           title="Username"
           icon={<Icons.UsernameIcon />}
         />
-        <Input type="text" name="username" value={"@" + user?.username} />
+        <Input
+          ref={usernameInput}
+          type="text"
+          name="username"
+          value={"@" + user?.username}
+        />
       </fieldset>
       <fieldset>
         <Label htmlFor="email" title="Email" icon={<Icons.EmailIcon />} />
-        <Input type="email" name="email" value={user?.email} />
+        <Input ref={emailInput} type="email" name="email" value={user?.email} />
       </fieldset>
       <fieldset>
         <Label
@@ -219,6 +267,7 @@ function EditProfileForm() {
           icon={<Icons.PencilIcon />}
         />
         <TextArea
+          ref={descriptionTextArea}
           name="description"
           maxLength={200}
           value={user?.description}
@@ -228,7 +277,7 @@ function EditProfileForm() {
           <p>Max 200 chars</p>
         </small>
       </fieldset>
-      <button>Save Profile Changes</button>
+      <button onClick={handleSubmit}>Save Profile Changes</button>
     </form>
   );
 }

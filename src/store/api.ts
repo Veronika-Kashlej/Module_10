@@ -76,6 +76,12 @@ export const authAPI = {
 export const profileApi = {
   getSuggestedUsers: () => api.get(`/api/getSuggested`),
   getCommunities: () => api.get(`/api/groups`),
+  updateProfile: (data: {
+    username?: string;
+    email?: string;
+    description?: string;
+    profileImage?: string;
+  }) => api.put(`/api/profile`, data),
 };
 
 export default api;
