@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { AddCommentForm } from "./components/AddCommentForm/AddCommentForm";
 import { CommentList } from "./components/CommentList/CommentList";
 import { useAuth } from "../../../../../../store/contexts/AuthContext";
 import { postsAPI } from "../../../../../../store/api";
 import { Comment } from "../../../../../../store/types";
+import { Forms } from "../../../../../../components/Forms/Forms";
 
 interface CommentsProps {
   postId: number;
@@ -59,7 +59,7 @@ export function Comments({
         onDeleteComment={handleDeleteComment}
         comments={comments}
       />
-      <AddCommentForm postId={postId} onAddComment={handleAddComment} />
+      <Forms.AddCommentForm postId={postId} onAddComment={handleAddComment} />
     </>
   );
 }

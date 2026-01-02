@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import "./FileUploadInput.css";
-import { Icons } from "../Icons/Icons";
+import { Icons } from "../../../Icons/Icons";
 
 interface FileUploadInputProps {
   onFileSelect: (file: File) => void;
