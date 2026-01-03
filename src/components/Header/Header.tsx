@@ -1,16 +1,12 @@
 import { useState } from "react";
 import "./Header.css";
 import { useAuth } from "../../store/contexts/AuthContext";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import { Icons } from "../Icons/Icons";
 
 export function Header() {
   const { isAuthenticated, user } = useAuth();
-  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const isAuthPage =
-    location.pathname === "/sign-in" || location.pathname === "/sign-up";
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -34,41 +30,37 @@ export function Header() {
           <Link to={"/"}>
             <Icons.SidekickLogo />
           </Link>
-          {!isAuthPage && (
-            <>
-              <div
-                className={`burger ${isMenuOpen ? "open" : ""}`}
-                onClick={openMenu}
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              {!isAuthenticated && (
-                <nav className="desktop-menu">
-                  <ul>
-                    <li>
-                      <Link to={"/sign-up"}>Sign Up</Link>
-                    </li>
-                    <li>
-                      <Link to={"/sign-in"}>Sign In</Link>
-                    </li>
-                  </ul>
-                </nav>
-              )}
-              {isAuthenticated && (
-                <Link className="profile-info" to={"/profile"}>
-                  <img
-                    className="profile-image"
-                    src={user?.profileImage}
-                    alt="profile"
-                  ></img>
-                  <p className="user-name">
-                    {user?.firstName} {user?.secondName}
-                  </p>
-                </Link>
-              )}
-            </>
+          <div
+            className={`burger ${isMenuOpen ? "open" : ""}`}
+            onClick={openMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          {!isAuthenticated && (
+            <nav className="desktop-menu">
+              <ul>
+                <li>
+                  <Link to={"/sign-up"}>Sign Up</Link>
+                </li>
+                <li>
+                  <Link to={"/sign-in"}>Sign In</Link>
+                </li>
+              </ul>
+            </nav>
+          )}
+          {isAuthenticated && (
+            <Link className="profile-info" to={"/profile"}>
+              <img
+                className="profile-image"
+                src={user?.profileImage}
+                alt="profile"
+              ></img>
+              <p className="user-name">
+                {user?.firstName} {user?.secondName}
+              </p>
+            </Link>
           )}
         </div>
       </header>

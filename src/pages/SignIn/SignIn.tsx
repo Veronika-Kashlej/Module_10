@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../store/contexts/AuthContext";
 import "./SignIn.css";
 import { Forms } from "../../components/Forms/Forms";
+import { SimpleHeader } from "../../components/SimpleHeader/SimpleHeader";
 
 export function SignIn() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export function SignIn() {
 
   return (
     <>
+      <SimpleHeader />
       <main className="auth-form-content sign-in">
         <div className="form-caption">
           <h4>Sign in into an account</h4>

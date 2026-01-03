@@ -1,4 +1,3 @@
-import { getSuggestedQuery } from "@testing-library/dom";
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3000";
@@ -82,6 +81,9 @@ export const profileApi = {
     description?: string;
     profileImage?: string;
   }) => api.put(`/api/profile`, data),
+  getPosts: () => api.get(`/api/me/posts`),
+  getComments: () => api.get(`/api/me/comments`),
+  getLikes: () => api.get(`/api/me/likes`),
 };
 
 export default api;

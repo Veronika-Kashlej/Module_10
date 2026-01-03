@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Profile.css";
 import { ProfileInfo } from "./components/ProfileInfo/ProfileInfo";
 import { Statistics } from "./components/Statistics/Statistics";
+import { Header } from "../../components/Header/Header";
 const tabs = [
   {
     id: 0,
@@ -18,19 +19,22 @@ const tabs = [
 export function Profile() {
   const [activeTab, setActiveTab] = useState(0);
   return (
-    <main className="profile-page">
-      <div className="tabs-container">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`tab ${activeTab === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      {tabs.find((tab) => tab.id === activeTab)?.content}
-    </main>
+    <>
+      <Header />
+      <main className="profile-page">
+        <div className="tabs-container">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`tab ${activeTab === tab.id ? "active" : ""}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        {tabs.find((tab) => tab.id === activeTab)?.content}
+      </main>
+    </>
   );
 }
