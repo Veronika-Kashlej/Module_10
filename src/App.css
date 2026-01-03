@@ -27,6 +27,13 @@ main {
   margin: auto;
 }
 
+h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 60px;
+  line-height: 150%;
+  font-weight: 600;
+}
+
 h2 {
   font-family: 'Inter', sans-serif;
   font-size: 16px;
@@ -132,6 +139,10 @@ a {
 @media(max-width: 768px) {
   button {
     padding: 8px 24px;
+  }
+
+  h1 {
+    font-size: 20px;
   }
 
   h3 {

@@ -9,6 +9,7 @@ import { AuthProvider } from "./store/contexts/AuthContext";
 import { Profile } from "./pages/Profile/Profile";
 import { ThemeProvider } from "./store/contexts/ThemeContext";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
+import { NotFound } from "./pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                 </PrivateRoute>
               }
             ></Route>
+            <Route path="*" element={<NotFound />}></Route>
           </Routes>
           <Footer />
         </AuthProvider>
