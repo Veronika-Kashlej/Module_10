@@ -1,0 +1,16 @@
+.cards-statistics-list {
+    display: flex;
+    gap: 32px;
+}
+
+@media(max-width: 1150px) {
+    .cards-statistics-list {
+        gap: 12px;
+    }
+}
+
+@media(max-width: 1085px) {
+    .cards-statistics-list {
+        flex-direction: column;
+    }
+}

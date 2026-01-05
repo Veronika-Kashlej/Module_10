@@ -62,3 +62,9 @@ export interface AuthResponse {
   refreshToken: string;
   user: User;
 }
+
+export interface StatisticsCard {
+  title: string;
+  count: number;
+  progress: string;
+}
