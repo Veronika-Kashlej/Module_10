@@ -7,7 +7,8 @@
   --form-bg-color: rgba(21, 26, 45, 1);
   --bg-primary-color: rgba(14, 18, 35, 1);
   --bg-secondary-color: rgba(27, 32, 55, 1);
-  --modal-bg-color: rgba(27, 32, 55, 0.5)
+  --modal-bg-color: rgba(27, 32, 55, 0.5);
+  --error-color: rgba(255, 85, 74, 1);
 }
 
 [data-theme="light"] {
@@ -19,7 +20,8 @@
   --form-bg-color: rgba(255, 255, 255, 1);
   --bg-primary-color: rgba(250, 250, 250, 1);
   --bg-secondary-color: rgba(255, 255, 255, 1);
-  --modal-bg-color: rgba(27, 32, 55, 0.5)
+  --modal-bg-color: rgba(27, 32, 55, 0.5);
+  --error-color: rgba(255, 85, 74, 1);
 }
 
 main {

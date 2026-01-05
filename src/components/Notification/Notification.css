@@ -1,18 +1,23 @@
 .notification-container {
-    max-width: 350px;
+    width: 350px;
     padding: 24px;
-    display: flex;
-    gap: 17px;
-    align-items: flex-start;
     border-radius: 8px;
     background-color: var(--primary-color);
     line-height: 28px;
-    position: absolute;
-    right: 24px;
-    bottom: 170px;
+    position: fixed;
+    right: 20px;
+    bottom: 100px;
+    font-size: 18px;
+}
+
+.notification-container.error {
+    background-color: var(--error-color);
 }
 
 .close-natification-btn {
     font-size: 20px;
-    cursor: pointer
+    cursor: pointer;
+    position: absolute;
+    top: 24px;
+    right: 24px;
 }

@@ -16,10 +16,6 @@ export function CardStatisticsList() {
             profileApi.getComments(),
           ]);
 
-        console.log("Posts:", postsResponse.data);
-        console.log("Likes:", likesResponse.data);
-        console.log("Comments:", commentsResponse.data);
-
         const formattedStats: StatisticsCard[] = [
           {
             title: "Posts",

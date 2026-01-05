@@ -8,6 +8,7 @@ import { FileUploadInput } from "./components/FileUploadInput/FileUploadInput";
 import { postsAPI, profileApi } from "../../store/api";
 import { TextArea } from "./components/TextArea/TextArea";
 import { SectionItem } from "../SectionItem/SectionItem";
+import { BaseForm } from "./components/BaseForm/BaseForm";
 
 interface AuthFormProps {
   type: "signin" | "signup";
@@ -19,9 +20,7 @@ function AuthForm({ type }: AuthFormProps) {
   const emailInput = useRef<HTMLInputElement>(null);
   const passwordInput = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (!emailInput.current || !passwordInput.current) return;
 
     const email = emailInput.current.value;
@@ -32,14 +31,18 @@ function AuthForm({ type }: AuthFormProps) {
     } else {
       await signUp(email, password);
     }
-
     navigate("/");
   };
 
   const buttonText = type === "signin" ? "Sign In" : "Sign Up";
+  const succesMessage = `You Sign ${type === "signin" ? "In" : "Up"} succesfully`;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <BaseForm
+      onSubmit={handleSubmit}
+      successMessage={succesMessage}
+      submitButtonText={buttonText}
+    >
       <fieldset>
         <Label htmlFor="email" title="Email" icon={<Icons.EmailIcon />} />
         <Input
@@ -66,8 +69,7 @@ function AuthForm({ type }: AuthFormProps) {
           required
         />
       </fieldset>
-      <button type="submit">{buttonText}</button>
-    </form>
+    </BaseForm>
   );
 }
 
@@ -98,29 +100,28 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
     setSelectedFile(file);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      let imageUrl: string | undefined = undefined;
-      if (imagePreview) {
-        imageUrl = imagePreview;
-      }
-      if (titleInput && descriptionTextArea) {
-        await postsAPI.createPost({
-          title: titleInput?.current!.value,
-          content: descriptionTextArea?.current!.value,
-          image: imageUrl,
-        });
-      }
-      onAddPost();
-      onClose();
-    } catch (err) {
-      console.error(err);
+  const handleSubmit = async () => {
+    let imageUrl: string | undefined = undefined;
+    if (imagePreview) {
+      imageUrl = imagePreview;
     }
+    if (titleInput && descriptionTextArea) {
+      await postsAPI.createPost({
+        title: titleInput?.current!.value,
+        content: descriptionTextArea?.current!.value,
+        image: imageUrl,
+      });
+    }
+    onAddPost();
+    onClose();
   };
 
   return (
-    <form action="#">
+    <BaseForm
+      onSubmit={handleSubmit}
+      submitButtonText="Create"
+      successMessage="Post created successfully"
+    >
       <fieldset>
         <Label
           htmlFor="post-title"
@@ -151,8 +152,7 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
         />
       </fieldset>
       <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
-      <button onClick={handleSubmit}>Create</button>
-    </form>
+    </BaseForm>
   );
 }
 
@@ -219,24 +219,24 @@ function EditProfileForm() {
     input.click();
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      const newFormData = {
-        username: usernameInput.current?.value.slice(1),
-        email: emailInput.current?.value,
-        description: descriptionTextArea.current?.value,
-        profileImage: profileImage,
-      };
-      await profileApi.updateProfile(newFormData);
-      await refreshUser();
-    } catch (err) {
-      console.error(err);
-    }
+  const handleSubmit = async () => {
+    const newFormData = {
+      username: usernameInput.current?.value.slice(1),
+      email: emailInput.current?.value,
+      description: descriptionTextArea.current?.value,
+      profileImage: profileImage,
+    };
+    await profileApi.updateProfile(newFormData);
+    await refreshUser();
   };
 
   return (
-    <form className="edit-profile-form" action="#">
+    <BaseForm
+      className="edit-profile-form"
+      onSubmit={handleSubmit}
+      submitButtonText="Save Profile Changes"
+      successMessage="Profile changes saved succesfullly"
+    >
       <SectionItem
         title={`${user?.firstName} ${user?.secondName}`}
         subtitle="Change profile photo"
@@ -277,8 +277,7 @@ function EditProfileForm() {
           <p>Max 200 chars</p>
         </small>
       </fieldset>
-      <button onClick={handleSubmit}>Save Profile Changes</button>
-    </form>
+    </BaseForm>
   );
 }
 

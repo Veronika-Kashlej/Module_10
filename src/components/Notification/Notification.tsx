@@ -1,12 +1,9 @@
 import { useState } from "react";
 import "./Notification.css";
 import { Portal } from "../Portal/Portal";
+import { CustomNotificationProps } from "../../store/types";
 
-interface NotificationProps {
-  message: string;
-}
-
-export function Notification({ message }: NotificationProps) {
+export function CustomNotification({ message, type }: CustomNotificationProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   const closeModal = () => {
@@ -17,7 +14,9 @@ export function Notification({ message }: NotificationProps) {
 
   return (
     <Portal>
-      <div className="notification-container">
+      <div
+        className={`notification-container ${type === "success" ? "" : "error"}`}
+      >
         <p>{message}</p>
         <p className="close-natification-btn" onClick={closeModal}>
           ×

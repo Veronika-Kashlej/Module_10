@@ -68,3 +68,10 @@ export interface StatisticsCard {
   count: number;
   progress: string;
 }
+
+export type CustomNotificationType = "success" | "error" | "warning";
+
+export interface CustomNotificationProps {
+  message: string;
+  type: CustomNotificationType;
+}

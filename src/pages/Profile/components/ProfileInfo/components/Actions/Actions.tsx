@@ -1,11 +1,10 @@
-import { useState } from "react";
 import "./Actions.css";
-import { Notification } from "../../../../../../components/Notification/Notification";
 import { useAuth } from "../../../../../../store/contexts/AuthContext";
 import { useNavigate } from "react-router";
+import { useCustomNotification } from "../../../../../../store/contexts/NotificationContext";
 
 export function Actions() {
-  const [error, setError] = useState<string | null>(null);
+  const { showCustomNotification } = useCustomNotification();
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -13,9 +12,10 @@ export function Actions() {
     try {
       await signOut();
       navigate("/");
+      showCustomNotification("You logged out successfully", "success");
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
+        showCustomNotification("Something went wrong", "error");
       }
     }
   }
@@ -26,7 +26,6 @@ export function Actions() {
       <button onClick={handleLogout} className="logout-btn">
         Logout
       </button>
-      {error && <Notification message={error} />}
     </section>
   );
 }
