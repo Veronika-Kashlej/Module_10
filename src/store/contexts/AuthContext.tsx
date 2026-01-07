@@ -1,133 +1,139 @@
 import {
-  createContext,
-  useState,
-  useEffect,
-  ReactNode,
-  useContext,
-} from "react";
-import { AuthResponse, User } from "../types";
-import { authAPI } from "../api";
+    createContext,
+    useState,
+    useEffect,
+    ReactNode,
+    useContext,
+} from 'react';
+import { AuthResponse, User } from '../types';
+import { authAPI } from '../api';
 
 interface AuthContextType {
-  isAuthenticated: boolean;
-  user: User | null;
-  signUp: (email: string, password: string) => Promise<AuthResponse>;
-  signIn: (email: string, password: string) => Promise<AuthResponse>;
-  signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>;
-  getCurrentUser: () => User | null;
+    isAuthenticated: boolean;
+    user: User | null;
+    signUp: (email: string, password: string) => Promise<AuthResponse>;
+    signIn: (email: string, password: string) => Promise<AuthResponse>;
+    signOut: () => Promise<void>;
+    refreshUser: () => Promise<void>;
+    getCurrentUser: () => User | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+    undefined
 );
 
 interface AuthProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      try {
-        if (token) {
-          const response = await authAPI.getMe();
-          setUser(response.data);
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        clearAuthData();
-      }
+    useEffect(() => {
+        const checkAuth = async () => {
+            const token = localStorage.getItem('accessToken');
+            try {
+                if (token) {
+                    const response = await authAPI.getMe();
+                    setUser(response.data);
+                    setIsAuthenticated(true);
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                clearAuthData();
+            }
+        };
+        checkAuth();
+    }, []);
+
+    const setAuthData = (token: string, userData: User) => {
+        localStorage.setItem('accessToken', token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        setIsAuthenticated(true);
+        setUser(userData);
     };
-    checkAuth();
-  }, []);
 
-  const setAuthData = (token: string, userData: User) => {
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("user", JSON.stringify(userData));
-    setIsAuthenticated(true);
-    setUser(userData);
-  };
+    const clearAuthData = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+        setUser(null);
+    };
 
-  const clearAuthData = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+    const signUp = async (
+        email: string,
+        password: string
+    ): Promise<AuthResponse> => {
+        try {
+            await authAPI.signup(email, password);
+            return await signIn(email, password);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(error.message || 'Registration failed');
+            }
+            throw new Error('Registration failed due to unknown error');
+        }
+    };
 
-  const signUp = async (
-    email: string,
-    password: string
-  ): Promise<AuthResponse> => {
-    try {
-      await authAPI.signup(email, password);
-      return await signIn(email, password);
-    } catch (error: any) {
-      throw new Error(error.response?.data?.message || "Registration failed");
-    }
-  };
+    const signIn = async (
+        email: string,
+        password: string
+    ): Promise<AuthResponse> => {
+        try {
+            const response = await authAPI.login(email, password);
+            const { token, user } = response.data;
 
-  const signIn = async (
-    email: string,
-    password: string
-  ): Promise<AuthResponse> => {
-    try {
-      const response = await authAPI.login(email, password);
-      const { token, user } = response.data;
+            setAuthData(token, user);
+            return response.data;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(error.message || 'Login failed');
+            }
+            throw new Error('Login failed due to unknown error');
+        }
+    };
 
-      setAuthData(token, user);
-      return response.data;
-    } catch (error: any) {
-      throw new Error(error.response?.data?.message || "Login failed");
-    }
-  };
+    const signOut = async (): Promise<void> => {
+        try {
+            await authAPI.logout();
+        } finally {
+            clearAuthData();
+        }
+    };
 
-  const signOut = async (): Promise<void> => {
-    try {
-      await authAPI.logout();
-    } finally {
-      clearAuthData();
-    }
-  };
+    const refreshUser = async (): Promise<void> => {
+        try {
+            const response = await authAPI.getMe();
+            setUser(response.data);
+            localStorage.setItem('user', JSON.stringify(response.data));
+        } catch (error) {
+            console.error('Failed to refresh user:', error);
+        }
+    };
 
-  const refreshUser = async (): Promise<void> => {
-    try {
-      const response = await authAPI.getMe();
-      setUser(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
-    } catch (error) {
-      console.error("Failed to refresh user:", error);
-    }
-  };
+    const getCurrentUser = (): User | null => {
+        const userStr = localStorage.getItem('user');
+        return userStr ? JSON.parse(userStr) : null;
+    };
 
-  const getCurrentUser = (): User | null => {
-    const userStr = localStorage.getItem("user");
-    return userStr ? JSON.parse(userStr) : null;
-  };
+    const value: AuthContextType = {
+        isAuthenticated,
+        user,
+        signUp,
+        signIn,
+        signOut,
+        refreshUser,
+        getCurrentUser,
+    };
 
-  const value: AuthContextType = {
-    isAuthenticated,
-    user,
-    signUp,
-    signIn,
-    signOut,
-    refreshUser,
-    getCurrentUser,
-  };
-
-  return <AuthContext value={value}>{children}</AuthContext>;
+    return <AuthContext value={value}>{children}</AuthContext>;
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 }

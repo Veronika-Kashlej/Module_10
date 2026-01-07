@@ -1,81 +1,94 @@
-import { useEffect, useState } from "react";
-import { CommunitiesSection } from "./components/CommunitiesSection/CommunitiesSection";
-import { CreatePostSection } from "./components/CreatePostSection/CreatePostSection";
-import { PostCard } from "./components/PostCard/PostCard";
-import { SuggestedPeopleSection } from "./components/SuggestedPeopleSection/SuggestedPeopleSection";
-import { useAuth } from "../../store/contexts/AuthContext";
-import "./Home.css";
-import { postsAPI } from "../../store/api";
-import { LikedPost, Post } from "../../store/types";
-import { Header } from "../../components/Header/Header";
+import { useCallback, useEffect, useState } from 'react';
+import { CommunitiesSection } from './components/CommunitiesSection/CommunitiesSection';
+import { CreatePostSection } from './components/CreatePostSection/CreatePostSection';
+import { PostCard } from './components/PostCard/PostCard';
+import { SuggestedPeopleSection } from './components/SuggestedPeopleSection/SuggestedPeopleSection';
+import { useAuth } from '../../store/contexts/AuthContext';
+import './Home.css';
+import { postsAPI } from '../../store/api';
+import { LikedPost, Post } from '../../store/types';
+import { Header } from '../../components/Header/Header';
+import { PostSkeleton } from 'components/Skeletons/PostSkeleton/PostSkeleton';
 
-export function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const { isAuthenticated } = useAuth();
-  const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
+function Home() {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const { isAuthenticated } = useAuth();
+    const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchPosts();
+    const fetchPosts = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const response = await postsAPI.getPosts();
+            setPosts(response.data);
+        } catch (error) {
+            console.error('Failed to fetch posts:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-    const fetchLikedPosts = async () => {
-      try {
-        const response = await postsAPI.getCurrentUsersLikedPosts();
-        setLikedPosts(response.data);
-      } catch (err) {
-        console.error("Failed to fetch liked posts:", err);
-      }
+    useEffect(() => {
+        fetchPosts();
+
+        const fetchLikedPosts = async () => {
+            try {
+                const response = await postsAPI.getCurrentUsersLikedPosts();
+                setLikedPosts(response.data);
+            } catch (err) {
+                console.error('Failed to fetch liked posts:', err);
+            }
+        };
+
+        if (isAuthenticated) {
+            fetchLikedPosts();
+        }
+    }, [isAuthenticated, fetchPosts]);
+
+    const handleAddPost = () => {
+        fetchPosts();
     };
 
-    if (isAuthenticated) {
-      fetchPosts();
-      fetchLikedPosts();
-    }
-  }, [isAuthenticated]);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await postsAPI.getPosts();
-      setPosts(response.data);
-    } catch (error) {
-      console.error("Failed to fetch posts:", error);
-    }
-  };
-
-  const handleAddPost = () => {
-    fetchPosts();
-  };
-
-  return (
-    <>
-      <Header />
-      <main
-        className="home-page"
-        style={{
-          justifyContent:
-            isAuthenticated && window.innerWidth > 1175 ? "flex-end" : "center",
-        }}
-      >
-        <div className="main-content">
-          {isAuthenticated && (
-            <CreatePostSection onAddPost={handleAddPost}></CreatePostSection>
-          )}
-          <div className="posts-list">
-            {[...posts].reverse().map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                likedPosts={likedPosts}
-              ></PostCard>
-            ))}
-          </div>
-        </div>
-        {isAuthenticated && (
-          <div className="asides">
-            <SuggestedPeopleSection></SuggestedPeopleSection>
-            <CommunitiesSection></CommunitiesSection>
-          </div>
-        )}
-      </main>
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <main
+                className="home-page"
+                style={{
+                    justifyContent:
+                        isAuthenticated && window.innerWidth > 1175
+                            ? 'flex-end'
+                            : 'center',
+                }}
+            >
+                <div className="main-content">
+                    {isAuthenticated && (
+                        <CreatePostSection
+                            onAddPost={handleAddPost}
+                        ></CreatePostSection>
+                    )}
+                    <div className="posts-list">
+                        {isLoading && <PostSkeleton />}
+                        {isLoading && <PostSkeleton />}
+                        {isLoading && <PostSkeleton />}
+                        {[...posts].reverse().map((post) => (
+                            <PostCard
+                                key={post.id}
+                                post={post}
+                                likedPosts={likedPosts}
+                            ></PostCard>
+                        ))}
+                    </div>
+                </div>
+                {isAuthenticated && (
+                    <div className="asides">
+                        <SuggestedPeopleSection></SuggestedPeopleSection>
+                        <CommunitiesSection></CommunitiesSection>
+                    </div>
+                )}
+            </main>
+        </>
+    );
 }
+
+export default Home;
