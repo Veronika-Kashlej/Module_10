@@ -16,6 +16,7 @@ interface AuthContextType {
     signOut: () => Promise<void>;
     refreshUser: () => Promise<void>;
     getCurrentUser: () => User | null;
+    isLoading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -29,10 +30,12 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('accessToken');
+            setIsLoading(true);
             try {
                 if (token) {
                     const response = await authAPI.getMe();
@@ -42,6 +45,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             } catch (error) {
                 console.error('Auth check failed:', error);
                 clearAuthData();
+            } finally {
+                setIsLoading(false);
             }
         };
         checkAuth();
@@ -125,6 +130,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         signOut,
         refreshUser,
         getCurrentUser,
+        isLoading,
     };
 
     return <AuthContext value={value}>{children}</AuthContext>;

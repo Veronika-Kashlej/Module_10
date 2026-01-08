@@ -9,8 +9,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { CustomNotificationProvider } from './store/contexts/NotificationContext';
 import { lazy, Suspense } from 'react';
 import { Loader } from './components/Loader/Loader';
+import Home from 'pages/Home/Home';
 
-const Home = lazy(() => import('./pages/Home/Home'));
 const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
 const Profile = lazy(() => import('./pages/Profile/Profile'));

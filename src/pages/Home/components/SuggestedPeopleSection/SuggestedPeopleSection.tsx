@@ -1,46 +1,47 @@
-import { useEffect, useState } from 'react';
-import { SectionItem } from '../../../../components/SectionItem/SectionItem';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { profileApi } from '../../../../store/api';
 import { SuggestedPeople } from '../../../../store/types';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
+import { SuggestedUserItem } from './components/SuggestedUserItem';
 
-export function SuggestedPeopleSection() {
+export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
     const [suggestedUsers, setSuggestedUsers] = useState<SuggestedPeople[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchSuggestedUsers = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const response = await profileApi.getSuggestedUsers();
+            setSuggestedUsers(response.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchSuggestedUsers = async () => {
-            setIsLoading(true);
-            try {
-                const response = await profileApi.getSuggestedUsers();
-                setSuggestedUsers(response.data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
         fetchSuggestedUsers();
-    }, []);
+    }, [fetchSuggestedUsers]);
+
+    const userList = useMemo(() => {
+        if (isLoading) {
+            return Array.from({ length: 4 }).map((_, index) => (
+                <SectionItemSkeleton key={`skeleton-${index}`} />
+            ));
+        }
+
+        return suggestedUsers.map((user, index) => (
+            <SuggestedUserItem user={user} key={index} />
+        ));
+    }, [isLoading, suggestedUsers]);
+
     return (
         <>
             <aside>
                 <h2>Suggested people</h2>
-                <div className="aside-list">
-                    {isLoading && <SectionItemSkeleton />}
-                    {isLoading && <SectionItemSkeleton />}
-                    {isLoading && <SectionItemSkeleton />}
-                    {isLoading && <SectionItemSkeleton />}
-                    {suggestedUsers.map((user) => (
-                        <SectionItem
-                            key={user.id}
-                            title={`${user.firstName} ${user.secondName}`}
-                            subtitle={`@${user.username}`}
-                            image={user.photo}
-                        />
-                    ))}
-                </div>
+                <div className="aside-list">{userList}</div>
             </aside>
         </>
     );
-}
+});

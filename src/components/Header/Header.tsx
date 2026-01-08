@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
 import { Link } from 'react-router';
@@ -8,19 +8,22 @@ export function Header() {
     const { isAuthenticated, user } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const closeMenu = () => {
+    const closeMenu = useCallback(() => {
         setIsMenuOpen(false);
         document.body.style.overflow = '';
         document.body.removeEventListener('click', closeMenu);
-    };
+    }, []);
 
-    const openMenu = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setIsMenuOpen(true);
-        window.scrollTo(0, 0);
-        document.body.style.overflow = 'hidden';
-        document.body.addEventListener('click', closeMenu);
-    };
+    const openMenu = useCallback(
+        (e: React.MouseEvent) => {
+            e.stopPropagation();
+            setIsMenuOpen(true);
+            window.scrollTo(0, 0);
+            document.body.style.overflow = 'hidden';
+            document.body.addEventListener('click', closeMenu);
+        },
+        [closeMenu]
+    );
 
     return (
         <>

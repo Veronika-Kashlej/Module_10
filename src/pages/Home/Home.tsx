@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CommunitiesSection } from './components/CommunitiesSection/CommunitiesSection';
 import { CreatePostSection } from './components/CreatePostSection/CreatePostSection';
 import { PostCard } from './components/PostCard/PostCard';
@@ -18,6 +18,7 @@ function Home() {
 
     const fetchPosts = useCallback(async () => {
         setIsLoading(true);
+
         try {
             const response = await postsAPI.getPosts();
             setPosts(response.data);
@@ -28,26 +29,32 @@ function Home() {
         }
     }, []);
 
+    const fetchLikedPosts = useCallback(async () => {
+        if (!isAuthenticated) return;
+
+        try {
+            const response = await postsAPI.getCurrentUsersLikedPosts();
+            setLikedPosts(response.data);
+        } catch (err) {
+            console.error('Failed to fetch liked posts:', err);
+        }
+    }, [isAuthenticated]);
+
     useEffect(() => {
         fetchPosts();
+    }, [fetchPosts]);
 
-        const fetchLikedPosts = async () => {
-            try {
-                const response = await postsAPI.getCurrentUsersLikedPosts();
-                setLikedPosts(response.data);
-            } catch (err) {
-                console.error('Failed to fetch liked posts:', err);
-            }
-        };
+    useEffect(() => {
+        fetchLikedPosts();
+    }, [fetchLikedPosts]);
 
-        if (isAuthenticated) {
-            fetchLikedPosts();
-        }
-    }, [isAuthenticated, fetchPosts]);
-
-    const handleAddPost = () => {
+    const handleAddPost = useCallback(() => {
         fetchPosts();
-    };
+    }, [fetchPosts]);
+
+    const reversedPosts = useMemo(() => {
+        return [...posts].reverse();
+    }, [posts]);
 
     return (
         <>
@@ -68,16 +75,19 @@ function Home() {
                         ></CreatePostSection>
                     )}
                     <div className="posts-list">
-                        {isLoading && <PostSkeleton />}
-                        {isLoading && <PostSkeleton />}
-                        {isLoading && <PostSkeleton />}
-                        {[...posts].reverse().map((post) => (
-                            <PostCard
-                                key={post.id}
-                                post={post}
-                                likedPosts={likedPosts}
-                            ></PostCard>
-                        ))}
+                        {isLoading
+                            ? Array.from({ length: 3 }).map((_, index) => (
+                                  <PostSkeleton
+                                      key={`post-skeleton-${index}`}
+                                  />
+                              ))
+                            : reversedPosts.map((post) => (
+                                  <PostCard
+                                      key={post.id}
+                                      post={post}
+                                      likedPosts={likedPosts}
+                                  ></PostCard>
+                              ))}
                     </div>
                 </div>
                 {isAuthenticated && (
