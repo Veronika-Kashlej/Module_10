@@ -8,7 +8,7 @@ import { FileUploadInput } from './components/FileUploadInput/FileUploadInput';
 import { TextArea } from './components/TextArea/TextArea';
 import { SectionItem } from '../SectionItem/SectionItem';
 import { BaseForm } from './components/BaseForm/BaseForm';
-import { postsAPI, profileApi } from '../../store/api';
+import { postsAPI, profileApi } from '../../store/api/api';
 
 interface AuthFormProps {
     type: 'signin' | 'signup';

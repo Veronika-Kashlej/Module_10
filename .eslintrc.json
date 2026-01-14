@@ -24,5 +24,26 @@
         "@typescript-eslint/no-non-null-assertion": "off",
         "react-hooks/set-state-in-effect": "off",
         "react-hooks/immutability": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.test.ts",
+                "**/*.test.tsx",
+                "**/*.spec.ts",
+                "**/*.spec.tsx",
+                "setupTests.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/no-empty-function": "off",
+                "react-hooks/rules-of-hooks": "off",
+                "import/named": "off",
+                "react/display-name": "off",
+                "react/prop-types": "off",
+                "react-hooks/globals": "off"
+            }
+        }
+    ]
 }

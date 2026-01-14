@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CommentList } from './components/CommentList/CommentList';
 import { useAuth } from '../../../../../../store/contexts/AuthContext';
-import { postsAPI } from '../../../../../../store/api';
+import { postsAPI } from '../../../../../../store/api/api';
 import { Comment } from '../../../../../../store/types';
 import { Forms } from '../../../../../../components/Forms/Forms';
 

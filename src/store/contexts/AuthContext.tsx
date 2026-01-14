@@ -6,7 +6,7 @@ import {
     useContext,
 } from 'react';
 import { AuthResponse, User } from '../types';
-import { authAPI } from '../api';
+import { authAPI } from '../api/api';
 
 interface AuthContextType {
     isAuthenticated: boolean;

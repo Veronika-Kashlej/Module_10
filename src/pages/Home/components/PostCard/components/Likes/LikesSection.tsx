@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Icons } from '../../../../../../components/Icons/Icons';
-import { postsAPI } from '../../../../../../store/api';
+import { postsAPI } from '../../../../../../store/api/api';
 import { LikedPost, Post } from '../../../../../../store/types';
 
 interface LikesSectionProps {

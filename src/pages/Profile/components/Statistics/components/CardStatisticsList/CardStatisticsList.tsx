@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { profileApi } from '../../../../../../store/api';
+import { profileApi } from '../../../../../../store/api/api';
 import { CardStatistics } from './components/CardStatistics';
 import './CardStatisticsList.css';
 import { StatisticsCard } from '../../../../../../store/types';
@@ -9,8 +9,8 @@ export function CardStatisticsList() {
     useEffect(() => {
         const fetchAllStatistics = async () => {
             try {
-                const [postsResponse, likesResponse, commentsResponse] =
-                    await Promise.all([
+                const [postsResult, likesResult, commentsResult] =
+                    await Promise.allSettled([
                         profileApi.getPosts(),
                         profileApi.getLikes(),
                         profileApi.getComments(),
@@ -19,17 +19,26 @@ export function CardStatisticsList() {
                 const formattedStats: StatisticsCard[] = [
                     {
                         title: 'Posts',
-                        count: postsResponse.data?.length || 0,
+                        count:
+                            postsResult.status === 'fulfilled'
+                                ? postsResult.value.data?.length || 0
+                                : 0,
                         progress: '+5% from last month',
                     },
                     {
                         title: 'Likes',
-                        count: likesResponse.data?.length || 0,
+                        count:
+                            likesResult.status === 'fulfilled'
+                                ? likesResult.value.data?.length || 0
+                                : 0,
                         progress: '+12% from last month',
                     },
                     {
                         title: 'Comments',
-                        count: commentsResponse.data?.length || 0,
+                        count:
+                            commentsResult.status === 'fulfilled'
+                                ? commentsResult.value.data?.length || 0
+                                : 0,
                         progress: '+8% from last month',
                     },
                 ];

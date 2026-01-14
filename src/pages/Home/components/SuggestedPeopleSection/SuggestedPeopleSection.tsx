@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { profileApi } from '../../../../store/api';
+import { profileApi } from '../../../../store/api/api';
 import { SuggestedPeople } from '../../../../store/types';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { SuggestedUserItem } from './components/SuggestedUserItem';
