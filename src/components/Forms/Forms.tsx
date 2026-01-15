@@ -237,7 +237,7 @@ function EditProfileForm() {
             className="edit-profile-form"
             onSubmit={handleSubmit}
             submitButtonText="Save Profile Changes"
-            successMessage="Profile changes saved succesfullly"
+            successMessage="Profile changes saved successfully"
         >
             <SectionItem
                 title={`${user?.firstName} ${user?.secondName}`}
