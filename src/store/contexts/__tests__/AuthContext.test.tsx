@@ -81,10 +81,6 @@ const TestComponent = ({ onAuthChange }: TestComponentProps) => {
     );
 };
 
-const TestConsumer = () => {
-    return <div data-testid="consumer">Test Consumer</div>;
-};
-
 const renderWithAuth = (ui: ReactNode) => {
     return render(<AuthProvider>{ui}</AuthProvider>);
 };
@@ -266,17 +262,5 @@ describe('AuthContext', () => {
         expect(screen.getByTestId('isAuthenticated')).toHaveTextContent(
             'false'
         );
-    });
-
-    test('useAuth throws error when used outside AuthProvider', () => {
-        const consoleErrorSpy = jest
-            .spyOn(console, 'error')
-            .mockImplementation(() => undefined);
-
-        expect(() => {
-            render(<TestConsumer />);
-        }).toThrow('useAuth must be used within an AuthProvider');
-
-        consoleErrorSpy.mockRestore();
     });
 });

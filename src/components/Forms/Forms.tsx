@@ -35,7 +35,7 @@ function AuthForm({ type }: AuthFormProps) {
     };
 
     const buttonText = type === 'signin' ? 'Sign In' : 'Sign Up';
-    const succesMessage = `You Sign ${type === 'signin' ? 'In' : 'Up'} succesfully`;
+    const succesMessage = `You Sign ${type === 'signin' ? 'In' : 'Up'} successfully`;
 
     return (
         <BaseForm

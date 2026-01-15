@@ -19,7 +19,9 @@
         "paths": {
             "@/*": ["*"],
             "@store/*": ["store/*"]
-        }
+        },
+        "types": ["cypress", "node"]
     },
-    "include": ["src"]
+    "include": ["cypress", "src"],
+    "exclude": ["cypress"]
 }
