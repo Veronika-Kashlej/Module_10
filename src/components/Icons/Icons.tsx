@@ -1,4 +1,5 @@
-import { useTheme } from '../../store/contexts/ThemeContext';
+'use client';
+import { useTheme } from '@/store/contexts/ThemeContext';
 
 interface LikeIconProps {
     onClick: () => void;
@@ -240,7 +241,7 @@ function FileDownloadIcon() {
     );
 }
 
-function SidekickLogo() {
+export function SidekickLogo() {
     const { theme } = useTheme();
 
     return (
@@ -349,7 +350,7 @@ function InfoIcon() {
     );
 }
 
-function NotFoundIcon() {
+export function NotFoundIcon() {
     const { theme } = useTheme();
 
     return (
@@ -379,7 +380,7 @@ function NotFoundIcon() {
     );
 }
 
-function ErrorIcon() {
+export function ErrorIcon() {
     const { theme } = useTheme();
 
     return (
@@ -408,9 +409,8 @@ export const Icons = {
     ShowCommentIcon,
     TrashIcon,
     FileDownloadIcon,
-    SidekickLogo,
     UsernameIcon,
+    SidekickLogo,
     InfoIcon,
-    NotFoundIcon,
     ErrorIcon,
 };

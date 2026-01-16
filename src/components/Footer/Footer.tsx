@@ -1,12 +1,10 @@
-import React from "react";
-import "./Footer.css";
+import React from 'react';
+import './Footer.css';
 
-export class Footer extends React.Component {
-  render() {
+export function Footer() {
     return (
-      <footer>
-        <p>© 2024 sidekick</p>
-      </footer>
+        <footer>
+            <p>© 2024 sidekick</p>
+        </footer>
     );
-  }
 }

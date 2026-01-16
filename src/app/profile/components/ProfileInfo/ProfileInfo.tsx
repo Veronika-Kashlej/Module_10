@@ -1,0 +1,15 @@
+import { Actions } from './components/Actions/Actions';
+import { EditProfile } from './components/EditProfile/EditProfile';
+import { Preferences } from './components/Preferences/Preferences';
+
+export function ProfileInfo() {
+    return (
+        <section className="tab-profile-info">
+            <EditProfile />
+            <div>
+                <Preferences />
+                <Actions />
+            </div>
+        </section>
+    );
+}

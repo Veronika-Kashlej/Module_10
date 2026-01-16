@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
+import ErrorBoundaryFallback from '../../app/error';
 
 jest.mock('../SimpleHeader/SimpleHeader', () => ({
     SimpleHeader: () => <div>Simple Header</div>,

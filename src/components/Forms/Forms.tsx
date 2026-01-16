@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useAuth } from '../../store/contexts/AuthContext';
 import { Icons } from '../Icons/Icons';
 import { Input } from './components/Input/Input';
@@ -9,6 +8,7 @@ import { TextArea } from './components/TextArea/TextArea';
 import { SectionItem } from '../SectionItem/SectionItem';
 import { BaseForm } from './components/BaseForm/BaseForm';
 import { postsAPI, profileApi } from '../../store/api/api';
+import { useRouter } from 'next/navigation';
 
 interface AuthFormProps {
     type: 'signin' | 'signup';
@@ -16,7 +16,7 @@ interface AuthFormProps {
 
 function AuthForm({ type }: AuthFormProps) {
     const { signIn, signUp } = useAuth();
-    const navigate = useNavigate();
+    const router = useRouter();
     const emailInput = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
 
@@ -31,7 +31,7 @@ function AuthForm({ type }: AuthFormProps) {
         } else {
             await signUp(email, password);
         }
-        navigate('/');
+        router.push('/');
     };
 
     const buttonText = type === 'signin' ? 'Sign In' : 'Sign Up';

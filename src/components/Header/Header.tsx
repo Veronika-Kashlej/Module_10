@@ -1,8 +1,9 @@
+'use client';
 import { useCallback, useState } from 'react';
 import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
-import { Link } from 'react-router';
 import { Icons } from '../Icons/Icons';
+import Link from 'next/link';
 
 export function Header() {
     const { isAuthenticated, user } = useAuth();
@@ -30,7 +31,7 @@ export function Header() {
             {isMenuOpen && <div className="menu-overlay" />}
             <header className={`header ${isMenuOpen ? 'open' : ''}`}>
                 <div className="header-content">
-                    <Link to={'/'}>
+                    <Link href={'/'}>
                         <Icons.SidekickLogo />
                     </Link>
                     <div
@@ -45,16 +46,16 @@ export function Header() {
                         <nav className="desktop-menu">
                             <ul>
                                 <li>
-                                    <Link to={'/sign-up'}>Sign Up</Link>
+                                    <Link href={'/sign-up'}>Sign Up</Link>
                                 </li>
                                 <li>
-                                    <Link to={'/sign-in'}>Sign In</Link>
+                                    <Link href={'/sign-in'}>Sign In</Link>
                                 </li>
                             </ul>
                         </nav>
                     )}
                     {isAuthenticated && (
-                        <Link className="profile-info" to={'/profile'}>
+                        <Link className="profile-info" href={'/profile'}>
                             <img
                                 className="profile-image"
                                 src={user?.profileImage}
@@ -71,19 +72,19 @@ export function Header() {
                 {isAuthenticated ? (
                     <ul>
                         <li>
-                            <Link to={'/profile'}>Profile info</Link>
+                            <Link href={'/profile'}>Profile info</Link>
                         </li>
                         <li>
-                            <Link to={'/profile'}>Statistics</Link>
+                            <Link href={'/profile'}>Statistics</Link>
                         </li>
                     </ul>
                 ) : (
                     <ul>
                         <li>
-                            <Link to={'/sign-up'}>Sign Up</Link>
+                            <Link href={'/sign-up'}>Sign Up</Link>
                         </li>
                         <li>
-                            <Link to={'/sign-in'}>Sign In</Link>
+                            <Link href={'/sign-in'}>Sign In</Link>
                         </li>
                     </ul>
                 )}

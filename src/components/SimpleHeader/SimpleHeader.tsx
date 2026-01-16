@@ -1,13 +1,13 @@
-import { Link } from 'react-router';
-import { Icons } from '../Icons/Icons';
+import Link from 'next/link';
 import './SimpleHeader.css';
+import { SidekickLogo } from '@/components/Icons/Icons';
 
 export function SimpleHeader() {
     return (
         <header className="header">
             <div className="header-content">
-                <Link to={'/'}>
-                    <Icons.SidekickLogo />
+                <Link href={'/'}>
+                    <SidekickLogo />
                 </Link>
             </div>
         </header>

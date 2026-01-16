@@ -1,55 +1,63 @@
+'use client';
 import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    ReactNode,
+} from 'react';
 
 interface ThemeContextType {
-  theme: string;
-  setTheme: (theme: string) => void;
-  toggleTheme: () => void;
+    theme: string;
+    setTheme: (theme: string) => void;
+    toggleTheme: () => void;
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
+    undefined
 );
 
 interface ThemeProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<string>(() => {
-    return localStorage.getItem("theme") || "dark";
-  });
+    const [theme, setTheme] = useState<string>('dark');
+    const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    useEffect(() => {
+        setIsMounted(true);
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+    }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-  };
+    useEffect(() => {
+        if (isMounted) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+    }, [theme, isMounted]);
 
-  const value: ThemeContextType = {
-    theme,
-    setTheme,
-    toggleTheme,
-  };
+    const toggleTheme = () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        setTheme(newTheme);
+    };
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+    const value: ThemeContextType = {
+        theme,
+        setTheme,
+        toggleTheme,
+    };
+
+    return (
+        <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
+    const context = useContext(ThemeContext);
+    if (context === undefined) {
+        throw new Error('useTheme must be used within a ThemeProvider');
+    }
+    return context;
 }

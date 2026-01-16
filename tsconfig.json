@@ -20,8 +20,21 @@
             "@/*": ["*"],
             "@store/*": ["store/*"]
         },
-        "types": ["cypress", "node"]
+        "types": ["cypress", "node"],
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ]
     },
-    "include": ["cypress", "src"],
+    "include": [
+        "cypress",
+        "src",
+        ".next/types/**/*.ts",
+        ".next/dev/types/**/*.ts",
+        "build/types/**/*.ts",
+        "build/dev/types/**/*.ts"
+    ],
     "exclude": ["cypress"]
 }
