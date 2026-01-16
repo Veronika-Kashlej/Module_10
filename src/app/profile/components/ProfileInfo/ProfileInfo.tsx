@@ -4,7 +4,7 @@ import { Preferences } from './components/Preferences/Preferences';
 
 export function ProfileInfo() {
     return (
-        <section className="tab-profile-info">
+        <section className="tab-profile-info" aria-label="profile info">
             <EditProfile />
             <div>
                 <Preferences />

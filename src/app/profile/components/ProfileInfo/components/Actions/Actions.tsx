@@ -25,7 +25,11 @@ export function Actions() {
     return (
         <section className="actions-section">
             <h3>Actions</h3>
-            <button onClick={handleLogout} className="logout-btn">
+            <button
+                onClick={handleLogout}
+                className="logout-btn"
+                aria-label="logout"
+            >
                 Logout
             </button>
         </section>

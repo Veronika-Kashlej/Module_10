@@ -32,7 +32,7 @@ export function Header() {
             {isMenuOpen && <div className="menu-overlay" />}
             <header className={`header ${isMenuOpen ? 'open' : ''}`}>
                 <div className="header-content">
-                    <Link href={'/'}>
+                    <Link href={'/'} aria-label="to home">
                         <Icons.SidekickLogo />
                     </Link>
                     <div

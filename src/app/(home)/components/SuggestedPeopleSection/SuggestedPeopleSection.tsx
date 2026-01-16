@@ -38,7 +38,7 @@ export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
 
     return (
         <>
-            <aside>
+            <aside aria-label="suggested people">
                 <h2>Suggested people</h2>
                 <div className="aside-list">{userList}</div>
             </aside>

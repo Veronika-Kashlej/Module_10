@@ -7,7 +7,7 @@ export function Preferences() {
     const isDark = theme === 'dark';
 
     return (
-        <section className="preferences-section">
+        <section className="preferences-section" aria-label="change theme">
             <h3>Preferences</h3>
             <label className="theme-container">
                 <Switcher onClick={toggleTheme} />

@@ -34,7 +34,7 @@ export class CommunitiesSection extends React.Component {
 
     render() {
         return (
-            <aside>
+            <aside aria-label="communities">
                 <h2>Communities you might like</h2>
                 <div className="section-list">
                     {this.state.isLoading

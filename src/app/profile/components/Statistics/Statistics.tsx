@@ -2,7 +2,7 @@ import { CardStatisticsList } from './components/CardStatisticsList/CardStatisti
 
 export function Statistics() {
     return (
-        <section className="tab-content">
+        <section className="tab-content" aria-label="statistics">
             <CardStatisticsList />
         </section>
     );

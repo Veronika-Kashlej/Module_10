@@ -22,7 +22,9 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
     title: 'Sidekick',
-    description: 'Web site created with Next.js.',
+    description:
+        'Connect with friends, share posts, and join communities on Sidekick social network.',
+    keywords: ['social network', 'community', 'posts', 'friends', 'connect'],
 };
 
 export default function RootLayout({

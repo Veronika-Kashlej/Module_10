@@ -35,7 +35,9 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
                 ></Image>
                 <p>What&apos;s happening?</p>
             </div>
-            <button onClick={openCreatePostModal}>Tell everyone</button>
+            <button onClick={openCreatePostModal} aria-label="create post">
+                Tell everyone
+            </button>
             {isModalOpen && (
                 <Suspense fallback={<Loader />}>
                     <CreatePostModal
