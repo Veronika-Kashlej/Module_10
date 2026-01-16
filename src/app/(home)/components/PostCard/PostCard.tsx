@@ -10,6 +10,7 @@ import { postsAPI } from '../../../../store/api/api';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { PostDescription } from './components/PostDescription/PostDescription';
 import { formatCreationDate } from 'store/utils/formatCreationDate';
+import Image from 'next/image';
 
 interface PostCardProps {
     post: Post;
@@ -67,11 +68,13 @@ export const PostCard = memo(function PostCard({
                 ></SectionItem>
             )}
             {post.image && (
-                <img
+                <Image
                     src={post.image}
                     className="post-image"
+                    width={400}
+                    height={458}
                     alt="post-image"
-                ></img>
+                ></Image>
             )}
             <PostDescription content={post.content} />
             <div

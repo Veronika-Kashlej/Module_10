@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from 'react';
 import './CreatePostSection.css';
 import { useAuth } from '../../../../store/contexts/AuthContext';
 import { Loader } from '../../../../components/Loader/Loader';
-
+import Image from 'next/image';
 const CreatePostModal = lazy(
     () => import('./components/CreatePostModal/CreatePostModal')
 );
@@ -26,11 +26,13 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
     return (
         <section className="create-post-section">
             <div className="create-post-info">
-                <img
-                    src={user?.profileImage}
+                <Image
+                    src={user!.profileImage}
                     className="create-post-image"
+                    width={64}
+                    height={64}
                     alt="avatar"
-                ></img>
+                ></Image>
                 <p>What&apos;s happening?</p>
             </div>
             <button onClick={openCreatePostModal}>Tell everyone</button>

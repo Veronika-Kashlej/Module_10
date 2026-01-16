@@ -4,6 +4,7 @@ import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
 import { Icons } from '../Icons/Icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Header() {
     const { isAuthenticated, user } = useAuth();
@@ -56,11 +57,13 @@ export function Header() {
                     )}
                     {isAuthenticated && (
                         <Link className="profile-info" href={'/profile'}>
-                            <img
+                            <Image
                                 className="profile-image"
-                                src={user?.profileImage}
+                                src={user!.profileImage}
+                                width={24}
+                                height={24}
                                 alt="profile"
-                            ></img>
+                            ></Image>
                             <p className="user-name">
                                 {user?.firstName} {user?.secondName}
                             </p>
