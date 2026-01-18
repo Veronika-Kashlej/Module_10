@@ -5,26 +5,6 @@ jest.mock('axios');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-const mockLocalStorage = {
-    getItem: jest.fn(),
-    removeItem: jest.fn(),
-    setItem: jest.fn(),
-    clear: jest.fn(),
-};
-
-Object.defineProperty(window, 'localStorage', {
-    value: mockLocalStorage,
-    writable: true,
-});
-
-const mockLocation = {
-    href: '',
-};
-Object.defineProperty(window, 'location', {
-    value: mockLocation,
-    writable: true,
-});
-
 const createSuccessResponse = <T>(data: T): AxiosResponse<T> => ({
     data,
     status: 200,
@@ -48,14 +28,10 @@ const createErrorResponse = (status: number, data?: any): AxiosError => {
 describe('API Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        mockLocalStorage.getItem.mockClear();
-        mockLocalStorage.removeItem.mockClear();
-        mockLocation.href = '';
     });
 
     describe('Posts API Functions', () => {
         beforeEach(() => {
-            // Мокаем успешные ответы для всех функций
             mockedAxios.get.mockResolvedValue(createSuccessResponse({}));
             mockedAxios.post.mockResolvedValue(createSuccessResponse({}));
             mockedAxios.put.mockResolvedValue(createSuccessResponse({}));

@@ -1,5 +1,4 @@
 import { render, screen, act } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
 import SignUp from './page';
 import { useAuth } from '../../store/contexts/AuthContext';
 
@@ -36,11 +35,7 @@ describe('SignUp Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignUp />
-            </MemoryRouter>
-        );
+        render(<SignUp />);
 
         expect(screen.getByText('Create an account')).toBeInTheDocument();
         expect(
@@ -53,11 +48,7 @@ describe('SignUp Component', () => {
     });
 
     test('redirects to home when authenticated', async () => {
-        const mockNavigate = jest.fn();
-
-        jest.spyOn(require('react-router'), 'useNavigate').mockImplementation(
-            () => mockNavigate
-        );
+        const mockRouter = (global as any).mockRouter;
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -71,22 +62,15 @@ describe('SignUp Component', () => {
         });
 
         await act(async () => {
-            render(
-                <MemoryRouter>
-                    <SignUp />
-                </MemoryRouter>
-            );
+            render(<SignUp />);
         });
 
-        expect(mockNavigate).toHaveBeenCalledWith('/');
+        expect(mockRouter.push).toHaveBeenCalledWith('/');
     });
 
     test('redirects only when authenticated changes to true', async () => {
-        const mockNavigate = jest.fn();
-
-        jest.spyOn(require('react-router'), 'useNavigate').mockImplementation(
-            () => mockNavigate
-        );
+        const mockRouter = (global as any).mockRouter;
+        mockRouter.push.mockClear();
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
@@ -99,13 +83,9 @@ describe('SignUp Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        const { rerender } = render(
-            <MemoryRouter>
-                <SignUp />
-            </MemoryRouter>
-        );
+        const { rerender } = render(<SignUp />);
 
-        expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockRouter.push).not.toHaveBeenCalled();
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -119,14 +99,10 @@ describe('SignUp Component', () => {
         });
 
         await act(async () => {
-            rerender(
-                <MemoryRouter>
-                    <SignUp />
-                </MemoryRouter>
-            );
+            rerender(<SignUp />);
         });
 
-        expect(mockNavigate).toHaveBeenCalledWith('/');
+        expect(mockRouter.push).toHaveBeenCalledWith('/');
     });
 
     test('shows terms and privacy links', () => {
@@ -141,11 +117,7 @@ describe('SignUp Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignUp />
-            </MemoryRouter>
-        );
+        render(<SignUp />);
 
         expect(screen.getByText(/Terms of Service/)).toBeInTheDocument();
         expect(screen.getByText(/Privacy Policy/)).toBeInTheDocument();
@@ -167,11 +139,7 @@ describe('SignUp Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignUp />
-            </MemoryRouter>
-        );
+        render(<SignUp />);
 
         const signInLink = screen.getByText('Sign in');
         expect(signInLink).toBeInTheDocument();
@@ -179,11 +147,7 @@ describe('SignUp Component', () => {
     });
 
     test('does not render content when authenticated', async () => {
-        const mockNavigate = jest.fn();
-
-        jest.spyOn(require('react-router'), 'useNavigate').mockImplementation(
-            () => mockNavigate
-        );
+        const mockRouter = (global as any).mockRouter;
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -197,13 +161,9 @@ describe('SignUp Component', () => {
         });
 
         await act(async () => {
-            render(
-                <MemoryRouter>
-                    <SignUp />
-                </MemoryRouter>
-            );
+            render(<SignUp />);
         });
 
-        expect(mockNavigate).toHaveBeenCalledWith('/');
+        expect(mockRouter.push).toHaveBeenCalledWith('/');
     });
 });

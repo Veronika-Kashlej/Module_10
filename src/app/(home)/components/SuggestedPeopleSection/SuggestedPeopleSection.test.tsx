@@ -4,7 +4,7 @@ import { profileApi } from '../../../../store/api/api';
 
 let consoleErrorSpy: jest.SpyInstance;
 
-jest.mock('store/api/api', () => {
+jest.mock('@/store/api/api', () => {
     const mockProfileApi = {
         getSuggestedUsers: jest.fn(),
     };

@@ -7,5 +7,13 @@ export default defineConfig({
         viewportHeight: 720,
         supportFile: 'cypress/support/e2e.ts',
         specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+        setupNodeEvents(on, config) {
+            on('before:browser:launch', (browser, launchOptions) => {
+                if (browser.name === 'chrome') {
+                    launchOptions.args.push('--disable-extensions');
+                }
+                return launchOptions;
+            });
+        },
     },
 });

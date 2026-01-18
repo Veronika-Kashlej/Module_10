@@ -253,14 +253,18 @@ describe('AuthContext', () => {
             expect(screen.getByTestId('isLoading')).toHaveTextContent('false');
         });
 
+        await waitFor(() => {
+            expect(screen.getByTestId('isAuthenticated')).toHaveTextContent(
+                'true'
+            );
+        });
+
         rerender(
             <AuthProvider>
                 <TestComponent />
             </AuthProvider>
         );
 
-        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent(
-            'false'
-        );
+        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
     });
 });

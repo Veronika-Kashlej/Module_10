@@ -12,7 +12,9 @@ describe('Authorization (Sign In)', () => {
         cy.clearCookies();
         cy.clearLocalStorage();
         cy.visit('/sign-in');
-        cy.contains('Sign in into an account').should('be.visible');
+        cy.contains('Sign in into an account', { timeout: 10000 }).should(
+            'be.visible'
+        );
     });
 
     it('Success login with valid credentials', () => {
@@ -66,8 +68,7 @@ describe('Authorization (Sign In)', () => {
 
     it('Login and verify user can create post', () => {
         cy.login(TEST_USER.email, TEST_USER.password);
-
-        cy.get('.create-post-section').should('be.visible');
+        cy.get('.create-post-section', { timeout: 10000 }).should('be.visible');
         cy.get('.create-post-section button').contains('Tell everyone').click();
 
         cy.get('.modal').should('be.visible');

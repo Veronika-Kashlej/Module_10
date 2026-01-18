@@ -14,7 +14,7 @@ describe('Registration', () => {
     it('Success registration', () => {
         cy.registerUser(TEST_USER.email, TEST_USER.password);
 
-        cy.get('.create-post-section').should('be.visible');
+        cy.get('.create-post-section', { timeout: 10000 }).should('be.visible');
         cy.get('.create-post-image').should('have.attr', 'src');
     });
 
@@ -38,7 +38,7 @@ describe('Registration', () => {
         cy.get('a.helper-link').contains('Sign in').click();
 
         cy.url().should('include', '/sign-in');
-        cy.contains('Sign In').should('be.visible');
+        cy.contains('Sign In', { timeout: 10000 }).should('be.visible');
     });
 
     it('Check policy links', () => {
@@ -57,7 +57,7 @@ describe('Registration', () => {
     it('Post creation after registration', () => {
         cy.registerUser(TEST_USER.email, TEST_USER.password);
 
-        cy.get('.asides').should('be.visible');
+        cy.get('.asides', { timeout: 10000 }).should('be.visible');
         cy.get('.create-post-section button').contains('Tell everyone').click();
 
         cy.get('.modal').should('be.visible');

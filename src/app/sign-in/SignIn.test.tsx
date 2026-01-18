@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import SignIn from './page.tsx';
-import { useAuth } from '../../store/contexts/AuthContext';
+import SignIn from './page';
+import { useAuth } from '@/store/contexts/AuthContext';
 
 jest.mock('../../store/contexts/AuthContext');
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -36,11 +35,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         expect(screen.getByText('Sign in into an account')).toBeInTheDocument();
         expect(
@@ -53,11 +48,7 @@ describe('SignIn Component', () => {
     });
 
     test('redirects to home when authenticated', async () => {
-        const mockNavigate = jest.fn();
-
-        jest.spyOn(require('react-router'), 'useNavigate').mockReturnValue(
-            mockNavigate
-        );
+        const mockRouter = (global as any).mockRouter;
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -70,23 +61,16 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith('/');
+            expect(mockRouter.push).toHaveBeenCalledWith('/');
         });
     });
 
     test('redirects only when authenticated changes to true', async () => {
-        const mockNavigate = jest.fn();
-
-        jest.spyOn(require('react-router'), 'useNavigate').mockImplementation(
-            () => mockNavigate
-        );
+        const mockRouter = (global as any).mockRouter;
+        mockRouter.push.mockClear();
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
@@ -99,13 +83,9 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        const { rerender } = render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        const { rerender } = render(<SignIn />);
 
-        expect(mockNavigate).not.toHaveBeenCalled();
+        expect(mockRouter.push).not.toHaveBeenCalled();
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -118,14 +98,10 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        rerender(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        rerender(<SignIn />);
 
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith('/');
+            expect(mockRouter.push).toHaveBeenCalledWith('/');
         });
     });
 
@@ -141,11 +117,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         expect(
             screen.getByText('Forgot to create an account?')
@@ -167,11 +139,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         const mainElement = screen.getByRole('main');
         expect(mainElement).toHaveClass('auth-form-content');
@@ -196,11 +164,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         expect(mockNavigate).not.toHaveBeenCalled();
     });
@@ -217,11 +181,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         const captionHeading = screen.getByRole('heading', { level: 4 });
         const captionSubheading = screen.getByRole('heading', { level: 5 });
@@ -244,11 +204,7 @@ describe('SignIn Component', () => {
             getCurrentUser: jest.fn(),
         });
 
-        render(
-            <MemoryRouter>
-                <SignIn />
-            </MemoryRouter>
-        );
+        render(<SignIn />);
 
         const signUpLink = screen.getByText('Sign up');
         const linkElement = signUpLink.closest('a');

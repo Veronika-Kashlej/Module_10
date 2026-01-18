@@ -1,5 +1,5 @@
 export const formatCreationDate = (date: string) => {
-    const now = Date.now(); // eslint-disable-line react-hooks/purity
+    const now = Date.now();
     const creationDate = new Date(date).getTime();
     const difference = now - creationDate;
 

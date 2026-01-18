@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Icons } from './Icons';
+import { ErrorIcon, Icons, NotFoundIcon } from './Icons';
 
 const mockUseTheme = jest.fn();
 
@@ -8,10 +8,20 @@ jest.mock('../../store/contexts/ThemeContext', () => ({
     useTheme: () => mockUseTheme(),
 }));
 
+jest.mock('../../store/contexts/AuthContext', () => ({
+    useAuth: () => ({
+        user: null,
+        isAuthenticated: false,
+        signIn: jest.fn(),
+        signUp: jest.fn(),
+        logout: jest.fn(),
+        refreshUser: jest.fn(),
+    }),
+}));
+
 describe('Icons', () => {
     describe('LikeIcon', () => {
         const onClick = jest.fn();
-
         beforeEach(() => {
             onClick.mockClear();
         });
@@ -349,7 +359,7 @@ describe('Icons', () => {
         test('has correct fill color for light theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(<Icons.NotFoundIcon />);
+            const { container } = render(<NotFoundIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', '#151A2D');
@@ -358,7 +368,7 @@ describe('Icons', () => {
         test('has correct fill color for dark theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'dark' });
 
-            const { container } = render(<Icons.NotFoundIcon />);
+            const { container } = render(<NotFoundIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', 'white');
@@ -369,7 +379,7 @@ describe('Icons', () => {
         test('has correct fill color for light theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(<Icons.ErrorIcon />);
+            const { container } = render(<ErrorIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', '#151A2D');
@@ -378,7 +388,7 @@ describe('Icons', () => {
         test('has correct fill color for dark theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'dark' });
 
-            const { container } = render(<Icons.ErrorIcon />);
+            const { container } = render(<ErrorIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', 'white');

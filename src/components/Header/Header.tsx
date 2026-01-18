@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
 import { Icons } from '../Icons/Icons';
@@ -13,19 +13,36 @@ export function Header() {
     const closeMenu = useCallback(() => {
         setIsMenuOpen(false);
         document.body.style.overflow = '';
-        document.body.removeEventListener('click', closeMenu);
     }, []);
 
-    const openMenu = useCallback(
-        (e: React.MouseEvent) => {
-            e.stopPropagation();
-            setIsMenuOpen(true);
-            window.scrollTo(0, 0);
-            document.body.style.overflow = 'hidden';
-            document.body.addEventListener('click', closeMenu);
-        },
-        [closeMenu]
-    );
+    const openMenu = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMenuOpen(true);
+        window.scrollTo(0, 0);
+        document.body.style.overflow = 'hidden';
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (isMenuOpen) {
+                const target = e.target as HTMLElement;
+                const isBurger = target.closest('.burger');
+                const isMenu = target.closest('.mobile-menu');
+
+                if (!isBurger && !isMenu) {
+                    closeMenu();
+                }
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [isMenuOpen, closeMenu]);
 
     return (
         <>

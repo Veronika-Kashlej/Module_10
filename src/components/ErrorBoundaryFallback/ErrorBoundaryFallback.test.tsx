@@ -1,15 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ErrorBoundaryFallback from '../../app/error';
+import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 
 jest.mock('../SimpleHeader/SimpleHeader', () => ({
     SimpleHeader: () => <div>Simple Header</div>,
 }));
 
 jest.mock('../Icons/Icons', () => ({
-    Icons: {
-        ErrorIcon: () => <div>Error Icon</div>,
-    },
+    ErrorIcon: () => <div>Error Icon</div>,
 }));
 
 describe('ErrorBoundaryFallback', () => {

@@ -1,9 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import {
     CustomNotificationProvider,
     useCustomNotification,
 } from '../NotificationContext';
 import { CustomNotificationType } from '@/store/types';
+import { useEffect } from 'react';
 
 jest.mock('../../../components/Notification/Notification', () => ({
     CustomNotification: ({
@@ -45,22 +46,38 @@ describe('CustomNotificationProvider', () => {
             consoleError.mockRestore();
         });
 
-        test('should return context value when used within provider', () => {
-            let contextValue: any;
+        test('should return context value when used within provider', async () => {
+            const TestConsumer = ({
+                onReady,
+            }: {
+                onReady: (value: any) => void;
+            }) => {
+                const contextValue = useCustomNotification();
 
-            const TestConsumer = () => {
-                contextValue = useCustomNotification();
+                useEffect(() => {
+                    onReady(contextValue);
+                }, [contextValue, onReady]);
+
                 return null;
+            };
+
+            let capturedValue: any = null;
+            const handleReady = (value: any) => {
+                capturedValue = value;
             };
 
             render(
                 <CustomNotificationProvider>
-                    <TestConsumer />
+                    <TestConsumer onReady={handleReady} />
                 </CustomNotificationProvider>
             );
 
-            expect(contextValue).toBeDefined();
-            expect(typeof contextValue.showCustomNotification).toBe('function');
+            await waitFor(() => {
+                expect(capturedValue).toBeDefined();
+                expect(typeof capturedValue.showCustomNotification).toBe(
+                    'function'
+                );
+            });
         });
 
         test('showCustomNotification function should update notification state', async () => {

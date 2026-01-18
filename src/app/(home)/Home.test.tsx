@@ -1,21 +1,21 @@
 import { render, screen, waitFor, act } from '@testing-library/react';
-import Home from '../pages/Home/Home';
-import { useAuth } from '../store/contexts/AuthContext';
-import { postsAPI } from '../store/api/api';
 import { LikedPost, Post } from '@/store/types';
+import { useAuth } from '@/store/contexts/AuthContext';
+import { postsAPI } from '@/store/api/api';
+import Home from '../page';
 
-jest.mock('../../store/contexts/AuthContext', () => ({
+jest.mock('@/store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('../../store/api/api', () => ({
+jest.mock('@/store/api/api', () => ({
     postsAPI: {
         getPosts: jest.fn(),
         getCurrentUsersLikedPosts: jest.fn(),
     },
 }));
 
-jest.mock('../../components/Header/Header', () => ({
+jest.mock('@/components/Header/Header', () => ({
     Header: () => <header data-testid="header">Header</header>,
 }));
 
@@ -33,7 +33,7 @@ jest.mock('./components/PostCard/PostCard', () => ({
     ),
 }));
 
-jest.mock('components/Skeletons/PostSkeleton/PostSkeleton', () => ({
+jest.mock('@/components/Skeletons/PostSkeleton/PostSkeleton', () => ({
     PostSkeleton: () => <div data-testid="post-skeleton">Loading post...</div>,
 }));
 

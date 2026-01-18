@@ -9,23 +9,23 @@ import { PostCard } from './PostCard';
 import { useAuth } from '../../../../store/contexts/AuthContext';
 import { postsAPI } from '../../../../store/api/api';
 import { LikedPost } from '../../../../store/types';
-
-jest.mock('../../../../store/contexts/AuthContext', () => ({
+import Image from 'next/image';
+jest.mock('@/store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('../../../../store/api/api', () => ({
+jest.mock('@/store/api/api', () => ({
     postsAPI: {
         getUser: jest.fn(),
     },
 }));
 
-jest.mock('../../../../components/SectionItem/SectionItem', () => ({
+jest.mock('@/components/SectionItem/SectionItem', () => ({
     SectionItem: ({ title, subtitle, image }: any) => (
         <div data-testid="section-item">
             <div data-testid="section-title">{title}</div>
             <div data-testid="section-subtitle">{subtitle}</div>
-            <img src={image} alt="section" data-testid="section-image" />
+            <Image src={image} alt="section" data-testid="section-image" />
         </div>
     ),
 }));
@@ -54,13 +54,13 @@ jest.mock('./components/PostDescription/PostDescription', () => ({
 }));
 
 jest.mock(
-    'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton',
+    '@/components/Skeletons/SectionItemSkeleton/SectionItemSkeleton',
     () => ({
         SectionItemSkeleton: () => <div data-testid="skeleton">Loading...</div>,
     })
 );
 
-jest.mock('../../../../components/Icons/Icons', () => ({
+jest.mock('@/components/Icons/Icons', () => ({
     Icons: {
         MessageIcon: () => <div data-testid="message-icon">💬</div>,
         ShowCommentIcon: ({ areVisibleComments, onClick }: any) => (
@@ -75,7 +75,7 @@ jest.mock('../../../../components/Icons/Icons', () => ({
     },
 }));
 
-jest.mock('store/utils/formatCreationDate', () => ({
+jest.mock('@/store/utils/formatCreationDate', () => ({
     formatCreationDate: (date: string) => `Formatted: ${date}`,
 }));
 

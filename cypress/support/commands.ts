@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="cypress" />
 
 declare global {
@@ -17,7 +16,7 @@ Cypress.Commands.add('registerUser', (email: string, password: string) => {
     cy.get('input[name="email"]').type(email);
     cy.get('input[name="password"]').type(password);
     cy.get('button[type="submit"]').contains('Sign Up').click();
-    cy.contains('You Sign Up succesfully', { timeout: 10000 });
+    cy.contains('You Sign Up successfully', { timeout: 10000 });
     cy.url().should('eq', Cypress.config().baseUrl + '/');
 });
 

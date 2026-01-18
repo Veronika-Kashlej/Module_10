@@ -22,20 +22,14 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<string>('dark');
-    const [isMounted, setIsMounted] = useState(false);
+    const [theme, setTheme] = useState<string>(() => {
+        return localStorage.getItem('theme') || 'dark';
+    });
 
     useEffect(() => {
-        setIsMounted(true);
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
-    }, []);
-
-    useEffect(() => {
-        if (isMounted) {
-            document.documentElement.setAttribute('data-theme', theme);
-        }
-    }, [theme, isMounted]);
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';

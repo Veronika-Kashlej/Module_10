@@ -34,12 +34,6 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
-            <head>
-                <link
-                    rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-                />
-            </head>
             <body>
                 <ClientLayout>{children}</ClientLayout>
             </body>

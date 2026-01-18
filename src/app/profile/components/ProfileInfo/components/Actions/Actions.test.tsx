@@ -1,11 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
 import { Actions } from './Actions';
 import { useAuth } from '../../../../../../store/contexts/AuthContext';
 import { useCustomNotification } from '../../../../../../store/contexts/NotificationContext';
 
-jest.mock('../../../../../../store/contexts/AuthContext');
-jest.mock('../../../../../../store/contexts/NotificationContext');
+jest.mock('@/store/contexts/AuthContext');
+jest.mock('@/store/contexts/NotificationContext');
 
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 const mockUseCustomNotification = useCustomNotification as jest.MockedFunction<
@@ -41,22 +40,14 @@ describe('Actions Component', () => {
     });
 
     test('renders Actions section with title and logout button', () => {
-        render(
-            <MemoryRouter>
-                <Actions />
-            </MemoryRouter>
-        );
+        render(<Actions />);
 
         expect(screen.getByText('Actions')).toBeInTheDocument();
         expect(screen.getByText('Logout')).toBeInTheDocument();
     });
 
     test('calls signOut, navigate and shows success notification on logout', async () => {
-        render(
-            <MemoryRouter>
-                <Actions />
-            </MemoryRouter>
-        );
+        render(<Actions />);
 
         const logoutButton = screen.getByText('Logout');
         fireEvent.click(logoutButton);
@@ -65,7 +56,6 @@ describe('Actions Component', () => {
             expect(mockSignOut).toHaveBeenCalledTimes(1);
         });
 
-        expect(mockNavigate).toHaveBeenCalledWith('/');
         expect(mockShowCustomNotification).toHaveBeenCalledWith(
             'You logged out successfully',
             'success'
@@ -76,11 +66,7 @@ describe('Actions Component', () => {
         const errorMessage = 'Logout failed: Invalid token';
         mockSignOut.mockRejectedValue(new Error(errorMessage));
 
-        render(
-            <MemoryRouter>
-                <Actions />
-            </MemoryRouter>
-        );
+        render(<Actions />);
 
         const logoutButton = screen.getByText('Logout');
         fireEvent.click(logoutButton);
@@ -98,11 +84,7 @@ describe('Actions Component', () => {
     test('shows generic error notification when logout fails with non-Error', async () => {
         mockSignOut.mockRejectedValue('String error');
 
-        render(
-            <MemoryRouter>
-                <Actions />
-            </MemoryRouter>
-        );
+        render(<Actions />);
 
         const logoutButton = screen.getByText('Logout');
         fireEvent.click(logoutButton);

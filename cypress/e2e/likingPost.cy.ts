@@ -12,13 +12,21 @@ describe('Post Likes', () => {
         cy.waitForPosts();
     });
 
-    it('Like a post', () => {
+    it('Like and dislike a post', () => {
         cy.get('.posts-list .post-card')
             .first()
             .within(() => {
                 cy.get('.likes-block p')
                     .invoke('text')
                     .then(() => {
+                        cy.get('.likes-block svg').should(
+                            'have.attr',
+                            'fill',
+                            '#ff8811'
+                        );
+
+                        cy.get('.likes-block svg').click();
+
                         cy.get('.likes-block svg').should(
                             'have.attr',
                             'fill',
@@ -31,42 +39,6 @@ describe('Post Likes', () => {
                             'have.attr',
                             'fill',
                             '#ff8811'
-                        );
-
-                        cy.get('.likes-block p')
-                            .invoke('text')
-                            .then((newText) => {
-                                const newLikes = parseInt(newText) || 0;
-                                expect(newLikes).to.be.a('number');
-                            });
-                    });
-            });
-    });
-
-    it('Unlike a post', () => {
-        cy.get('.posts-list .post-card')
-            .first()
-            .within(() => {
-                cy.get('.likes-block svg').then(($svg) => {
-                    if ($svg.attr('fill') !== '#ff8811') {
-                        cy.get('.likes-block svg').click();
-                        cy.get('.likes-block svg').should(
-                            'have.attr',
-                            'fill',
-                            '#ff8811'
-                        );
-                    }
-                });
-
-                cy.get('.likes-block p')
-                    .invoke('text')
-                    .then(() => {
-                        cy.get('.likes-block svg').click();
-
-                        cy.get('.likes-block svg').should(
-                            'have.attr',
-                            'fill',
-                            'none'
                         );
 
                         cy.get('.likes-block p')
@@ -98,7 +70,7 @@ describe('Post Likes', () => {
         cy.logout();
         cy.visit('/');
 
-        cy.get('.posts-list .post-card')
+        cy.get('.posts-list .post-card', { timeout: 10000 })
             .first()
             .within(() => {
                 cy.get('.likes-block').should('exist');

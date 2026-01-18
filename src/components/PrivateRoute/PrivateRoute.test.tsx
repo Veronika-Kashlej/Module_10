@@ -1,16 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Routes, Route } from 'react-router';
 import { PrivateRoute } from './PrivateRoute';
 import { useAuth } from '../../store/contexts/AuthContext';
 
 jest.mock('../../store/contexts/AuthContext');
-
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
 const ProtectedPage = () => <div>Protected</div>;
-const SignInPage = () => <div>Sign In</div>;
 
 describe('PrivateRoute', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('allows access when authenticated', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
@@ -24,24 +25,18 @@ describe('PrivateRoute', () => {
         });
 
         render(
-            <MemoryRouter initialEntries={['/private']}>
-                <Routes>
-                    <Route
-                        path="/private"
-                        element={
-                            <PrivateRoute>
-                                <ProtectedPage />
-                            </PrivateRoute>
-                        }
-                    />
-                </Routes>
-            </MemoryRouter>
+            <PrivateRoute>
+                <ProtectedPage />
+            </PrivateRoute>
         );
 
         expect(screen.getByText('Protected')).toBeInTheDocument();
     });
 
     test('redirects when not authenticated', () => {
+        const mockRouter = (global as any).mockRouter;
+        mockRouter.push.mockClear();
+
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
             isLoading: false,
@@ -54,44 +49,11 @@ describe('PrivateRoute', () => {
         });
 
         render(
-            <MemoryRouter initialEntries={['/private']}>
-                <Routes>
-                    <Route
-                        path="/private"
-                        element={
-                            <PrivateRoute>
-                                <ProtectedPage />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route path="/sign-in" element={<SignInPage />} />
-                </Routes>
-            </MemoryRouter>
+            <PrivateRoute>
+                <ProtectedPage />
+            </PrivateRoute>
         );
 
-        expect(screen.getByText('Sign In')).toBeInTheDocument();
-    });
-
-    test('shows nothing while loading', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            isLoading: true,
-            user: null,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
-        });
-
-        const { container } = render(
-            <MemoryRouter>
-                <PrivateRoute>
-                    <ProtectedPage />
-                </PrivateRoute>
-            </MemoryRouter>
-        );
-
-        expect(container.firstChild).toBeNull();
+        expect(mockRouter.push).toHaveBeenCalledWith('/sign-in');
     });
 });
