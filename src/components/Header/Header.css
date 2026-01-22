@@ -66,7 +66,7 @@ header {
     z-index: 998;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .header-content {
         padding: 8px 12px;
     }
@@ -105,7 +105,8 @@ header {
         justify-self: end;
     }
 
-    .header.open .profile-image, .header.open .profile-info {
+    .header.open .profile-image,
+    .header.open .profile-info {
         display: block;
     }
 
@@ -136,8 +137,9 @@ header {
     }
 
     .mobile-menu.open ul li a {
+        display: block;
+        width: 100%;
         font-size: 18px;
         color: var(--small-text-color);
     }
-
 }
