@@ -15,12 +15,9 @@ describe('PrivateRoute', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
             isLoading: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
         });
 
         render(
@@ -45,12 +42,9 @@ describe('PrivateRoute', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
             isLoading: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
         });
 
         render(
@@ -76,12 +70,9 @@ describe('PrivateRoute', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
             isLoading: true,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
         });
 
         const { container } = render(

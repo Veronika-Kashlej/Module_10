@@ -65,15 +65,12 @@ describe('Comments Component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         mockUseAuth.mockReturnValue({
-            user: mockUser,
             isAuthenticated: true,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
     });
 
     test('fetches and displays comments on mount', async () => {

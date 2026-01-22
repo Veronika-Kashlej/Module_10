@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
 import './CreatePostSection.css';
-import { useAuth } from '../../../../store/contexts/AuthContext';
+import { useUser } from '../../../../store/contexts/UserContext';
 import { Loader } from '../../../../components/Loader/Loader';
 
 const CreatePostModal = lazy(
@@ -13,7 +13,7 @@ interface CreatePostSectionProps {
 
 export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { user } = useAuth();
+    const { user } = useUser();
 
     const openCreatePostModal = () => {
         setIsModalOpen(true);

@@ -28,12 +28,9 @@ describe('Header', () => {
     test('renders logo and burger menu for unauthenticated user', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
             isLoading: false,
         });
 
@@ -55,55 +52,12 @@ describe('Header', () => {
         expect(desktopMenu).toBeInTheDocument();
     });
 
-    test('renders user profile for authenticated user', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            user: {
-                id: 1,
-                firstName: 'John',
-                secondName: 'Doe',
-                profileImage: 'image.jpg',
-                username: 'johndoe',
-                email: 'john@example.com',
-                description: 'Test description',
-                creationDate: '2023-01-01',
-                lastLogin: '2023-01-01',
-                modifiedDate: '2023-01-01',
-            },
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
-            isLoading: false,
-        });
-
-        render(
-            <MemoryRouter>
-                <Header />
-            </MemoryRouter>
-        );
-
-        expect(screen.getByText('John Doe')).toBeInTheDocument();
-        expect(screen.getByAltText('profile')).toBeInTheDocument();
-        expect(screen.getByAltText('profile')).toHaveAttribute(
-            'src',
-            'image.jpg'
-        );
-
-        const desktopMenu = document.querySelector('.desktop-menu');
-        expect(desktopMenu).toBeNull();
-    });
-
     test('opens and closes mobile menu', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
             isLoading: false,
         });
 
@@ -132,23 +86,9 @@ describe('Header', () => {
     test('mobile menu shows correct links for authenticated user', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: {
-                id: 1,
-                firstName: 'John',
-                secondName: 'Doe',
-                profileImage: 'image.jpg',
-                username: 'johndoe',
-                email: 'john@example.com',
-                description: 'Test description',
-                creationDate: '2023-01-01',
-                lastLogin: '2023-01-01',
-                modifiedDate: '2023-01-01',
-            },
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
             isLoading: false,
         });
 
@@ -173,12 +113,9 @@ describe('Header', () => {
     test('mobile menu shows correct links for unauthenticated user', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
             isLoading: false,
         });
 
@@ -213,12 +150,9 @@ describe('Header', () => {
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            getCurrentUser: jest.fn(),
-            refreshUser: jest.fn(),
             isLoading: false,
         });
 

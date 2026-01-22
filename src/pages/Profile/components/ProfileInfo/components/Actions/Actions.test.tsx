@@ -24,10 +24,7 @@ describe('Actions Component', () => {
             signOut: mockSignOut,
             signIn: jest.fn(),
             signUp: jest.fn(),
-            refreshUser: jest.fn(),
-            user: null,
             isAuthenticated: false,
-            getCurrentUser: jest.fn(),
             isLoading: false,
         });
 

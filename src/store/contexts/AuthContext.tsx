@@ -5,17 +5,14 @@ import {
     ReactNode,
     useContext,
 } from 'react';
-import { AuthResponse, User } from '../types';
+import { AuthResponse } from '../types';
 import { authAPI } from '../api/api';
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    user: User | null;
     signUp: (email: string, password: string) => Promise<AuthResponse>;
     signIn: (email: string, password: string) => Promise<AuthResponse>;
     signOut: () => Promise<void>;
-    refreshUser: () => Promise<void>;
-    getCurrentUser: () => User | null;
     isLoading: boolean;
 }
 
@@ -29,7 +26,6 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -38,8 +34,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setIsLoading(true);
             try {
                 if (token) {
-                    const response = await authAPI.getMe();
-                    setUser(response.data);
                     setIsAuthenticated(true);
                 }
             } catch (error) {
@@ -52,18 +46,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         checkAuth();
     }, []);
 
-    const setAuthData = (token: string, userData: User) => {
+    const setAuthData = (token: string) => {
         localStorage.setItem('accessToken', token);
-        localStorage.setItem('user', JSON.stringify(userData));
         setIsAuthenticated(true);
-        setUser(userData);
     };
 
     const clearAuthData = () => {
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
         setIsAuthenticated(false);
-        setUser(null);
     };
 
     const signUp = async (
@@ -87,9 +77,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     ): Promise<AuthResponse> => {
         try {
             const response = await authAPI.login(email, password);
-            const { token, user } = response.data;
+            const { token } = response.data;
 
-            setAuthData(token, user);
+            setAuthData(token);
             return response.data;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -107,29 +97,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     };
 
-    const refreshUser = async (): Promise<void> => {
-        try {
-            const response = await authAPI.getMe();
-            setUser(response.data);
-            localStorage.setItem('user', JSON.stringify(response.data));
-        } catch (error) {
-            console.error('Failed to refresh user:', error);
-        }
-    };
-
-    const getCurrentUser = (): User | null => {
-        const userStr = localStorage.getItem('user');
-        return userStr ? JSON.parse(userStr) : null;
-    };
-
     const value: AuthContextType = {
         isAuthenticated,
-        user,
         signUp,
         signIn,
         signOut,
-        refreshUser,
-        getCurrentUser,
         isLoading,
     };
 

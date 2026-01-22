@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CommentList } from './components/CommentList/CommentList';
 import { useAuth } from '../../../../../../store/contexts/AuthContext';
+import { useUser } from '../../../../../../store/contexts/UserContext';
 import { postsAPI } from '../../../../../../store/api/api';
 import { Comment } from '../../../../../../store/types';
 import { Forms } from '../../../../../../components/Forms/Forms';
@@ -16,7 +17,8 @@ export function Comments({
     onChangeCommentsCount,
 }: CommentsProps) {
     const [comments, setComments] = useState<Comment[]>([]);
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
+    const { user } = useUser();
 
     useEffect(() => {
         const fetchComments = async () => {

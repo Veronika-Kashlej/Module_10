@@ -9,6 +9,7 @@ import { TextArea } from './components/TextArea/TextArea';
 import { SectionItem } from '../SectionItem/SectionItem';
 import { BaseForm } from './components/BaseForm/BaseForm';
 import { postsAPI, profileApi } from '../../store/api/api';
+import { useUser } from '../../store/contexts/UserContext';
 
 interface AuthFormProps {
     type: 'signin' | 'signup';
@@ -193,7 +194,7 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
 }
 
 function EditProfileForm() {
-    const { user, refreshUser } = useAuth();
+    const { user, refreshUser } = useUser();
     const [profileImage, setProfileImage] = useState(user?.profileImage || '');
     const usernameInput = useRef<HTMLInputElement>(null);
     const emailInput = useRef<HTMLInputElement>(null);

@@ -10,6 +10,7 @@ import { CustomNotificationProvider } from './store/contexts/NotificationContext
 import { lazy, Suspense } from 'react';
 import { Loader } from './components/Loader/Loader';
 import Home from 'pages/Home/Home';
+import { UserProvider } from './store/contexts/UserContext';
 
 const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
@@ -22,42 +23,49 @@ function App() {
             <ThemeProvider>
                 <CustomNotificationProvider>
                     <AuthProvider>
-                        <ErrorBoundary
-                            FallbackComponent={ErrorBoundaryFallback}
-                        >
-                            <Suspense
-                                fallback={<Loader message="Loading page..." />}
+                        <UserProvider>
+                            <ErrorBoundary
+                                FallbackComponent={ErrorBoundaryFallback}
                             >
-                                <Routes>
-                                    <Route path="/" element={<Home />}></Route>
-                                    <Route
-                                        path="/sign-up"
-                                        element={<SignUp />}
-                                    ></Route>
-                                    <Route
-                                        path="/sign-in"
-                                        element={<SignIn />}
-                                    ></Route>
-                                    <Route
-                                        path="/error"
-                                        element={<ErrorBoundaryFallback />}
-                                    ></Route>
-                                    <Route
-                                        path="/profile/:tab?"
-                                        element={
-                                            <PrivateRoute>
-                                                <Profile />
-                                            </PrivateRoute>
-                                        }
-                                    ></Route>
-                                    <Route
-                                        path="*"
-                                        element={<NotFound />}
-                                    ></Route>
-                                </Routes>
-                                <Footer />
-                            </Suspense>
-                        </ErrorBoundary>
+                                <Suspense
+                                    fallback={
+                                        <Loader message="Loading page..." />
+                                    }
+                                >
+                                    <Routes>
+                                        <Route
+                                            path="/"
+                                            element={<Home />}
+                                        ></Route>
+                                        <Route
+                                            path="/sign-up"
+                                            element={<SignUp />}
+                                        ></Route>
+                                        <Route
+                                            path="/sign-in"
+                                            element={<SignIn />}
+                                        ></Route>
+                                        <Route
+                                            path="/error"
+                                            element={<ErrorBoundaryFallback />}
+                                        ></Route>
+                                        <Route
+                                            path="/profile/:tab?"
+                                            element={
+                                                <PrivateRoute>
+                                                    <Profile />
+                                                </PrivateRoute>
+                                            }
+                                        ></Route>
+                                        <Route
+                                            path="*"
+                                            element={<NotFound />}
+                                        ></Route>
+                                    </Routes>
+                                    <Footer />
+                                </Suspense>
+                            </ErrorBoundary>
+                        </UserProvider>
                     </AuthProvider>
                 </CustomNotificationProvider>
             </ThemeProvider>

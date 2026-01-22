@@ -27,13 +27,10 @@ describe('SignUp Component', () => {
     test('renders SignUp component correctly when not authenticated', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         render(
@@ -61,13 +58,10 @@ describe('SignUp Component', () => {
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 } as any,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         await act(async () => {
@@ -90,13 +84,10 @@ describe('SignUp Component', () => {
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         const { rerender } = render(
@@ -109,13 +100,10 @@ describe('SignUp Component', () => {
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 } as any,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         await act(async () => {
@@ -132,13 +120,10 @@ describe('SignUp Component', () => {
     test('shows terms and privacy links', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         render(
@@ -158,13 +143,10 @@ describe('SignUp Component', () => {
     test('contains sign in link', () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         render(
@@ -187,13 +169,10 @@ describe('SignUp Component', () => {
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 } as any,
             signUp: jest.fn(),
             signIn: jest.fn(),
-            refreshUser: jest.fn(),
             signOut: jest.fn(),
             isLoading: false,
-            getCurrentUser: jest.fn(),
         });
 
         await act(async () => {

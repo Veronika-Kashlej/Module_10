@@ -112,14 +112,11 @@ describe('PostCard Component', () => {
         jest.clearAllMocks();
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
     });
 
     test('renders post content after loading', async () => {
@@ -202,14 +199,11 @@ describe('PostCard Component', () => {
     test('shows login message for unauthenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 
@@ -233,14 +227,11 @@ describe('PostCard Component', () => {
     test('does not render comments component for unauthenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 

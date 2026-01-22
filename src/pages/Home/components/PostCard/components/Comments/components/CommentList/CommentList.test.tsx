@@ -48,15 +48,12 @@ describe('CommentList Component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         mockUseAuth.mockReturnValue({
-            user: { id: 1, username: 'currentUser' },
             isAuthenticated: true,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
     });
 
     test('renders all comments when visible', () => {
@@ -121,15 +118,12 @@ describe('CommentList Component', () => {
 
     test('does not show delete icon when user is not logged in', () => {
         mockUseAuth.mockReturnValue({
-            user: null,
             isAuthenticated: false,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
 
         render(
             <CommentList

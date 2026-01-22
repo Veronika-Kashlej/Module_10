@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
 import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
+import { useUser } from '../../store/contexts/UserContext';
 import { Link } from 'react-router';
 import { Icons } from '../Icons/Icons';
 
 export function Header() {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
+    const { user } = useUser();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const closeMenu = useCallback(() => {
