@@ -14,15 +14,17 @@
 
 button.tab {
     padding: 4px 12px;
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 500;
     font-size: 16px;
     line-height: 150%;
     background-color: var(--bg-primary-color);
+    color: var(--text-color);
     transition: all 0.3s ease-in;
 }
 
-button.tab:hover, button.tab.active {
+button.tab:hover,
+button.tab.active {
     background-color: var(--primary-color);
 }
 
@@ -31,7 +33,7 @@ button.tab:hover, button.tab.active {
     gap: 50px;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .profile-page {
         padding: 12px;
         gap: 12px;
