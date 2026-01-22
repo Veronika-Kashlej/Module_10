@@ -9,13 +9,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .delete-comment-btn {
     cursor: pointer;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .trash-icon {
         display: none;
     }

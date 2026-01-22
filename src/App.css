@@ -173,3 +173,11 @@ a {
         font-size: 18px;
     }
 }
+
+@media (max-width: 380px) {
+    input[type='text'],
+    input[type='email'],
+    input[type='password'] {
+        width: unset;
+    }
+}

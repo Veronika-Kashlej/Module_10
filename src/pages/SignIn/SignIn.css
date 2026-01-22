@@ -21,19 +21,12 @@
 }
 
 @media (max-width: 400px) {
-    .auth-form-content.sign-in {
-        margin-bottom: 50px;
-    }
-
     .auth-form-content {
         padding: 0 18px;
     }
 
-    .auth-form-content form, .auth-form-content button {
+    .auth-form-content form,
+    .auth-form-content button {
         width: 100%;
-    }
-
-    .auth-form-content form input {
-        width: unset;
     }
 }

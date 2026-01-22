@@ -43,7 +43,7 @@
     align-self: flex-end;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .modal {
         padding: 12px;
     }
@@ -57,4 +57,10 @@
         width: 16px;
         height: 16px;
     }
+}
+
+@media (max-width: 380px) {
+    /* .modal input {
+        width: unset
+    } */
 }

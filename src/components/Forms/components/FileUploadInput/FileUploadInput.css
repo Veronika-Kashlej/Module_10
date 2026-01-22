@@ -14,7 +14,8 @@
     gap: 12px;
 }
 
-.file-upload-text-title, .file-upload-text-subtitle {
+.file-upload-text-title,
+.file-upload-text-subtitle {
     font-size: 14px;
     line-height: 20px;
 }
@@ -31,9 +32,20 @@
     border-color: #ef4444;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .file-upload-dropzone {
         padding: 8px 12px;
         text-align: center;
+    }
+}
+
+@media (max-width: 375px) {
+    .file-upload-dropzone {
+        gap: 10px;
+    }
+
+    .file-upload-text-title,
+    .file-upload-text-subtitle {
+        font-size: 11px;
     }
 }
