@@ -6,7 +6,7 @@ import {
     useContext,
 } from 'react';
 import { AuthResponse } from '../types';
-import { authAPI } from '../api/api';
+import { authAPI } from '../../utils/api/api';
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -16,9 +16,7 @@ interface AuthContextType {
     isLoading: boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-    undefined
-);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
     children: ReactNode;

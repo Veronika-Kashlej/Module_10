@@ -1,6 +1,6 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { CommunitiesSection } from './CommunitiesSection';
-import { profileApi } from '../../../../store/api/api';
+import { profileApi } from '../../../../utils/api/api';
 
 let consoleErrorSpy: jest.SpyInstance;
 

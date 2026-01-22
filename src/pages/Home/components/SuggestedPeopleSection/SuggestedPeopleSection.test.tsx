@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import { SuggestedPeopleSection } from './SuggestedPeopleSection';
-import { profileApi } from '../../../../store/api/api';
+import { profileApi } from '@/utils/api/api';
 
 let consoleErrorSpy: jest.SpyInstance;
 

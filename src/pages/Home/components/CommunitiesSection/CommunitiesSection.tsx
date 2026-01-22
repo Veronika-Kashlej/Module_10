@@ -1,9 +1,9 @@
 import React from 'react';
 import { SectionItem } from '../../../../components/SectionItem/SectionItem';
-import { profileApi } from '../../../../store/api/api';
 import { Community } from '../../../../store/types';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
-import { formatMembersCount } from 'store/utils/formatMembersCount';
+import { formatMembersCount } from '../../../../utils/formatMembersCount';
+import { profileApi } from '../../../../utils/api/api';
 
 type CommunitiesSectionState = {
     communities: Community[];

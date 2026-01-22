@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './Notification.css';
 import { Portal } from '../Portal/Portal';
 import { CustomNotificationProps } from '../../store/types';

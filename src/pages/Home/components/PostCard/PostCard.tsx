@@ -4,12 +4,11 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { LikedPost, Post, User } from '../../../../store/types';
 import { Icons } from '../../../../components/Icons/Icons';
 import { useAuth } from '../../../../store/contexts/AuthContext';
-import { Comments } from './components/Comments/Comments';
-import { LikesSection } from './components/Likes/LikesSection';
-import { postsAPI } from '../../../../store/api/api';
+import { Comments } from '../Comments/Comments';
+import { LikesSection } from '../Likes/LikesSection';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
-import { PostDescription } from './components/PostDescription/PostDescription';
-import { formatCreationDate } from 'store/utils/formatCreationDate';
+import { formatCreationDate } from '../../../../utils/formatCreationDate';
+import { postsAPI } from '../../../../utils/api/api';
 
 interface PostCardProps {
     post: Post;
@@ -73,7 +72,7 @@ export const PostCard = memo(function PostCard({
                     alt="post-image"
                 ></img>
             )}
-            <PostDescription content={post.content} />
+            <p className="post-description">{post.content}</p>
             <div
                 className="likes-and-comments-block"
                 style={{ marginBottom: areVisibleComments ? '' : '-12px' }}

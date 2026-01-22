@@ -7,8 +7,8 @@ import {
 } from '@testing-library/react';
 import { PostCard } from './PostCard';
 import { useAuth } from '../../../../store/contexts/AuthContext';
-import { postsAPI } from '../../../../store/api/api';
 import { LikedPost } from '../../../../store/types';
+import { postsAPI } from '@/utils/api/api';
 
 jest.mock('../../../../store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),

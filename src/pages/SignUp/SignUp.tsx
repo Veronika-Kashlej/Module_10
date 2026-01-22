@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../../store/contexts/AuthContext';
 import './SignUp.css';
-import { Forms } from '../../components/Forms/Forms';
 import { SimpleHeader } from '../../components/SimpleHeader/SimpleHeader';
+import { Forms } from '../../forms/Forms';
 
 function SignUp() {
     const navigate = useNavigate();

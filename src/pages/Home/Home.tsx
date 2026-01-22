@@ -5,10 +5,10 @@ import { PostCard } from './components/PostCard/PostCard';
 import { SuggestedPeopleSection } from './components/SuggestedPeopleSection/SuggestedPeopleSection';
 import { useAuth } from '../../store/contexts/AuthContext';
 import './Home.css';
-import { postsAPI } from '../../store/api/api';
 import { LikedPost, Post } from '../../store/types';
 import { Header } from '../../components/Header/Header';
 import { PostSkeleton } from 'components/Skeletons/PostSkeleton/PostSkeleton';
+import { postsAPI } from '../../utils/api/api';
 
 function Home() {
     const [posts, setPosts] = useState<Post[]>([]);

@@ -1,9 +1,9 @@
-import { CardStatisticsList } from "./components/CardStatisticsList/CardStatisticsList";
+import { CardStatisticsList } from './CardStatisticsList';
 
 export function Statistics() {
-  return (
-    <section className="tab-content">
-      <CardStatisticsList />
-    </section>
-  );
+    return (
+        <section className="tab-content">
+            <CardStatisticsList />
+        </section>
+    );
 }

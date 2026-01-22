@@ -4,7 +4,7 @@ import { useUser } from '../../../../store/contexts/UserContext';
 import { Loader } from '../../../../components/Loader/Loader';
 
 const CreatePostModal = lazy(
-    () => import('./components/CreatePostModal/CreatePostModal')
+    () => import('../CreatePostModal/CreatePostModal')
 );
 
 interface CreatePostSectionProps {

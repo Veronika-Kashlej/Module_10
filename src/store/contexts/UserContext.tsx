@@ -6,8 +6,8 @@ import {
     useContext,
 } from 'react';
 import { User } from '../types';
-import { authAPI } from '../api/api';
 import { useAuth } from './AuthContext';
+import { authAPI } from '../../utils/api/api';
 
 interface UserContextType {
     user: User | null;
@@ -15,9 +15,7 @@ interface UserContextType {
     isLoading: boolean;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(
-    undefined
-);
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
 interface UserProviderProps {
     children: ReactNode;

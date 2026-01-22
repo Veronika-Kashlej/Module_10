@@ -2,6 +2,7 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import React, { ReactNode } from 'react';
 import { AuthProvider, useAuth } from '../AuthContext';
 import { User } from '@/store/types';
+import { authAPI } from '@/utils/api/api';
 
 jest.mock('../../api/api', () => ({
     authAPI: {
@@ -11,8 +12,6 @@ jest.mock('../../api/api', () => ({
         logout: jest.fn(),
     },
 }));
-
-import { authAPI } from '../../api/api';
 
 const mockLocalStorage = {
     store: {} as Record<string, string>,
@@ -52,7 +51,6 @@ const TestComponent = ({ onAuthChange }: TestComponentProps) => {
                 {auth.isAuthenticated.toString()}
             </div>
             <div data-testid="isLoading">{auth.isLoading.toString()}</div>
-            <div data-testid="user">{JSON.stringify(auth.user)}</div>
             <button
                 onClick={() => {
                     try {
@@ -76,7 +74,6 @@ const TestComponent = ({ onAuthChange }: TestComponentProps) => {
                 Sign Up
             </button>
             <button onClick={() => auth.signOut()}>Sign Out</button>
-            <button onClick={() => auth.refreshUser()}>Refresh User</button>
         </div>
     );
 };
@@ -110,10 +107,6 @@ describe('AuthContext', () => {
     });
 
     test('provides initial context values', async () => {
-        (authAPI.getMe as jest.Mock).mockRejectedValue(
-            new Error('Not authenticated')
-        );
-
         let capturedAuth: any;
         const onAuthChange = jest.fn((auth) => {
             capturedAuth = auth;

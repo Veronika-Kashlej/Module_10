@@ -4,6 +4,7 @@ import { ProfileInfo } from './components/ProfileInfo/ProfileInfo';
 import { Statistics } from './components/Statistics/Statistics';
 import { Header } from '../../components/Header/Header';
 import { useNavigate, useParams } from 'react-router';
+
 const tabs = [
     {
         id: 0,
