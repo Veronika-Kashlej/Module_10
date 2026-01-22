@@ -43,7 +43,7 @@ function App() {
                                         element={<ErrorBoundaryFallback />}
                                     ></Route>
                                     <Route
-                                        path="/profile"
+                                        path="/profile/:tab?"
                                         element={
                                             <PrivateRoute>
                                                 <Profile />
