@@ -3,11 +3,11 @@
     height: 28px;
     border-radius: 16px;
     padding: 4px;
-    background-color: var(--bg-primary-color);
+    background-color: var(--switcher-bg-color);
 }
 
 .switcher:hover {
-    background-color: var(--bg-primary-color);
+    background-color: var(--switcher-bg-color);
 }
 
 .circle {

@@ -11,6 +11,7 @@
     --bg-secondary-color: rgba(27, 32, 55, 1);
     --modal-bg-color: rgba(27, 32, 55, 0.5);
     --error-color: rgba(255, 85, 74, 1);
+    --switcher-bg-color: rgba(14, 18, 35, 1);
 }
 
 [data-theme='light'] {
@@ -24,6 +25,7 @@
     --bg-secondary-color: rgba(255, 255, 255, 1);
     --modal-bg-color: rgba(27, 32, 55, 0.5);
     --error-color: rgba(255, 85, 74, 1);
+    --switcher-bg-color: rgb(154, 159, 180);
 }
 
 * {
