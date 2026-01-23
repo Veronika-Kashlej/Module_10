@@ -1,0 +1,44 @@
+.create-post-section {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-primary-color);
+    border: 2px solid var(--border-color);
+}
+
+.create-post-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.create-post-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.create-post-info p {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .create-post-section {
+        border-left: none;
+        border-right: none;
+    }
+
+    .create-post-image {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 360px) {
+    .create-post-section p,
+    .create-post-section button {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,22 @@
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 90px;
+    text-align: center;
+}
+
+.error-page svg {
+    width: 95px;
+}
+
+@media(max-width: 768px) {
+    .error-page {
+        gap: 19px;
+    }
+
+    .error-page svg {
+        width: 19px;
+        height: 19px;
+    }
+}

@@ -1,0 +1,24 @@
+.switcher {
+    width: 48px;
+    height: 28px;
+    border-radius: 16px;
+    padding: 4px;
+    background-color: var(--switcher-bg-color);
+}
+
+.switcher:hover {
+    background-color: var(--switcher-bg-color);
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    transition: all 0.5s ease-out;
+}
+
+.circle.active {
+    background-color: var(--primary-color);
+    transform: translateX(20px);
+}

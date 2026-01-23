@@ -1,0 +1,24 @@
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.delete-comment-btn {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .trash-icon {
+        display: none;
+    }
+}
