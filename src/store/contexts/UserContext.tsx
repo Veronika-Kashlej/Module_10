@@ -31,11 +31,9 @@ export function UserProvider({ children }: UserProviderProps) {
             try {
                 if (isAuthenticated) {
                     const response = await authAPI.getMe();
-                    localStorage.setItem('user', JSON.stringify(response.data));
                     setUser(response.data);
                 } else {
                     setUser(null);
-                    localStorage.removeItemo('user');
                 }
             } catch (error) {
                 console.error(error);
