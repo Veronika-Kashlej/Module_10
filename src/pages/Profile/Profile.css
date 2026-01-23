@@ -12,7 +12,7 @@
     align-self: center;
 }
 
-button.tab {
+a.tab {
     padding: 4px 12px;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
@@ -23,8 +23,8 @@ button.tab {
     transition: all 0.3s ease-in;
 }
 
-button.tab:hover,
-button.tab.active {
+a.tab:hover,
+a.tab.active {
     background-color: var(--primary-color);
 }
 

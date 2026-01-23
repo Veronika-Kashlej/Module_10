@@ -73,10 +73,10 @@ export function Header() {
                 {isAuthenticated ? (
                     <ul>
                         <li>
-                            <Link to={'/profile/profile'}>Profile info</Link>
+                            <Link to={'/profile'}>Profile info</Link>
                         </li>
                         <li>
-                            <Link to={'/profile/statistics'}>Statistics</Link>
+                            <Link to={'/statistics'}>Statistics</Link>
                         </li>
                     </ul>
                 ) : (

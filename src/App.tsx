@@ -11,6 +11,8 @@ import { lazy, Suspense } from 'react';
 import { Loader } from './components/Loader/Loader';
 import Home from 'pages/Home/Home';
 import { UserProvider } from './store/contexts/UserContext';
+import { ProfileInfo } from './pages/Profile/components/ProfileInfo/ProfileInfo';
+import { Statistics } from './pages/Profile/components/Statistics/Statistics';
 
 const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
@@ -33,22 +35,32 @@ function App() {
                                     }
                                 >
                                     <Routes>
-                                        <Route
-                                            path="/"
-                                            element={<Home />}
-                                        ></Route>
+                                        <Route path="/" element={<Home />} />
                                         <Route
                                             path="/sign-up"
                                             element={<SignUp />}
-                                        ></Route>
+                                        />
                                         <Route
                                             path="/sign-in"
                                             element={<SignIn />}
-                                        ></Route>
+                                        />
                                         <Route
-                                            path="/error"
-                                            element={<ErrorBoundaryFallback />}
-                                        ></Route>
+                                            element={
+                                                <PrivateRoute>
+                                                    <Profile />
+                                                </PrivateRoute>
+                                            }
+                                        >
+                                            <Route
+                                                index
+                                                path="profile"
+                                                element={<ProfileInfo />}
+                                            />
+                                            <Route
+                                                path="statistics"
+                                                element={<Statistics />}
+                                            />
+                                        </Route>
                                         <Route
                                             path="/profile/:tab?"
                                             element={
@@ -56,11 +68,11 @@ function App() {
                                                     <Profile />
                                                 </PrivateRoute>
                                             }
-                                        ></Route>
+                                        />
                                         <Route
                                             path="*"
                                             element={<NotFound />}
-                                        ></Route>
+                                        />
                                     </Routes>
                                     <Footer />
                                 </Suspense>
