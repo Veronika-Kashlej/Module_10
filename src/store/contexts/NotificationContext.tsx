@@ -1,5 +1,11 @@
 'use client';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import { CustomNotificationProps, CustomNotificationType } from '../types';
 import { CustomNotification } from '../../components/Notification/Notification';
 
@@ -41,6 +47,14 @@ export const CustomNotificationProvider = ({
         setNotification({ message, type });
     };
 
+    const handleClose = () => {
+        setNotification(null);
+    };
+
+    useEffect(() => {
+        setTimeout(handleClose, 3000);
+    });
+
     return (
         <CustomNotificationContext value={{ showCustomNotification }}>
             {children}
@@ -48,6 +62,7 @@ export const CustomNotificationProvider = ({
                 <CustomNotification
                     message={notification.message}
                     type={notification.type}
+                    onClose={handleClose}
                 />
             )}
         </CustomNotificationContext>

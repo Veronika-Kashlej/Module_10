@@ -1,10 +1,10 @@
 import { act, render, screen } from '@testing-library/react';
 import { SuggestedPeopleSection } from './SuggestedPeopleSection';
-import { profileApi } from '../../../../store/api/api';
+import { profileApi } from '@/utils/api/api';
 
 let consoleErrorSpy: jest.SpyInstance;
 
-jest.mock('@/store/api/api', () => {
+jest.mock('store/api/api', () => {
     const mockProfileApi = {
         getSuggestedUsers: jest.fn(),
     };

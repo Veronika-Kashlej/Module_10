@@ -6,6 +6,7 @@ import { CustomNotificationProvider } from 'store/contexts/NotificationContext';
 import { AuthProvider } from 'store/contexts/AuthContext';
 import { Footer } from '@/components/Footer/Footer';
 import { Loader } from '@/components/Loader/Loader';
+import { UserProvider } from '@/store/contexts/UserContext';
 
 export default function ClientLayout({
     children,
@@ -40,8 +41,10 @@ export default function ClientLayout({
             <ThemeProvider>
                 <CustomNotificationProvider>
                     <AuthProvider>
-                        {children}
-                        <Footer />
+                        <UserProvider>
+                            {children}
+                            <Footer />
+                        </UserProvider>
                     </AuthProvider>
                 </CustomNotificationProvider>
             </ThemeProvider>

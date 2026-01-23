@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../store/contexts/AuthContext';
 import './SignUp.css';
-import { Forms } from '../../components/Forms/Forms';
+import { Forms } from '../../forms/Forms';
 import { SimpleHeader } from '../../components/SimpleHeader/SimpleHeader';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';

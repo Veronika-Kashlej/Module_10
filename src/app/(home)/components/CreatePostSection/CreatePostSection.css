@@ -35,3 +35,11 @@
         height: 32px;
     }
 }
+
+@media (max-width: 360px) {
+
+    .create-post-section p,
+    .create-post-section button {
+        font-size: 12px;
+    }
+}

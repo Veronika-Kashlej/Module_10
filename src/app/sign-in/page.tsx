@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/store/contexts/AuthContext';
 import { SimpleHeader } from '@/components/SimpleHeader/SimpleHeader';
-import { Forms } from '@/components/Forms/Forms';
+import { Forms } from '@/forms/Forms';
 import './SignIn.css';
 
 function SignIn() {

@@ -1,8 +1,19 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { profileApi } from '../../../../store/api/api';
 import { SuggestedPeople } from '../../../../store/types';
-import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
-import { SuggestedUserItem } from './components/SuggestedUserItem';
+import { profileApi } from '../../../../utils/api/api';
+import { SectionItem } from '@/components/SectionItem/SectionItem';
+import { SectionItemSkeleton } from '@/components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
+
+interface UserItemProps {
+    user: SuggestedPeople;
+}
+
+const SuggestedUserItem = function ({ user }: UserItemProps) {
+    const title = `${user.firstName} ${user.secondName}`;
+    const subtitle = `@${user.username}`;
+
+    return <SectionItem title={title} subtitle={subtitle} image={user.photo} />;
+};
 
 export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
     const [suggestedUsers, setSuggestedUsers] = useState<SuggestedPeople[]>([]);
@@ -38,7 +49,7 @@ export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
 
     return (
         <>
-            <aside aria-label="suggested people">
+            <aside>
                 <h2>Suggested people</h2>
                 <div className="aside-list">{userList}</div>
             </aside>

@@ -7,25 +7,24 @@ import {
 } from '@testing-library/react';
 import { PostCard } from './PostCard';
 import { useAuth } from '../../../../store/contexts/AuthContext';
-import { postsAPI } from '../../../../store/api/api';
 import { LikedPost } from '../../../../store/types';
-import Image from 'next/image';
-jest.mock('@/store/contexts/AuthContext', () => ({
+import { postsAPI } from '@/utils/api/api';
+
+jest.mock('../../../../store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('@/store/api/api', () => ({
+jest.mock('../../../../store/api/api', () => ({
     postsAPI: {
         getUser: jest.fn(),
     },
 }));
 
-jest.mock('@/components/SectionItem/SectionItem', () => ({
+jest.mock('../../../../components/SectionItem/SectionItem', () => ({
     SectionItem: ({ title, subtitle, image }: any) => (
         <div data-testid="section-item">
             <div data-testid="section-title">{title}</div>
             <div data-testid="section-subtitle">{subtitle}</div>
-            <Image src={image} alt="section" data-testid="section-image" />
         </div>
     ),
 }));
@@ -54,13 +53,13 @@ jest.mock('./components/PostDescription/PostDescription', () => ({
 }));
 
 jest.mock(
-    '@/components/Skeletons/SectionItemSkeleton/SectionItemSkeleton',
+    'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton',
     () => ({
         SectionItemSkeleton: () => <div data-testid="skeleton">Loading...</div>,
     })
 );
 
-jest.mock('@/components/Icons/Icons', () => ({
+jest.mock('../../../../components/Icons/Icons', () => ({
     Icons: {
         MessageIcon: () => <div data-testid="message-icon">💬</div>,
         ShowCommentIcon: ({ areVisibleComments, onClick }: any) => (
@@ -75,7 +74,7 @@ jest.mock('@/components/Icons/Icons', () => ({
     },
 }));
 
-jest.mock('@/store/utils/formatCreationDate', () => ({
+jest.mock('store/utils/formatCreationDate', () => ({
     formatCreationDate: (date: string) => `Formatted: ${date}`,
 }));
 
@@ -112,14 +111,11 @@ describe('PostCard Component', () => {
         jest.clearAllMocks();
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
     });
 
     test('renders post content after loading', async () => {
@@ -202,14 +198,11 @@ describe('PostCard Component', () => {
     test('shows login message for unauthenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 
@@ -233,14 +226,11 @@ describe('PostCard Component', () => {
     test('does not render comments component for unauthenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
             signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
             isLoading: false,
-        } as any);
+        });
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 

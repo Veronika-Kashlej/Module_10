@@ -1,7 +1,7 @@
 import { render, screen, waitFor, act } from '@testing-library/react';
 import { LikedPost, Post } from '@/store/types';
 import { useAuth } from '@/store/contexts/AuthContext';
-import { postsAPI } from '@/store/api/api';
+import { postsAPI } from '@/utils/api/api';
 import Home from '../page';
 
 jest.mock('@/store/contexts/AuthContext', () => ({

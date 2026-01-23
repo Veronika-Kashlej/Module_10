@@ -2,12 +2,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import './Header.css';
 import { useAuth } from '../../store/contexts/AuthContext';
+import { useUser } from '../../store/contexts/UserContext';
 import { Icons } from '../Icons/Icons';
 import Link from 'next/link';
 import Image from 'next/image';
-
 export function Header() {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated } = useAuth();
+    const { user } = useUser();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const closeMenu = useCallback(() => {
@@ -49,7 +50,7 @@ export function Header() {
             {isMenuOpen && <div className="menu-overlay" />}
             <header className={`header ${isMenuOpen ? 'open' : ''}`}>
                 <div className="header-content">
-                    <Link href={'/'} aria-label="to home">
+                    <Link href={'/'}>
                         <Icons.SidekickLogo />
                     </Link>
                     <div
@@ -92,10 +93,10 @@ export function Header() {
                 {isAuthenticated ? (
                     <ul>
                         <li>
-                            <Link href={'/profile'}>Profile info</Link>
+                            <Link href={'/profile/profile'}>Profile info</Link>
                         </li>
                         <li>
-                            <Link href={'/profile'}>Statistics</Link>
+                            <Link href={'/profile/statistics'}>Statistics</Link>
                         </li>
                     </ul>
                 ) : (

@@ -12,7 +12,7 @@ jest.mock('../../api/api', () => ({
     },
 }));
 
-import { authAPI } from '../../api/api';
+import { authAPI } from '../../../utils/api/api';
 
 const mockLocalStorage = {
     store: {} as Record<string, string>,

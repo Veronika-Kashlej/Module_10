@@ -6,7 +6,7 @@ import { CommunitiesSection } from '@/app/(home)/components/CommunitiesSection/C
 import { CreatePostSection } from '@/app/(home)/components/CreatePostSection/CreatePostSection';
 import { PostCard } from '@/app/(home)/components/PostCard/PostCard';
 import { SuggestedPeopleSection } from '@/app/(home)/components/SuggestedPeopleSection/SuggestedPeopleSection';
-import { postsAPI } from '@/store/api/api';
+import { postsAPI } from '@/utils/api/api';
 import { useAuth } from '@/store/contexts/AuthContext';
 import { LikedPost, Post } from '@/store/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';

@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import './SectionItem.css';
 import Image from 'next/image';
-
 type SectionItemParams = {
     title: string;
     subtitle: string;
@@ -17,13 +16,15 @@ export const SectionItem = memo(function SectionItem({
 }: SectionItemParams) {
     return (
         <div className="section-item">
-            <Image
-                className="section-item-image"
-                src={image}
-                width={48}
-                height={48}
-                alt="profile"
-            ></Image>
+            {image && (
+                <Image
+                    src={image}
+                    className="section-item-image"
+                    width={48}
+                    height={48}
+                    alt="profile"
+                ></Image>
+            )}
             <div className="section-item-info">
                 <p className="section-item-title">{title}</p>
                 <p

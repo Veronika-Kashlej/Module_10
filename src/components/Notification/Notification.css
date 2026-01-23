@@ -21,3 +21,17 @@
     top: 24px;
     right: 24px;
 }
+
+
+@media (max-width: 1120px) {
+    .notification-container {
+        width: 250px;
+        padding: 20px;
+        font-size: 15px;
+    }
+
+    .close-natification-btn {
+        top: 0px;
+        right: 10px;
+    }
+}

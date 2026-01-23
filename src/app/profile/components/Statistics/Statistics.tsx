@@ -1,8 +1,8 @@
-import { CardStatisticsList } from './components/CardStatisticsList/CardStatisticsList';
+import { CardStatisticsList } from './CardStatisticsList';
 
 export function Statistics() {
     return (
-        <section className="tab-content" aria-label="statistics">
+        <section className="tab-content">
             <CardStatisticsList />
         </section>
     );

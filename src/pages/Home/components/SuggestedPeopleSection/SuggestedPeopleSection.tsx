@@ -1,0 +1,58 @@
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { SuggestedPeople } from '../../../../store/types';
+import { SectionItem } from '../../../../components/SectionItem/SectionItem';
+import React from 'react';
+import { profileApi } from '../../../../utils/api/api';
+
+interface UserItemProps {
+    user: SuggestedPeople;
+}
+
+const SuggestedUserItem = function ({ user }: UserItemProps) {
+    const title = `${user.firstName} ${user.secondName}`;
+    const subtitle = `@${user.username}`;
+
+    return <SectionItem title={title} subtitle={subtitle} image={user.photo} />;
+};
+
+export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
+    const [suggestedUsers, setSuggestedUsers] = useState<SuggestedPeople[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchSuggestedUsers = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const response = await profileApi.getSuggestedUsers();
+            setSuggestedUsers(response.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchSuggestedUsers();
+    }, [fetchSuggestedUsers]);
+
+    const userList = useMemo(() => {
+        if (isLoading) {
+            return Array.from({ length: 4 }).map((_, index) => (
+                <SectionItemSkeleton key={`skeleton-${index}`} />
+            ));
+        }
+
+        return suggestedUsers.map((user, index) => (
+            <SuggestedUserItem user={user} key={index} />
+        ));
+    }, [isLoading, suggestedUsers]);
+
+    return (
+        <>
+            <aside>
+                <h2>Suggested people</h2>
+                <div className="aside-list">{userList}</div>
+            </aside>
+        </>
+    );
+});
