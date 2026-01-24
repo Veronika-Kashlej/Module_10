@@ -27,7 +27,8 @@
     line-height: 150%;
 }
 
-.likes-block, .comments-block {
+.likes-block,
+.comments-block {
     display: flex;
     gap: 8px;
     align-items: center;
@@ -38,10 +39,18 @@
     display: flex;
     gap: 22px;
     align-items: center;
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
-@media(max-width: 768px) {
+.add-comment-form {
+    width: 100%;
+}
+
+.add-comment-form button {
+    width: 212px;
+}
+
+@media (max-width: 768px) {
     .post-card {
         background-color: var(--bg-secondary-color);
         width: 100%;
@@ -63,7 +72,8 @@
         gap: 16px;
     }
 
-    .likes-block, .comments-block {
+    .likes-block,
+    .comments-block {
         font-size: 12px;
     }
 }

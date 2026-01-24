@@ -338,7 +338,7 @@ describe('Icons', () => {
         test('always has #6A749C fill color regardless of theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(<Icons.InfoIcon />);
+            const { container } = render(<Icons.InfoIcon isValid={true} />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', '#6A749C');

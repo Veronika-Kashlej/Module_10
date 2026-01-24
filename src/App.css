@@ -77,6 +77,17 @@ input::placeholder {
     color: var(--small-text-color);
 }
 
+input:focus,
+textarea:focus {
+    outline: 1px solid rgb(122, 68, 255);
+}
+
+input.invalide,
+textarea.invalide {
+    outline: 1px solid var(--error-color);
+    color: var(--error-color);
+}
+
 textarea {
     padding: 14px 14px;
     height: 58px;
@@ -113,6 +124,13 @@ form {
     gap: 16px;
 }
 
+form .error-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--error-color);
+}
+
 ul,
 li {
     padding: 0;
@@ -141,7 +159,6 @@ button:active {
 
 button:disabled {
     background-color: rgb(188, 195, 227);
-    border: 1px solid rgb(157, 166, 203);
     pointer-events: none;
 }
 
