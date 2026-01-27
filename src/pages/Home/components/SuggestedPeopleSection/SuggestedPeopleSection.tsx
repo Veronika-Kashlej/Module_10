@@ -1,8 +1,11 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { SuggestedPeople } from '../../../../store/types';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { SectionItem } from 'components/SectionItem/SectionItem';
 import { profileApi } from '../../../../utils/api/api';
+import { useQuery } from '@tanstack/react-query';
+import { ErrorBoundaryFallback } from '../../../../components/ErrorBoundaryFallback/ErrorBoundaryFallback';
+import { useTranslation } from 'react-i18next';
 
 interface UserItemProps {
     user: SuggestedPeople;
@@ -16,24 +19,18 @@ const SuggestedUserItem = function ({ user }: UserItemProps) {
 };
 
 export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
-    const [suggestedUsers, setSuggestedUsers] = useState<SuggestedPeople[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const fetchSuggestedUsers = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const response = await profileApi.getSuggestedUsers();
-            setSuggestedUsers(response.data);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchSuggestedUsers();
-    }, [fetchSuggestedUsers]);
+    const {
+        data: suggestedUsers,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ['suggestedUsers'],
+        queryFn: profileApi.getSuggestedUsers,
+        select: (response) => response.data,
+        staleTime: 2 * 60 * 1000,
+    });
+    const { t } = useTranslation();
 
     const userList = useMemo(() => {
         if (isLoading) {
@@ -42,15 +39,22 @@ export const SuggestedPeopleSection = memo(function SuggestedPeopleSection() {
             ));
         }
 
-        return suggestedUsers.map((user, index) => (
-            <SuggestedUserItem user={user} key={index} />
-        ));
-    }, [isLoading, suggestedUsers]);
+        if (isError) {
+            console.error('Fetching users error:', error);
+            return <ErrorBoundaryFallback />;
+        }
+
+        return (
+            suggestedUsers?.map((user: SuggestedPeople, index: number) => (
+                <SuggestedUserItem user={user} key={`${user.id}-${index}`} />
+            )) || []
+        );
+    }, [isLoading, isError, error, suggestedUsers]);
 
     return (
         <>
             <aside>
-                <h2>Suggested people</h2>
+                <h2>{t('pages.home.suggestedPeople.title')}</h2>
                 <div className="aside-list">{userList}</div>
             </aside>
         </>

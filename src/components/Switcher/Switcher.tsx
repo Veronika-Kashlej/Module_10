@@ -1,21 +1,21 @@
-import { useState } from "react";
-import "./Switcher.css";
+import { useState } from 'react';
+import './Switcher.css';
 
 interface SwitcherProps {
-  onClick: () => void;
+    onClick: () => void;
 }
 
 export function Switcher({ onClick }: SwitcherProps) {
-  const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState(false);
 
-  const handleSwitch = () => {
-    setIsActive(!isActive);
-    onClick();
-  };
+    const handleSwitch = () => {
+        setIsActive(!isActive);
+        onClick();
+    };
 
-  return (
-    <button onClick={handleSwitch} className="switcher">
-      <div className={`circle ${isActive ? "active" : ""}`}></div>
-    </button>
-  );
+    return (
+        <button onClick={handleSwitch} className="switcher">
+            <div className={`circle ${isActive ? 'active' : ''}`}></div>
+        </button>
+    );
 }

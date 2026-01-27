@@ -1,7 +1,7 @@
 import { SectionItem } from '../../../../components/SectionItem/SectionItem';
 import './PostCard.css';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { LikedPost, Post, User } from '../../../../store/types';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { LikedPost, Post } from '../../../../store/types';
 import { Icons } from '../../../../components/Icons/Icons';
 import { useAuth } from '../../../../store/contexts/AuthContext';
 import { Comments } from '../Comments/Comments';
@@ -9,6 +9,7 @@ import { LikesSection } from '../Likes/LikesSection';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { formatCreationDate } from '../../../../utils/formatCreationDate';
 import { postsAPI } from '../../../../utils/api/api';
+import { useQuery } from '@tanstack/react-query';
 
 interface PostCardProps {
     post: Post;
@@ -22,24 +23,14 @@ export const PostCard = memo(function PostCard({
     const [areVisibleComments, setAreVisibleComments] = useState(false);
     const { isAuthenticated } = useAuth();
     const [commentsCount, setCommentsCount] = useState(post.commentsCount + 1);
-    const [author, setAuthor] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
 
-    const fetchAuthor = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const response = await postsAPI.getUser(post.authorId);
-            setAuthor(response.data);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [post.authorId]);
-
-    useEffect(() => {
-        fetchAuthor();
-    }, [fetchAuthor, post.authorId]);
+    const { data: author, isLoading } = useQuery({
+        queryKey: ['user', post.authorId],
+        queryFn: () => postsAPI.getUser(post.authorId),
+        select: (response) => response.data,
+        staleTime: 5 * 60 * 1000,
+        enabled: !!post.authorId,
+    });
 
     const handleToggleComments = useCallback(() => {
         setAreVisibleComments(!areVisibleComments);
@@ -63,14 +54,10 @@ export const PostCard = memo(function PostCard({
                     title={authorName}
                     subtitle={formatCreationDate(post.creationDate)}
                     image={author?.profileImage || 'assets/user-helena.png'}
-                ></SectionItem>
+                />
             )}
             {post.image && (
-                <img
-                    src={post.image}
-                    className="post-image"
-                    alt="post-image"
-                ></img>
+                <img src={post.image} className="post-image" alt="post-image" />
             )}
             <p className="post-description">{post.content}</p>
             <div

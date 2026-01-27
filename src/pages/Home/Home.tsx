@@ -1,60 +1,59 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CommunitiesSection } from './components/CommunitiesSection/CommunitiesSection';
 import { CreatePostSection } from './components/CreatePostSection/CreatePostSection';
 import { PostCard } from './components/PostCard/PostCard';
 import { SuggestedPeopleSection } from './components/SuggestedPeopleSection/SuggestedPeopleSection';
 import { useAuth } from '../../store/contexts/AuthContext';
 import './Home.css';
-import { LikedPost, Post } from '../../store/types';
 import { Header } from '../../components/Header/Header';
 import { PostSkeleton } from 'components/Skeletons/PostSkeleton/PostSkeleton';
 import { postsAPI } from '../../utils/api/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ErrorBoundaryFallback } from '../../components/ErrorBoundaryFallback/ErrorBoundaryFallback';
 
 function Home() {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const queryClient = useQueryClient();
     const { isAuthenticated } = useAuth();
-    const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
 
-    const fetchPosts = useCallback(async () => {
-        setIsLoading(true);
+    const {
+        data: postsData,
+        isLoading: isPostsLoading,
+        isError: isPostsError,
+        error: postsError,
+    } = useQuery({
+        queryKey: ['posts'],
+        queryFn: postsAPI.getPosts,
+        select: (response) => response.data,
+    });
 
-        try {
-            const response = await postsAPI.getPosts();
-            setPosts(response.data);
-        } catch (error) {
-            console.error('Failed to fetch posts:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+    const {
+        data: likedPostsData,
+        isLoading: isLikedPostsLoading,
+        isError: isLikedPostsError,
+        error: likedPostsError,
+    } = useQuery({
+        queryKey: ['likedPosts'],
+        queryFn: postsAPI.getCurrentUsersLikedPosts,
+        select: (response) => response.data,
+        enabled: isAuthenticated,
+        staleTime: 5 * 60 * 1000,
+    });
 
-    const fetchLikedPosts = useCallback(async () => {
-        if (!isAuthenticated) return;
+    const handleAddPost = () => {
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
+    };
 
-        try {
-            const response = await postsAPI.getCurrentUsersLikedPosts();
-            setLikedPosts(response.data);
-        } catch (err) {
-            console.error('Failed to fetch liked posts:', err);
-        }
-    }, [isAuthenticated]);
+    const posts = postsData || [];
+    const likedPosts = likedPostsData || [];
 
-    useEffect(() => {
-        fetchPosts();
-    }, [fetchPosts]);
+    if (isPostsError || isLikedPostsError) {
+        console.error('Fetching error:', postsError || likedPostsError);
+        return <ErrorBoundaryFallback />;
+    }
 
-    useEffect(() => {
-        fetchLikedPosts();
-    }, [fetchLikedPosts]);
+    const reversedPosts = [...posts].reverse();
 
-    const handleAddPost = useCallback(() => {
-        fetchPosts();
-    }, [fetchPosts]);
-
-    const reversedPosts = useMemo(() => {
-        return [...posts].reverse();
-    }, [posts]);
+    const isLoading =
+        isPostsLoading || (isAuthenticated && isLikedPostsLoading);
 
     return (
         <>
@@ -70,9 +69,7 @@ function Home() {
             >
                 <div className="main-content">
                     {isAuthenticated && (
-                        <CreatePostSection
-                            onAddPost={handleAddPost}
-                        ></CreatePostSection>
+                        <CreatePostSection onAddPost={handleAddPost} />
                     )}
                     <div className="posts-list">
                         {isLoading
@@ -86,14 +83,14 @@ function Home() {
                                       key={post.id}
                                       post={post}
                                       likedPosts={likedPosts}
-                                  ></PostCard>
+                                  />
                               ))}
                     </div>
                 </div>
                 {isAuthenticated && (
                     <div className="asides">
-                        <SuggestedPeopleSection></SuggestedPeopleSection>
-                        <CommunitiesSection></CommunitiesSection>
+                        <SuggestedPeopleSection />
+                        <CommunitiesSection />
                     </div>
                 )}
             </main>

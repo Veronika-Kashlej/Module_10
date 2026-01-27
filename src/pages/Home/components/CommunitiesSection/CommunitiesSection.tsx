@@ -1,58 +1,37 @@
-import React from 'react';
 import { SectionItem } from '../../../../components/SectionItem/SectionItem';
-import { Community } from '../../../../store/types';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { formatMembersCount } from '../../../../utils/formatMembersCount';
-import { profileApi } from '../../../../utils/api/api';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { GQLCommunity, profileApi } from '../../../../utils/api/graphQL';
 
-type CommunitiesSectionState = {
-    communities: Community[];
-    isLoading: boolean;
-};
+export function CommunitiesSection() {
+    const { data: communities, isLoading } = useQuery({
+        queryKey: ['communities'],
+        queryFn: profileApi.getCommunities,
+        select: (response) => response.data,
+    });
+    const { t } = useTranslation();
 
-export class CommunitiesSection extends React.Component {
-    state: CommunitiesSectionState = {
-        communities: [],
-        isLoading: true,
-    };
-
-    componentDidMount() {
-        this.fetchCommunities();
-    }
-
-    fetchCommunities = async () => {
-        this.setState({ isLoading: true });
-        try {
-            const response = await profileApi.getCommunities();
-            this.setState({ communities: response.data });
-        } catch (err) {
-            console.error(err);
-        } finally {
-            this.setState({ isLoading: false });
-        }
-    };
-
-    render() {
-        return (
-            <aside>
-                <h2>Communities you might like</h2>
-                <div className="section-list">
-                    {this.state.isLoading
-                        ? Array.from({ length: 3 }).map((_, index) => (
-                              <SectionItemSkeleton key={`skeleton-${index}`} />
-                          ))
-                        : this.state.communities.map((community) => (
-                              <SectionItem
-                                  key={community.id}
-                                  title={community.title}
-                                  subtitle={formatMembersCount(
-                                      community.membersCount
-                                  )}
-                                  image={community.photo}
-                              />
-                          ))}
-                </div>
-            </aside>
-        );
-    }
+    return (
+        <aside>
+            <h2>{t('pages.home.communities.title')}</h2>
+            <div className="section-list">
+                {isLoading
+                    ? Array.from({ length: 3 }).map((_, index) => (
+                          <SectionItemSkeleton key={`skeleton-${index}`} />
+                      ))
+                    : communities?.map((community: GQLCommunity) => (
+                          <SectionItem
+                              key={community.id}
+                              title={community.title}
+                              subtitle={formatMembersCount(
+                                  community.membersCount
+                              )}
+                              image={community.photo || ''}
+                          />
+                      ))}
+            </div>
+        </aside>
+    );
 }

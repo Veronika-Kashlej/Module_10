@@ -10,6 +10,7 @@ import { SectionItem } from '../components/SectionItem/SectionItem';
 import { useForm } from 'react-hook-form';
 import { useCustomNotification } from '../store/contexts/NotificationContext';
 import { useShowError } from '../utils/hooks/useShowError';
+import { useTranslation } from 'react-i18next';
 
 interface AuthFormProps {
     type: 'signin' | 'signup';
@@ -26,6 +27,7 @@ function AuthForm({ type }: AuthFormProps) {
         handleSubmit,
         formState: { isSubmitting, errors, isValid },
     } = useForm<AuthFormData>({ mode: 'onChange' });
+    const { t } = useTranslation();
     const { signIn, signUp } = useAuth();
     const { showCustomNotification } = useCustomNotification();
     const showError = useShowError();
@@ -38,7 +40,10 @@ function AuthForm({ type }: AuthFormProps) {
             const authFunc = type === 'signin' ? signIn : signUp;
             await authFunc(email, password);
 
-            const message = `You signed ${type === 'signin' ? 'in' : 'up'} successfully`;
+            const message =
+                type === 'signin'
+                    ? t('messages.success.signIn')
+                    : t('messages.success.signUp');
             showCustomNotification(message, 'success');
             navigate('/');
         } catch (err) {
@@ -51,20 +56,20 @@ function AuthForm({ type }: AuthFormProps) {
             <fieldset>
                 <Label
                     htmlFor="email"
-                    title="Email"
+                    title={t('forms.email.label')}
                     icon={<Icons.EmailIcon />}
                 />
                 <input
                     {...register('email', {
-                        required: 'Email is required',
+                        required: t('forms.email.validation.required'),
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email address',
+                            message: t('forms.email.validation.invalide'),
                         },
                     })}
                     type="email"
                     id="email"
-                    placeholder="Enter email"
+                    placeholder={t('forms.email.placeholder')}
                     className={errors.email ? 'invalide' : ''}
                 />
                 {errors.email && (
@@ -77,22 +82,22 @@ function AuthForm({ type }: AuthFormProps) {
             <fieldset>
                 <Label
                     htmlFor="password"
-                    title="Password"
+                    title={t('forms.password.label')}
                     icon={<Icons.PasswordIcon />}
                 />
                 <input
                     {...register('password', {
-                        required: 'Password is required',
+                        required: t('forms.password.validation.required'),
                         validate: (value) => {
                             if (value && value.trim().length < 6) {
-                                return 'Password must be at least 6 characters';
+                                return t('forms.password.validation.minLength');
                             }
                             return true;
                         },
                     })}
                     type="password"
                     id="password"
-                    placeholder="Enter password"
+                    placeholder={t('forms.password.placeholder')}
                     className={errors.password ? 'invalide' : ''}
                 />
                 {errors.password && (
@@ -104,10 +109,10 @@ function AuthForm({ type }: AuthFormProps) {
             </fieldset>
             <button type="submit" disabled={isSubmitting || !isValid}>
                 {isSubmitting
-                    ? 'Processing...'
+                    ? t('states.process')
                     : type === 'signin'
-                      ? 'Sign In'
-                      : 'Sign Up'}
+                      ? t('actions.signIn')
+                      : t('actions.signUp')}
             </button>
         </form>
     );
@@ -134,6 +139,7 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const { showCustomNotification } = useCustomNotification();
     const showError = useShowError();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (selectedFile) {
@@ -159,7 +165,7 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
             });
             onAddPost();
             onClose();
-            showCustomNotification('Post created successfully', 'success');
+            showCustomNotification(t('messages.success.createPost'), 'success');
         } catch (err) {
             showError(err);
         }
@@ -170,14 +176,16 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
             <fieldset>
                 <Label
                     htmlFor="post-title"
-                    title="Post Title"
+                    title={t('forms.postTitle.label')}
                     icon={<Icons.EmailIcon />}
                 />
                 <input
-                    {...register('title', { required: 'Title is required' })}
+                    {...register('title', {
+                        required: t('forms.postTitle.validation.required'),
+                    })}
                     type="text"
                     id="post-title"
-                    placeholder="Enter post title"
+                    placeholder={t('forms.postTitle.placeholder')}
                 />
                 {errors.title && (
                     <div className="error-message">
@@ -189,15 +197,15 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
             <fieldset>
                 <Label
                     htmlFor="post-description"
-                    title="Description"
+                    title={t('forms.description.label')}
                     icon={<Icons.PencilIcon />}
                 />
                 <textarea
                     {...register('content', {
-                        required: 'Description is required',
+                        required: t('forms.description.validation.required'),
                     })}
                     id="post-description"
-                    placeholder="Write description here..."
+                    placeholder={t('forms.description.placeholder')}
                     required
                 ></textarea>
                 {errors.content && (
@@ -209,7 +217,7 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
             </fieldset>
             <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
             <button type="submit" disabled={isSubmitting || !isValid}>
-                {isSubmitting ? 'Creating...' : 'Create'}
+                {isSubmitting ? t('states.creating') : t('actions.create')}
             </button>
         </form>
     );
@@ -232,6 +240,8 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
         getValues,
         formState: { isSubmitting },
     } = useForm<AddCommentFormData>();
+    const { t } = useTranslation();
+
     const commentValue = getValues('comment');
     const isCommentEmpty = !commentValue?.trim();
 
@@ -244,16 +254,16 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
         <form className="add-comment-form" onSubmit={handleSubmit(onSubmit)}>
             <Label
                 htmlFor={`comment-${postId}`}
-                title="Add a comment"
+                title={t('forms.addComment.label')}
                 icon={<Icons.PencilIcon />}
             />
             <textarea
                 {...register('comment')}
                 id={`comment-${postId}`}
-                placeholder="Write description here..."
+                placeholder={t('forms.addComment.placeholder')}
             />
             <button type="submit" disabled={isSubmitting || isCommentEmpty}>
-                {isSubmitting ? 'Adding...' : 'Add a comment'}
+                {isSubmitting ? t('states.adding') : t('actions.addComment')}
             </button>
         </form>
     );
@@ -284,6 +294,7 @@ function EditProfileForm() {
         },
         mode: 'onChange',
     });
+    const { t } = useTranslation();
     const { showCustomNotification } = useCustomNotification();
     const showError = useShowError();
 
@@ -323,7 +334,7 @@ function EditProfileForm() {
                 profileImage: data.profileImage,
             });
             showCustomNotification(
-                'Profile changes saved successfully',
+                t('messages.success.changeProfile'),
                 'success'
             );
         } catch (err) {
@@ -335,33 +346,32 @@ function EditProfileForm() {
         <form className="edit-profile-form" onSubmit={handleSubmit(onSubmit)}>
             <SectionItem
                 title={`${user?.firstName} ${user?.secondName}`}
-                subtitle="Change profile photo"
+                subtitle={t('actions.changePhoto')}
                 image={previewImage}
                 onImageChange={handleImageChange}
             ></SectionItem>
             <fieldset>
                 <Label
                     htmlFor="username"
-                    title="Username"
+                    title={t('forms.username.label')}
                     icon={<Icons.UsernameIcon />}
                 />
                 <input
                     {...register('username', {
-                        required: 'Username is required',
+                        required: t('forms.username.validation.required'),
                         validate: (value) => {
                             if (value && value.trim().length < 3) {
-                                return 'Username must be at least 3 characters';
+                                return t('forms.username.validation.minLength');
                             }
                             return true;
                         },
                         maxLength: {
                             value: 30,
-                            message: 'Username must be less than 30 characters',
+                            message: t('forms.username.validation.maxLength'),
                         },
                         pattern: {
                             value: /^[a-zA-Z0-9_.-]+$/,
-                            message:
-                                'Username can only contain letters, numbers, underscores, dots, and hyphens',
+                            message: t('forms.username.validation.format'),
                         },
                     })}
                     type="text"
@@ -377,15 +387,15 @@ function EditProfileForm() {
             <fieldset>
                 <Label
                     htmlFor="email"
-                    title="Email"
+                    title={t('forms.email.label')}
                     icon={<Icons.EmailIcon />}
                 />
                 <input
                     {...register('email', {
-                        required: 'Email is required',
+                        required: t('forms.email.validation.required'),
                         pattern: {
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email address',
+                            message: t('forms.email.validation.invalide'),
                         },
                     })}
                     type="email"
@@ -401,20 +411,23 @@ function EditProfileForm() {
             <fieldset>
                 <Label
                     htmlFor="description"
-                    title="Description"
+                    title={t('forms.description.label')}
                     icon={<Icons.PencilIcon />}
                 />
                 <textarea
                     {...register('description', {
-                        required: 'Description is required',
+                        required: t('forms.description.label'),
                         maxLength: {
                             value: 200,
-                            message:
-                                'Description must be less than 200 characters',
+                            message: t(
+                                'forms.description.validation.maxLength'
+                            ),
                         },
                         validate: (value) => {
                             if (value && value.trim().length < 10) {
-                                return 'Description must be at least 10 characters if provided';
+                                return t(
+                                    'forms.description.validation.minLength'
+                                );
                             }
                             return true;
                         },
@@ -427,7 +440,7 @@ function EditProfileForm() {
                     <p>
                         {errors.description
                             ? errors.description.message
-                            : 'Max 200 chars'}
+                            : t('forms.description.validation.minLength')}
                     </p>
                 </small>
             </fieldset>
@@ -435,7 +448,7 @@ function EditProfileForm() {
                 type="submit"
                 disabled={isSubmitting || !isDirty || !isValid}
             >
-                {isSubmitting ? 'Saving...' : 'Save Profile Changes'}
+                {isSubmitting ? 'Saving...' : t('actions.saveProfileChanges')}
             </button>
         </form>
     );

@@ -108,16 +108,16 @@ describe('PostCard Component', () => {
         creationDate: '',
     };
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
-    });
+    // beforeEach(() => {
+    //     jest.clearAllMocks();
+    //     mockUseAuth.mockReturnValue({
+    //         isAuthenticated: true,
+    //         signIn: jest.fn(),
+    //         signUp: jest.fn(),
+    //         signOut: jest.fn(),
+    //         isLoading: false,
+    //     });
+    // });
 
     test('renders post content after loading', async () => {
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);

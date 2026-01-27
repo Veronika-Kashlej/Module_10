@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../../../store/contexts/AuthContext';
 import { useUser } from '../../../../store/contexts/UserContext';
 import { Comment } from '../../../../store/types';
@@ -6,6 +5,9 @@ import { Forms } from '../../../../forms/Forms';
 import { Icons } from '../../../../components/Icons/Icons';
 import './Comments.css';
 import { postsAPI } from '../../../../utils/api/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
 interface CommentListProps {
     areVisibleComments: boolean;
     onDeleteComment: (commentId: number) => void;
@@ -46,56 +48,58 @@ interface CommentsProps {
     areVisibleComments: boolean;
     onChangeCommentsCount: (count: number) => void;
 }
+
 export function Comments({
     postId,
     areVisibleComments,
     onChangeCommentsCount,
 }: CommentsProps) {
-    const [comments, setComments] = useState<Comment[]>([]);
     const { isAuthenticated } = useAuth();
     const { user } = useUser();
+    const queryClient = useQueryClient();
+
+    const { data: comments = [] } = useQuery({
+        queryKey: ['comments', postId],
+        queryFn: () => postsAPI.getComments(postId),
+        select: (response) => response.data,
+        enabled: isAuthenticated && areVisibleComments,
+        staleTime: 2 * 60 * 1000,
+    });
 
     useEffect(() => {
-        const fetchComments = async () => {
-            try {
-                const response = await postsAPI.getComments(postId);
-                setComments(response.data);
-                onChangeCommentsCount(response.data.length);
-            } catch (error) {
-                console.error('Failed to fetch comments:', error);
-            }
-        };
-        fetchComments();
-    }, [isAuthenticated, onChangeCommentsCount, postId]);
+        if (comments.length > 0) {
+            onChangeCommentsCount(comments.length);
+        }
+    }, [comments, onChangeCommentsCount]);
 
-    const handleDeleteComment = useCallback(
-        async (commentId: number) => {
-            await postsAPI.deleteComment(commentId);
-            setComments([
-                ...comments.filter((comment) => comment.id !== commentId),
-            ]);
-            onChangeCommentsCount(comments.length - 1);
+    const createCommentMutation = useMutation({
+        mutationFn: (text: string) => postsAPI.createComment({ postId, text }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['comments', postId] });
         },
-        [comments, onChangeCommentsCount]
-    );
+        onError: (error) => {
+            console.error('Failed to create comment:', error);
+        },
+    });
 
-    const handleAddComment = useCallback(
-        async (text: string) => {
-            if (!text.trim()) return;
-            await postsAPI.createComment({ postId, text });
-            const newComment = {
-                authorId: user!.id,
-                creationDate: Date.now().toString(),
-                id: comments.length + 1,
-                text,
-                modifiedDate: '',
-                postId: postId,
-            };
-            setComments([...comments, newComment]);
-            onChangeCommentsCount(comments.length + 1);
+    const deleteCommentMutation = useMutation({
+        mutationFn: (commentId: number) => postsAPI.deleteComment(commentId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['comments', postId] });
         },
-        [comments, postId, user, onChangeCommentsCount]
-    );
+        onError: (error) => {
+            console.error('Failed to delete comment:', error);
+        },
+    });
+
+    const handleAddComment = async (text: string) => {
+        if (!text.trim() || !user) return;
+        await createCommentMutation.mutateAsync(text);
+    };
+
+    const handleDeleteComment = async (commentId: number) => {
+        await deleteCommentMutation.mutateAsync(commentId);
+    };
 
     return (
         <>

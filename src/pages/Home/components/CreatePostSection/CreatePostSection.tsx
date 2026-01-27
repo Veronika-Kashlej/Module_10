@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from 'react';
 import './CreatePostSection.css';
 import { useUser } from '../../../../store/contexts/UserContext';
 import { Loader } from '../../../../components/Loader/Loader';
+import { useTranslation } from 'react-i18next';
 
 const CreatePostModal = lazy(
     () => import('../CreatePostModal/CreatePostModal')
@@ -14,6 +15,7 @@ interface CreatePostSectionProps {
 export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { user } = useUser();
+    const { t } = useTranslation();
 
     const openCreatePostModal = () => {
         setIsModalOpen(true);
@@ -31,9 +33,9 @@ export function CreatePostSection({ onAddPost }: CreatePostSectionProps) {
                     className="create-post-image"
                     alt="avatar"
                 ></img>
-                <p>What&apos;s happening?</p>
+                <p>{t('pages.home.createPost.title')}</p>
             </div>
-            <button onClick={openCreatePostModal}>Tell everyone</button>
+            <button onClick={openCreatePostModal}>{t('actions.share')}</button>
             {isModalOpen && (
                 <Suspense fallback={<Loader />}>
                     <CreatePostModal

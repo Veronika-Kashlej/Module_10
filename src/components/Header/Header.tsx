@@ -4,11 +4,14 @@ import { useAuth } from '../../store/contexts/AuthContext';
 import { useUser } from '../../store/contexts/UserContext';
 import { Link } from 'react-router';
 import { Icons } from '../Icons/Icons';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export function Header() {
     const { isAuthenticated } = useAuth();
     const { user } = useUser();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { t } = useTranslation();
 
     const closeMenu = useCallback(() => {
         setIsMenuOpen(false);
@@ -35,6 +38,7 @@ export function Header() {
                     <Link to={'/'}>
                         <Icons.SidekickLogo />
                     </Link>
+                    <LanguageSwitcher />
                     <div
                         className={`burger ${isMenuOpen ? 'open' : ''}`}
                         onClick={openMenu}
@@ -47,10 +51,14 @@ export function Header() {
                         <nav className="desktop-menu">
                             <ul>
                                 <li>
-                                    <Link to={'/sign-up'}>Sign Up</Link>
+                                    <Link to={'/sign-up'}>
+                                        {t('actions.signUp')}
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/sign-in'}>Sign In</Link>
+                                    <Link to={'/sign-in'}>
+                                        {t('actions.signIn')}
+                                    </Link>
                                 </li>
                             </ul>
                         </nav>
@@ -73,19 +81,21 @@ export function Header() {
                 {isAuthenticated ? (
                     <ul>
                         <li>
-                            <Link to={'/profile'}>Profile info</Link>
+                            <Link to={'/profile'}>{t('nav.profile')}</Link>
                         </li>
                         <li>
-                            <Link to={'/statistics'}>Statistics</Link>
+                            <Link to={'/statistics'}>
+                                {t('nav.statistics')}
+                            </Link>
                         </li>
                     </ul>
                 ) : (
                     <ul>
                         <li>
-                            <Link to={'/sign-up'}>Sign Up</Link>
+                            <Link to={'/sign-up'}>{t('actions.signUp')}</Link>
                         </li>
                         <li>
-                            <Link to={'/sign-in'}>Sign In</Link>
+                            <Link to={'/sign-in'}>{t('actions.signIn')}</Link>
                         </li>
                     </ul>
                 )}

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import './FileUploadInput.css';
 import { Icons } from '../../../components/Icons/Icons';
+import { useTranslation } from 'react-i18next';
 
 interface FileUploadInputProps {
     onFileSelect: (file: File) => void;
@@ -11,6 +12,7 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const { t } = useTranslation();
 
     const MAX_FILE_SIZE = 10 * 1024 * 1024;
     const ACCEPTED_TYPES = ['.jpg', '.jpeg', '.png'];
@@ -32,17 +34,12 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
 
         const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
         if (!ACCEPTED_TYPES.includes(fileExtension)) {
-            setError(
-                `Unsupported file format. Allowed: ${ACCEPTED_TYPES.join(', ')}`
-            );
+            setError(t('forms.selectImage.validation.size'));
             return;
         }
 
         if (file.size > MAX_FILE_SIZE) {
-            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-            setError(
-                `The file is too large (${fileSizeMB} MB). Maximum size: 10MB`
-            );
+            setError(t('forms.selectImage.validation.size'));
             return;
         }
         setSelectedFile(file);
@@ -99,12 +96,12 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
                     ) : (
                         <>
                             <p className="file-upload-text-title">
-                                Select a file or drag and drop here
+                                {t('forms.selectImage.label')}
                             </p>
                             <p className="file-upload-text-subtitle">
                                 {error
                                     ? error
-                                    : 'JPG, or PNG, no more than 10MB'}
+                                    : t('forms.selectImage.subtitle')}
                             </p>
                         </>
                     )}

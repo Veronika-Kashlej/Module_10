@@ -4,10 +4,12 @@ import { useAuth } from '../../store/contexts/AuthContext';
 import './SignUp.css';
 import { SimpleHeader } from '../../components/SimpleHeader/SimpleHeader';
 import { Forms } from '../../forms/Forms';
+import { useTranslation } from 'react-i18next';
 
 function SignUp() {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -20,29 +22,27 @@ function SignUp() {
             <SimpleHeader />
             <main className="auth-form-content sign-up">
                 <div className="form-caption">
-                    <h4>Create an account</h4>
-                    <h5>
-                        Enter your email and password to sign up for this app
-                    </h5>
+                    <h4>{t('pages.signUp.title')}</h4>
+                    <h5>{t('pages.signUp.subtitle')}</h5>
                 </div>
                 <Forms.SignUpForm />
                 <small>
-                    By clicking continue, you agree to our
+                    {t('pages.signUp.legal.prefix')}
                     <a rel="noreffer" href="https://www.google.com/">
                         {' '}
-                        Terms of Service{' '}
+                        {t('pages.signUp.legal.terms')}{' '}
                     </a>
-                    and
+                    {t('pages.signUp.legal.conjunction')}
                     <a rel="noreffer" href="https://www.google.com/">
                         {' '}
-                        Privacy Policy
+                        {t('pages.signUp.legal.privacy')}
                     </a>
                 </small>
                 <p>
-                    Already have an account?
+                    {t('pages.signUp.smallText')}
                     <Link to={'/sign-in'} className="helper-link">
                         {' '}
-                        Sign in
+                        {t('pages.signUp.linkToSignIn')}
                     </Link>
                 </p>
             </main>
