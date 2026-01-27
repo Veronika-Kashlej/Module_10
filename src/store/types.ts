@@ -42,10 +42,10 @@ export interface SuggestedPeople {
 }
 
 export interface Community {
-    id: number;
-    photo: string;
+    id: string;
     title: string;
     membersCount: number;
+    photo?: string;
 }
 
 export interface Comment {

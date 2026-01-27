@@ -1,14 +1,9 @@
-const GRAPHQL_URL = 'http://localhost:3000/graphql';
+import { Community } from '../../store/types';
 
-export interface GQLCommunity {
-    id: string;
-    title: string;
-    membersCount: number;
-    photo?: string;
-}
+const GRAPHQL_URL = 'http://localhost:3000/api/graphql';
 
 interface GQLGetCommunitiesResponse {
-    getCommunities: GQLCommunity[];
+    allGroups: Community[];
 }
 
 interface GraphQLResponse<T> {
@@ -17,8 +12,8 @@ interface GraphQLResponse<T> {
 }
 
 const GET_COMMUNITIES_QUERY = `
-  query GetCommunities {
-    getCommunities {
+  query GetAllGroups {
+    allGroups {
       id
       title
       membersCount
@@ -74,19 +69,17 @@ const graphqlRequest = async <T>(
 };
 
 export const profileApi = {
-    getCommunities: async (): Promise<{ data: GQLCommunity[] }> => {
+    getCommunities: async (): Promise<{ data: Community[] }> => {
         const data = await graphqlRequest<GQLGetCommunitiesResponse>(
             GET_COMMUNITIES_QUERY
         );
 
-        const communities: GQLCommunity[] = data.getCommunities.map(
-            (community) => ({
-                id: community.id,
-                title: community.title,
-                membersCount: community.membersCount,
-                photo: community.photo || '',
-            })
-        );
+        const communities: Community[] = data.allGroups.map((community) => ({
+            id: community.id,
+            title: community.title,
+            membersCount: community.membersCount,
+            photo: community.photo || '',
+        }));
 
         return { data: communities };
     },
