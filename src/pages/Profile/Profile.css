@@ -4,6 +4,8 @@
     padding: 24px;
     gap: 24px;
     margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .tabs-container {

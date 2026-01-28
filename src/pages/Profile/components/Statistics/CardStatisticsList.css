@@ -1,6 +1,7 @@
 .cards-statistics-list {
     display: flex;
     gap: 32px;
+    margin: 0 auto 24px auto;
 }
 
 .card-statistics {
@@ -11,8 +12,8 @@
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
-    width: 330px;
     font-family: 'Inter', sans-serif;
+    flex: 1;
 }
 
 .card-statistics-title {
@@ -34,30 +35,7 @@
     color: var(--small-text-color);
 }
 
-@media (max-width: 1150px) {
-    .card-statistics {
-        padding: 12px;
-    }
-
-    .card-statistics-count {
-        font-size: 24px;
-        gap: 8px;
-    }
-}
-
-@media (max-width: 500px) {
-    .card-statistics {
-        width: 100%;
-    }
-}
-
-@media (max-width: 1150px) {
-    .cards-statistics-list {
-        gap: 12px;
-    }
-}
-
-@media (max-width: 1085px) {
+@media (max-width: 768px) {
     .cards-statistics-list {
         flex-direction: column;
     }

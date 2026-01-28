@@ -1,0 +1,31 @@
+.diagram-switcher {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 24px;
+}
+
+.diagrams-container {
+    display: flex;
+    gap: 50px;
+}
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 58px;
+}
+
+@media (max-width: 768px) {
+    .diagrams-container {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .diagram {
+        margin-bottom: 0;
+    }
+}

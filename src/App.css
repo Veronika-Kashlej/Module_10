@@ -10,6 +10,8 @@
     --modal-bg-color: rgba(27, 32, 55, 0.5);
     --error-color: rgba(255, 85, 74, 1);
     --switcher-bg-color: rgba(14, 18, 35, 1);
+    --chart-text-color: rgba(188, 195, 227, 1);
+    --diagram-color: rgba(56, 65, 98, 1);
 }
 
 [data-theme='light'] {
@@ -24,6 +26,8 @@
     --modal-bg-color: rgba(27, 32, 55, 0.5);
     --error-color: rgba(255, 85, 74, 1);
     --switcher-bg-color: rgb(154, 159, 180);
+    --chart-text-color: rgba(27, 32, 55, 1);
+    --diagram-color: rgba(27, 32, 55, 1);
 }
 
 main {
