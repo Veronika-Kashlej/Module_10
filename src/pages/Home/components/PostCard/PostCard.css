@@ -50,6 +50,10 @@
     width: 212px;
 }
 
+.delete-comment-btn {
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .post-card {
         background-color: var(--bg-secondary-color);
@@ -75,5 +79,9 @@
     .likes-block,
     .comments-block {
         font-size: 12px;
+    }
+
+    .trash-icon {
+        display: none;
     }
 }

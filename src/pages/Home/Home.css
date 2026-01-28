@@ -33,13 +33,29 @@ aside {
     gap: 8px;
 }
 
-@media(max-width: 1600px) {
+.post-card:nth-child(1) {
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1600px) {
     .home-page {
         margin: unset;
     }
 }
 
-@media(max-width: 1175px) {
+@media (max-width: 1175px) {
     .asides {
         display: none;
     }
@@ -49,7 +65,7 @@ aside {
     }
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .home-page {
         padding: 10px 0;
     }

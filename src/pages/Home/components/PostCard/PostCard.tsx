@@ -22,7 +22,7 @@ export const PostCard = memo(function PostCard({
 }: PostCardProps) {
     const [areVisibleComments, setAreVisibleComments] = useState(false);
     const { isAuthenticated } = useAuth();
-    const [commentsCount, setCommentsCount] = useState(post.commentsCount + 1);
+    const [commentsCount, setCommentsCount] = useState(post.commentsCount);
 
     const { data: author, isLoading } = useQuery({
         queryKey: ['user', post.authorId],

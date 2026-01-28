@@ -3,10 +3,25 @@ import { useUser } from '../../../../store/contexts/UserContext';
 import { Comment } from '../../../../store/types';
 import { Forms } from '../../../../forms/Forms';
 import { Icons } from '../../../../components/Icons/Icons';
-import './Comments.css';
 import { postsAPI } from '../../../../utils/api/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import styled from 'styled-components';
+
+const CommentsListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+`;
+
+const CommentItem = styled.div<{ $areVisibleComments: boolean }>`
+    display: ${(props) => (props.$areVisibleComments ? 'flex' : 'none')};
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+`;
 
 interface CommentListProps {
     areVisibleComments: boolean;
@@ -22,12 +37,11 @@ export function CommentList({
     const { user } = useUser();
 
     return (
-        <div className="comments-list">
+        <CommentsListContainer>
             {comments.map((comment, index) => (
-                <div
+                <CommentItem
                     key={comment.id}
-                    className="comment-item"
-                    style={{ display: areVisibleComments ? 'flex' : 'none' }}
+                    $areVisibleComments={areVisibleComments}
                 >
                     <p>
                         #{index + 1}. {comment.text}
@@ -37,9 +51,9 @@ export function CommentList({
                             onClick={() => onDeleteComment(comment.id)}
                         />
                     )}
-                </div>
+                </CommentItem>
             ))}
-        </div>
+        </CommentsListContainer>
     );
 }
 
@@ -67,15 +81,20 @@ export function Comments({
     });
 
     useEffect(() => {
-        if (comments.length > 0) {
-            onChangeCommentsCount(comments.length);
-        }
+        onChangeCommentsCount(comments.length);
     }, [comments, onChangeCommentsCount]);
 
     const createCommentMutation = useMutation({
         mutationFn: (text: string) => postsAPI.createComment({ postId, text }),
-        onSuccess: () => {
+        onSuccess: (newComment) => {
             queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+            queryClient.setQueryData(['comments', postId], (old: any) => {
+                const oldData = old?.data || [];
+                return {
+                    ...old,
+                    data: [...oldData, newComment.data],
+                };
+            });
         },
         onError: (error) => {
             console.error('Failed to create comment:', error);
