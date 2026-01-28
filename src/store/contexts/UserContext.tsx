@@ -6,8 +6,8 @@ import {
     useContext,
 } from 'react';
 import { User } from '../types';
-import { useAuth } from './AuthContext';
-import { authAPI } from '../../utils/api/api';
+import { useAuth } from '../../utils/hooks/useAuth';
+import { authAPI } from '../../utils/api/authApi';
 
 interface UserContextType {
     user: User | null;

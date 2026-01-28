@@ -1,7 +1,8 @@
 import { render, screen, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import SignUp from './SignUp';
-import { useAuth } from '../../store/contexts/AuthContext';
+import { useAuth } from '../../utils/hooks/useAuth';
+import { createMockAuth } from '../../utils/api/api.test';
 
 jest.mock('../../store/contexts/AuthContext');
 const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -25,13 +26,7 @@ afterEach(() => {
 
 describe('SignUp Component', () => {
     test('renders SignUp component correctly when not authenticated', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -56,13 +51,7 @@ describe('SignUp Component', () => {
             () => mockNavigate
         );
 
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
 
         await act(async () => {
             render(
@@ -82,13 +71,7 @@ describe('SignUp Component', () => {
             () => mockNavigate
         );
 
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         const { rerender } = render(
             <MemoryRouter>
@@ -98,13 +81,7 @@ describe('SignUp Component', () => {
 
         expect(mockNavigate).not.toHaveBeenCalled();
 
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
 
         await act(async () => {
             rerender(
@@ -118,13 +95,7 @@ describe('SignUp Component', () => {
     });
 
     test('shows terms and privacy links', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -141,13 +112,7 @@ describe('SignUp Component', () => {
     });
 
     test('contains sign in link', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -167,13 +132,7 @@ describe('SignUp Component', () => {
             () => mockNavigate
         );
 
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signUp: jest.fn(),
-            signIn: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
 
         await act(async () => {
             render(

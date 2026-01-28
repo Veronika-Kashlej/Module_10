@@ -6,9 +6,10 @@ import {
     act,
 } from '@testing-library/react';
 import { PostCard } from './PostCard';
-import { useAuth } from '../../../../store/contexts/AuthContext';
 import { LikedPost } from '../../../../store/types';
-import { postsAPI } from '@/utils/api/api';
+import { postsAPI } from '../../../../utils/api/api';
+import { useAuth } from '../../../../utils/hooks/useAuth';
+import { createMockAuth } from '../../../../utils/api/api.test';
 
 jest.mock('../../../../store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),
@@ -108,16 +109,10 @@ describe('PostCard Component', () => {
         creationDate: '',
     };
 
-    // beforeEach(() => {
-    //     jest.clearAllMocks();
-    //     mockUseAuth.mockReturnValue({
-    //         isAuthenticated: true,
-    //         signIn: jest.fn(),
-    //         signUp: jest.fn(),
-    //         signOut: jest.fn(),
-    //         isLoading: false,
-    //     });
-    // });
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
+    });
 
     test('renders post content after loading', async () => {
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
@@ -197,13 +192,7 @@ describe('PostCard Component', () => {
     });
 
     test('shows login message for unauthenticated user', async () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 
@@ -225,13 +214,7 @@ describe('PostCard Component', () => {
     });
 
     test('does not render comments component for unauthenticated user', async () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         mockPostsAPI.getUser.mockResolvedValue({ data: mockAuthor } as any);
 

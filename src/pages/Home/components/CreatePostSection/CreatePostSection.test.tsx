@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { CreatePostSection } from './CreatePostSection';
-import { useAuth } from '../../../../store/contexts/AuthContext';
+import { useAuth } from '../../../../utils/hooks/useAuth';
+import { createMockAuth } from '../../../../utils/api/api.test';
 
 jest.mock('../../../../store/contexts/AuthContext');
 jest.mock('../../../../components/Loader/Loader', () => ({
@@ -23,21 +24,10 @@ const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
 
 describe('CreatePostSection Component', () => {
     const mockOnAddPost = jest.fn();
-    const mockUser = {
-        profileImage: 'test-image.jpg',
-        firstName: 'John',
-        lastName: 'Doe',
-    };
 
     beforeEach(() => {
         jest.clearAllMocks();
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
     });
 
     test('renders user profile image and prompt text', () => {

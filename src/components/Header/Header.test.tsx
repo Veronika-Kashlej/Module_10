@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { Header } from './Header';
-import { useAuth } from '../../store/contexts/AuthContext';
+import { useAuth } from '../../utils/hooks/useAuth';
+import { createMockAuth } from '../../utils/api/api.test';
 
 jest.mock('../../store/contexts/AuthContext');
 jest.mock('../Icons/Icons', () => ({
@@ -26,13 +27,7 @@ describe('Header', () => {
     });
 
     test('renders logo and burger menu for unauthenticated user', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -53,13 +48,7 @@ describe('Header', () => {
     });
 
     test('opens and closes mobile menu', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -84,13 +73,7 @@ describe('Header', () => {
     });
 
     test('mobile menu shows correct links for authenticated user', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
 
         render(
             <MemoryRouter>
@@ -111,13 +94,7 @@ describe('Header', () => {
     });
 
     test('mobile menu shows correct links for unauthenticated user', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>
@@ -148,13 +125,7 @@ describe('Header', () => {
             'removeEventListener'
         );
 
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter>

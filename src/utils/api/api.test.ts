@@ -1,5 +1,30 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { postsAPI, authAPI, profileApi } from './api';
+import { postsAPI, profileApi } from './api';
+import { authAPI } from './authApi';
+
+export const createMockAuth = (overrides = {}) => {
+    const mockSignIn = jest.fn().mockResolvedValue({});
+    const mockSignUp = jest.fn().mockResolvedValue({});
+    const mockSignOut = jest.fn().mockResolvedValue({});
+    const mockCheckAuth = jest.fn().mockResolvedValue({});
+    const mockClearError = jest.fn();
+
+    return {
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+        signIn: mockSignIn,
+        signUp: mockSignUp,
+        signOut: mockSignOut,
+        checkAuth: mockCheckAuth,
+        clearError: mockClearError,
+        getUser: () => null,
+        getToken: () => null,
+        ...overrides,
+    };
+};
 
 jest.mock('axios');
 
@@ -55,7 +80,6 @@ describe('API Tests', () => {
 
     describe('Posts API Functions', () => {
         beforeEach(() => {
-            // Мокаем успешные ответы для всех функций
             mockedAxios.get.mockResolvedValue(createSuccessResponse({}));
             mockedAxios.post.mockResolvedValue(createSuccessResponse({}));
             mockedAxios.put.mockResolvedValue(createSuccessResponse({}));

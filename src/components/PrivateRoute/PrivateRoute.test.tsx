@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router';
 import { PrivateRoute } from './PrivateRoute';
-import { useAuth } from '../../store/contexts/AuthContext';
+import { useAuth } from '../../utils/hooks/useAuth';
+import { createMockAuth } from '../../utils/api/api.test';
 
 jest.mock('../../store/contexts/AuthContext');
 
@@ -12,14 +13,7 @@ const SignInPage = () => <div>Sign In</div>;
 
 describe('PrivateRoute', () => {
     test('allows access when authenticated', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: true,
-            isLoading: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-        });
-
+        mockUseAuth.mockReturnValue(createMockAuth({ isAuthenticated: true }));
         render(
             <MemoryRouter initialEntries={['/private']}>
                 <Routes>
@@ -34,18 +28,10 @@ describe('PrivateRoute', () => {
                 </Routes>
             </MemoryRouter>
         );
-
         expect(screen.getByText('Protected')).toBeInTheDocument();
     });
-
     test('redirects when not authenticated', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            isLoading: false,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         render(
             <MemoryRouter initialEntries={['/private']}>
@@ -62,18 +48,10 @@ describe('PrivateRoute', () => {
                 </Routes>
             </MemoryRouter>
         );
-
         expect(screen.getByText('Sign In')).toBeInTheDocument();
     });
-
     test('shows nothing while loading', () => {
-        mockUseAuth.mockReturnValue({
-            isAuthenticated: false,
-            isLoading: true,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            signOut: jest.fn(),
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         const { container } = render(
             <MemoryRouter>
@@ -82,7 +60,6 @@ describe('PrivateRoute', () => {
                 </PrivateRoute>
             </MemoryRouter>
         );
-
         expect(container.firstChild).toBeNull();
     });
 });

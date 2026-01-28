@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 import './Header.css';
-import { useAuth } from '../../store/contexts/AuthContext';
 import { useUser } from '../../store/contexts/UserContext';
 import { Link } from 'react-router';
 import { Icons } from '../Icons/Icons';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../utils/hooks/useAuth';
 
 export function Header() {
     const { isAuthenticated } = useAuth();

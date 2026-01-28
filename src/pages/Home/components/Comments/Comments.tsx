@@ -1,4 +1,3 @@
-import { useAuth } from '../../../../store/contexts/AuthContext';
 import { useUser } from '../../../../store/contexts/UserContext';
 import { Comment } from '../../../../store/types';
 import { Forms } from '../../../../forms/Forms';
@@ -7,6 +6,7 @@ import { postsAPI } from '../../../../utils/api/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../../../../utils/hooks/useAuth';
 
 const CommentsListContainer = styled.div`
     display: flex;

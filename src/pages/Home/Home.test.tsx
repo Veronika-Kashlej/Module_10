@@ -1,8 +1,8 @@
 import { render, screen, waitFor, act } from '@testing-library/react';
 import Home from './Home';
-import { useAuth } from '../../store/contexts/AuthContext';
 import { LikedPost, Post } from '@/store/types';
-import { postsAPI } from '@/utils/api/api';
+import { postsAPI } from '../../utils/api/api';
+import { useAuth } from '../../utils/hooks/useAuth';
 
 jest.mock('../../store/contexts/AuthContext', () => ({
     useAuth: jest.fn(),

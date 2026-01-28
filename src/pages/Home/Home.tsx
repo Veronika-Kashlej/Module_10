@@ -2,13 +2,13 @@ import { CommunitiesSection } from './components/CommunitiesSection/CommunitiesS
 import { CreatePostSection } from './components/CreatePostSection/CreatePostSection';
 import { PostCard } from './components/PostCard/PostCard';
 import { SuggestedPeopleSection } from './components/SuggestedPeopleSection/SuggestedPeopleSection';
-import { useAuth } from '../../store/contexts/AuthContext';
 import './Home.css';
 import { Header } from '../../components/Header/Header';
 import { PostSkeleton } from 'components/Skeletons/PostSkeleton/PostSkeleton';
 import { postsAPI } from '../../utils/api/api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorBoundaryFallback } from '../../components/ErrorBoundaryFallback/ErrorBoundaryFallback';
+import { useAuth } from '../../utils/hooks/useAuth';
 
 function Home() {
     const queryClient = useQueryClient();

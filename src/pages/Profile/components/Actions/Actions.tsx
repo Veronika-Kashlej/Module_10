@@ -1,9 +1,9 @@
 import './Actions.css';
-import { useAuth } from '../../../../store/contexts/AuthContext';
 import { useNavigate } from 'react-router';
 import { useCustomNotification } from '../../../../store/contexts/NotificationContext';
 import { useTranslation } from 'react-i18next';
 import { useShowError } from '../../../../utils/hooks/useShowError';
+import { useAuth } from '../../../../utils/hooks/useAuth';
 
 export function Actions() {
     const { showCustomNotification } = useCustomNotification();

@@ -60,18 +60,6 @@ export const postsAPI = {
     getCurrentUsersLikedPosts: () => api.get(`/api/me/likes`),
 };
 
-export const authAPI = {
-    login: (email: string, password: string) =>
-        api.post(`/api/login`, { email, password }),
-
-    signup: (email: string, password: string) =>
-        api.post(`/api/signup`, { email, password }),
-
-    logout: () => api.post(`/api/logout`),
-
-    getMe: () => api.get(`/api/me`),
-};
-
 export const profileApi = {
     getSuggestedUsers: () => api.get(`/api/getSuggested`),
     getCommunities: () => api.get(`/api/groups`),

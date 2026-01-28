@@ -3,13 +3,13 @@ import './PostCard.css';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { LikedPost, Post } from '../../../../store/types';
 import { Icons } from '../../../../components/Icons/Icons';
-import { useAuth } from '../../../../store/contexts/AuthContext';
 import { Comments } from '../Comments/Comments';
 import { LikesSection } from '../Likes/LikesSection';
 import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/SectionItemSkeleton';
 import { formatCreationDate } from '../../../../utils/formatCreationDate';
 import { postsAPI } from '../../../../utils/api/api';
 import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '../../../../utils/hooks/useAuth';
 
 interface PostCardProps {
     post: Post;

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { useAuth } from '../../store/contexts/AuthContext';
 import './SignUp.css';
 import { SimpleHeader } from '../../components/SimpleHeader/SimpleHeader';
 import { Forms } from '../../forms/Forms';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../utils/hooks/useAuth';
 
 function SignUp() {
     const navigate = useNavigate();

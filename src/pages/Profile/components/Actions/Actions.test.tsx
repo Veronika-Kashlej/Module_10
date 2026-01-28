@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { Actions } from './Actions';
-import { useAuth } from '../../../../store/contexts/AuthContext';
+import { useAuth } from '../../../../utils/hooks/useAuth';
 import { useCustomNotification } from '../../../../store/contexts/NotificationContext';
-
+import { createMockAuth } from '../../../../utils/api/api.test';
 jest.mock('../../../../../../store/contexts/AuthContext');
 jest.mock('../../../../../../store/contexts/NotificationContext');
 
@@ -20,13 +20,7 @@ describe('Actions Component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
 
-        mockUseAuth.mockReturnValue({
-            signOut: mockSignOut,
-            signIn: jest.fn(),
-            signUp: jest.fn(),
-            isAuthenticated: false,
-            isLoading: false,
-        });
+        mockUseAuth.mockReturnValue(createMockAuth());
 
         mockUseCustomNotification.mockReturnValue({
             showCustomNotification: mockShowCustomNotification,

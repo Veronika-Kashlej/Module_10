@@ -1,4 +1,3 @@
-import { useAuth } from '../store/contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Label } from './components/Label/Label';
@@ -11,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { useCustomNotification } from '../store/contexts/NotificationContext';
 import { useShowError } from '../utils/hooks/useShowError';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../utils/hooks/useAuth';
 
 interface AuthFormProps {
     type: 'signin' | 'signup';
