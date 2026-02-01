@@ -6,14 +6,13 @@ import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { ErrorBoundaryFallback } from './components/ErrorBoundaryFallback/ErrorBoundaryFallback';
 import { ErrorBoundary } from 'react-error-boundary';
 import { CustomNotificationProvider } from './store/contexts/NotificationContext';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { Loader } from './components/Loader/Loader';
 import Home from 'pages/Home/Home';
 import { UserProvider } from './store/contexts/UserContext';
 import { ProfileInfo } from './pages/Profile/components/ProfileInfo/ProfileInfo';
 import { Statistics } from './pages/Profile/components/Statistics/Statistics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useAuth } from './utils/hooks/useAuth';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 
@@ -23,23 +22,6 @@ const SignUp = lazy(() => import('./pages/SignUp/SignUp'));
 const SignIn = lazy(() => import('./pages/SignIn/SignIn'));
 const Profile = lazy(() => import('./pages/Profile/Profile'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound'));
-
-const AuthChecker = ({ children }: { children: React.ReactNode }) => {
-    const { checkAuth, isLoading } = useAuth();
-
-    useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            checkAuth();
-        }
-    }, [checkAuth]);
-
-    if (isLoading) {
-        return <Loader />;
-    }
-
-    return <>{children}</>;
-};
 
 function App() {
     return (
@@ -66,31 +48,24 @@ function App() {
                                                 path="/sign-in"
                                                 element={<SignIn />}
                                             />
-                                            <Route
-                                                element={
-                                                    <PrivateRoute>
-                                                        <Profile />
-                                                    </PrivateRoute>
-                                                }
-                                            >
+                                            <Route element={<PrivateRoute />}>
                                                 <Route
-                                                    index
-                                                    path="profile"
-                                                    element={<ProfileInfo />}
-                                                />
-                                                <Route
-                                                    path="statistics"
-                                                    element={<Statistics />}
-                                                />
+                                                    path="/profile"
+                                                    element={<Profile />}
+                                                >
+                                                    <Route
+                                                        index
+                                                        path="profile"
+                                                        element={
+                                                            <ProfileInfo />
+                                                        }
+                                                    />
+                                                    <Route
+                                                        path="statistics"
+                                                        element={<Statistics />}
+                                                    />
+                                                </Route>
                                             </Route>
-                                            <Route
-                                                path="/profile/:tab?"
-                                                element={
-                                                    <PrivateRoute>
-                                                        <Profile />
-                                                    </PrivateRoute>
-                                                }
-                                            />
                                             <Route
                                                 path="*"
                                                 element={<NotFound />}

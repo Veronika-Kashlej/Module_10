@@ -50,7 +50,7 @@ export function LikesSection({ post, likedPosts }: LikesSectionProps) {
         } finally {
             setTimeout(() => setIsAnimating(false), 300);
         }
-    }, [isLiked, isAnimating, post.id]);
+    }, [isLiked, isAnimating, post.id, likesCount]);
 
     return (
         <div className="likes-block">

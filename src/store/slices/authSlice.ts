@@ -29,10 +29,8 @@ export const login = createAsyncThunk(
             localStorage.setItem('user', JSON.stringify(user));
 
             return { token, user };
-        } catch (error: any) {
-            return rejectWithValue(
-                error.response?.data?.message || 'Login failed'
-            );
+        } catch (error) {
+            return rejectWithValue(error || 'Login failed');
         }
     }
 );
@@ -52,27 +50,22 @@ export const register = createAsyncThunk(
             localStorage.setItem('user', JSON.stringify(user));
 
             return { token, user };
-        } catch (error: any) {
-            return rejectWithValue(
-                error.response?.data?.message || 'Registration failed'
-            );
+        } catch (error) {
+            return rejectWithValue(error || 'Registration failed');
         }
     }
 );
 
-export const logout = createAsyncThunk(
-    'auth/logout',
-    async (_, { rejectWithValue }) => {
-        try {
-            await authAPI.logout();
-        } catch (error) {
-            console.error('Logout error:', error);
-        } finally {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
-        }
+export const logout = createAsyncThunk('auth/logout', async () => {
+    try {
+        await authAPI.logout();
+    } catch (error) {
+        console.error('Logout error:', error);
+    } finally {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
     }
-);
+});
 
 export const checkAuth = createAsyncThunk(
     'auth/checkAuth',
@@ -87,10 +80,10 @@ export const checkAuth = createAsyncThunk(
             const user = response.data;
 
             return { token, user };
-        } catch (error: any) {
+        } catch (error) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('user');
-            return rejectWithValue('Session expired');
+            rejectWithValue(error);
         }
     }
 );
@@ -161,8 +154,8 @@ const authSlice = createSlice({
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isAuthenticated = true;
-                state.token = action.payload.token;
-                state.user = action.payload.user;
+                state.token = action.payload?.token as string;
+                state.user = action.payload?.user;
                 state.error = null;
             })
             .addCase(checkAuth.rejected, (state) => {

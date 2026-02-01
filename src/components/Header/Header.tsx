@@ -64,7 +64,7 @@ export function Header() {
                         </nav>
                     )}
                     {isAuthenticated && (
-                        <Link className="profile-info" to={'/profile'}>
+                        <Link className="profile-info" to={'/profile/profile'}>
                             <img
                                 className="profile-image"
                                 src={user?.profileImage}

@@ -237,7 +237,7 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
         register,
         handleSubmit,
         reset,
-        watch,
+        getValues,
         formState: { isSubmitting },
     } = useForm<AddCommentFormData>({
         defaultValues: {
@@ -246,7 +246,7 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
     });
     const { t } = useTranslation();
 
-    const commentValue = watch('comment');
+    const commentValue = getValues('comment');
     const isCommentEmpty = !commentValue?.trim();
 
     const onSubmit = ({ comment }: AddCommentFormData) => {

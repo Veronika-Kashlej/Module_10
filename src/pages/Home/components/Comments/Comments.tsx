@@ -5,7 +5,7 @@ import { Icons } from '../../../../components/Icons/Icons';
 import { postsAPI } from '../../../../utils/api/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { useAuth } from '../../../../utils/hooks/useAuth';
 
 const CommentsListContainer = styled.div`
@@ -88,13 +88,16 @@ export function Comments({
         mutationFn: (text: string) => postsAPI.createComment({ postId, text }),
         onSuccess: (newComment) => {
             queryClient.invalidateQueries({ queryKey: ['comments', postId] });
-            queryClient.setQueryData(['comments', postId], (old: any) => {
-                const oldData = old?.data || [];
-                return {
-                    ...old,
-                    data: [...oldData, newComment.data],
-                };
-            });
+            queryClient.setQueryData(
+                ['comments', postId],
+                (old: { data: Comment[] }) => {
+                    const oldData = old?.data || [];
+                    return {
+                        ...old,
+                        data: [...oldData, newComment.data],
+                    };
+                }
+            );
         },
         onError: (error) => {
             console.error('Failed to create comment:', error);
