@@ -5,8 +5,19 @@ import { Icons } from '../../../../components/Icons/Icons';
 import { postsAPI } from '../../../../utils/api/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { styled } from 'styled-components';
+import { styled, keyframes, css } from 'styled-components';
 import { useAuth } from '../../../../utils/hooks/useAuth';
+
+const slideIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const CommentsListContainer = styled.div`
     display: flex;
@@ -15,12 +26,21 @@ const CommentsListContainer = styled.div`
     width: 100%;
 `;
 
-const CommentItem = styled.div<{ $areVisibleComments: boolean }>`
+const CommentItem = styled.div<{
+    $areVisibleComments: boolean;
+    $isNew: boolean;
+}>`
     display: ${(props) => (props.$areVisibleComments ? 'flex' : 'none')};
     justify-content: space-between;
     align-items: center;
     max-width: 100%;
     overflow: hidden;
+
+    ${(props) =>
+        props.$isNew &&
+        css`
+            animation: ${slideIn} 0.3s ease-out;
+        `}
 `;
 
 interface CommentListProps {
@@ -42,6 +62,7 @@ export function CommentList({
                 <CommentItem
                     key={comment.id}
                     $areVisibleComments={areVisibleComments}
+                    $isNew={index === comments.length - 1}
                 >
                     <p>
                         #{index + 1}. {comment.text}

@@ -6,7 +6,7 @@ import { postsAPI, profileApi } from '../utils/api/api';
 import { FileUploadInput } from './components/FileUploadInput/FileUploadInput';
 import { useUser } from '../store/contexts/UserContext';
 import { SectionItem } from '../components/SectionItem/SectionItem';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useCustomNotification } from '../store/contexts/NotificationContext';
 import { useShowError } from '../utils/hooks/useShowError';
 import { useTranslation } from 'react-i18next';
@@ -237,16 +237,17 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
         register,
         handleSubmit,
         reset,
-        getValues,
+        control,
         formState: { isSubmitting },
-    } = useForm<AddCommentFormData>({
-        defaultValues: {
-            comment: '',
-        },
-    });
+    } = useForm<AddCommentFormData>();
     const { t } = useTranslation();
 
-    const commentValue = getValues('comment');
+    const commentValue = useWatch({
+        control,
+        name: 'comment',
+        defaultValue: '',
+    });
+
     const isCommentEmpty = !commentValue?.trim();
 
     const onSubmit = ({ comment }: AddCommentFormData) => {
