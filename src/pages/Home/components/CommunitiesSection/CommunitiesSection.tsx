@@ -3,8 +3,8 @@ import { SectionItemSkeleton } from 'components/Skeletons/SectionItemSkeleton/Se
 import { formatMembersCount } from '../../../../utils/formatMembersCount';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { profileApi } from '../../../../utils/api/graphQL';
 import { Community } from '../../../../store/types';
+import { profileApi } from '../../../../utils/api/api';
 
 export function CommunitiesSection() {
     const { data: communities, isLoading } = useQuery({
