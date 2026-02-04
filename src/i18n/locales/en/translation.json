@@ -77,7 +77,7 @@
             "progress": "from last month"
         },
         "error": {
-            "title": "Oops... <br/>Something bad has just happened"
+            "title": "Oops... Something bad has just happened"
         },
         "notFound": {
             "title": "Page not found"
