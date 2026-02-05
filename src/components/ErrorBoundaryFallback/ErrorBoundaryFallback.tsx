@@ -11,7 +11,7 @@ export function ErrorBoundaryFallback() {
             <SimpleHeader />
             <main className="error-page">
                 <Icons.ErrorIcon />
-                <h1>{t('pages.error.title')}</h1>
+                <h1 role="alert">{t('pages.error.title')}</h1>
             </main>
         </>
     );

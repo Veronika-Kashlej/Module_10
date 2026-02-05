@@ -70,9 +70,17 @@ export const PostCard = memo(function PostCard({
                     {isAuthenticated ? (
                         <>
                             <p>{commentsCount} comments</p>
+                            <button
+                                onClick={handleToggleComments}
+                                className="toggle-comments-btn"
+                                aria-label={
+                                    areVisibleComments
+                                        ? 'hide comments'
+                                        : 'show comments'
+                                }
+                            ></button>
                             <Icons.ShowCommentIcon
                                 areVisibleComments={areVisibleComments}
-                                onClick={handleToggleComments}
                             />
                         </>
                     ) : (

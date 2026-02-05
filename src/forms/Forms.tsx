@@ -71,9 +71,11 @@ function AuthForm({ type }: AuthFormProps) {
                     id="email"
                     placeholder={t('forms.email.placeholder')}
                     className={errors.email ? 'invalide' : ''}
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
                 />
                 {errors.email && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.email.message}</p>
                     </div>
@@ -99,15 +101,21 @@ function AuthForm({ type }: AuthFormProps) {
                     id="password"
                     placeholder={t('forms.password.placeholder')}
                     className={errors.password ? 'invalide' : ''}
+                    aria-required="true"
+                    aria-invalid={!!errors.password}
                 />
                 {errors.password && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.password.message}</p>
                     </div>
                 )}
             </fieldset>
-            <button type="submit" disabled={isSubmitting || !isValid}>
+            <button
+                type="submit"
+                disabled={isSubmitting || !isValid}
+                aria-busy={isSubmitting}
+            >
                 {isSubmitting
                     ? t('states.process')
                     : type === 'signin'
@@ -186,9 +194,11 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
                     type="text"
                     id="post-title"
                     placeholder={t('forms.postTitle.placeholder')}
+                    aria-required="true"
+                    aria-invalid={!!errors.title}
                 />
                 {errors.title && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.title.message}</p>
                     </div>
@@ -207,16 +217,22 @@ function CreatePostForm({ onAddPost, onClose }: CreatePostFormProps) {
                     id="post-description"
                     placeholder={t('forms.description.placeholder')}
                     required
+                    aria-required="true"
+                    aria-invalid={!!errors.content}
                 ></textarea>
                 {errors.content && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.content.message}</p>
                     </div>
                 )}
             </fieldset>
             <FileUploadInput onFileSelect={handleFileSelect}></FileUploadInput>
-            <button type="submit" disabled={isSubmitting || !isValid}>
+            <button
+                type="submit"
+                disabled={isSubmitting || !isValid}
+                aria-busy={isSubmitting}
+            >
                 {isSubmitting ? t('states.creating') : t('actions.create')}
             </button>
         </form>
@@ -267,7 +283,12 @@ function AddCommentForm({ postId, onAddComment }: AddCommentFormProps) {
                 id={`comment-${postId}`}
                 placeholder={t('forms.addComment.placeholder')}
             />
-            <button type="submit" disabled={isSubmitting || isCommentEmpty}>
+            <button
+                type="submit"
+                disabled={isSubmitting || isCommentEmpty}
+                aria-disabled={isSubmitting || isCommentEmpty}
+                aria-busy={isSubmitting}
+            >
                 {isSubmitting ? t('states.adding') : t('actions.addComment')}
             </button>
         </form>
@@ -381,9 +402,11 @@ function EditProfileForm() {
                     })}
                     type="text"
                     id="username"
+                    aria-required="true"
+                    aria-invalid={!!errors.username}
                 />
                 {errors.username && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.username.message}</p>
                     </div>
@@ -405,9 +428,11 @@ function EditProfileForm() {
                     })}
                     type="email"
                     id="email"
+                    aria-required="true"
+                    aria-invalid={!!errors.email}
                 />
                 {errors.email && (
-                    <div className="error-message">
+                    <div className="error-message" role="alert">
                         <Icons.InfoIcon isValid={false} />
                         <p>{errors.email.message}</p>
                     </div>
@@ -439,10 +464,12 @@ function EditProfileForm() {
                     })}
                     maxLength={200}
                     id="description"
+                    aria-required="true"
+                    aria-invalid={!!errors.description}
                 ></textarea>
                 <small className={isValid ? '' : 'error-message'}>
                     <Icons.InfoIcon isValid={isValid} />
-                    <p>
+                    <p role="alert">
                         {errors.description
                             ? errors.description.message
                             : t('forms.description.validation.minLength')}
@@ -452,6 +479,8 @@ function EditProfileForm() {
             <button
                 type="submit"
                 disabled={isSubmitting || !isDirty || !isValid}
+                aria-disabled={isSubmitting || !isDirty || !isValid}
+                aria-busy={isSubmitting}
             >
                 {isSubmitting ? 'Saving...' : t('actions.saveProfileChanges')}
             </button>

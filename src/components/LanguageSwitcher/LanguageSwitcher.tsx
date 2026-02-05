@@ -28,7 +28,7 @@ const LanguageSwitcher: React.FC = () => {
     const currentLang = i18n.language;
 
     return (
-        <SwitchButton onClick={toggleLanguage}>
+        <SwitchButton onClick={toggleLanguage} aria-label="change language">
             {currentLang === 'en' ? 'RU' : 'EN'}
         </SwitchButton>
     );

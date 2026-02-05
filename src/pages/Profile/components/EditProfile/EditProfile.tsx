@@ -6,7 +6,11 @@ export function EditProfile() {
     const { t } = useTranslation();
 
     return (
-        <section className="edit-profile-section" role="tabpanel">
+        <section
+            className="edit-profile-section"
+            role="tabpanel"
+            aria-labelledby="tab1"
+        >
             <h3>{t('pages.profile.editProfile.title')}</h3>
             <Forms.EditProfileForm />
         </section>

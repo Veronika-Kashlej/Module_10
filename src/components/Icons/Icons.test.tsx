@@ -10,18 +10,10 @@ jest.mock('../../store/contexts/ThemeContext', () => ({
 
 describe('Icons', () => {
     describe('LikeIcon', () => {
-        const onClick = jest.fn();
-
-        beforeEach(() => {
-            onClick.mockClear();
-        });
-
         test('renders with light theme stroke color', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(
-                <Icons.LikeIcon onClick={onClick} isLiked={false} />
-            );
+            const { container } = render(<Icons.LikeIcon isLiked={false} />);
 
             const svg = container.querySelector('svg');
             const path = svg?.querySelector('path');
@@ -33,9 +25,7 @@ describe('Icons', () => {
         test('renders with dark theme stroke color', () => {
             mockUseTheme.mockReturnValue({ theme: 'dark' });
 
-            const { container } = render(
-                <Icons.LikeIcon onClick={onClick} isLiked={false} />
-            );
+            const { container } = render(<Icons.LikeIcon isLiked={false} />);
 
             const svg = container.querySelector('svg');
             const path = svg?.querySelector('path');
@@ -47,9 +37,7 @@ describe('Icons', () => {
         test('has correct fill color when liked', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(
-                <Icons.LikeIcon onClick={onClick} isLiked={true} />
-            );
+            const { container } = render(<Icons.LikeIcon isLiked={true} />);
 
             const svg = container.querySelector('svg');
 
@@ -169,20 +157,11 @@ describe('Icons', () => {
     });
 
     describe('ShowCommentIcon', () => {
-        const onClick = jest.fn();
-
-        beforeEach(() => {
-            onClick.mockClear();
-        });
-
         test('has correct fill color for light theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
             const { container } = render(
-                <Icons.ShowCommentIcon
-                    onClick={onClick}
-                    areVisibleComments={false}
-                />
+                <Icons.ShowCommentIcon areVisibleComments={false} />
             );
 
             const path = container.querySelector('path');
@@ -193,10 +172,7 @@ describe('Icons', () => {
             mockUseTheme.mockReturnValue({ theme: 'dark' });
 
             const { container } = render(
-                <Icons.ShowCommentIcon
-                    onClick={onClick}
-                    areVisibleComments={false}
-                />
+                <Icons.ShowCommentIcon areVisibleComments={false} />
             );
 
             const path = container.querySelector('path');
@@ -207,10 +183,7 @@ describe('Icons', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
             const { container } = render(
-                <Icons.ShowCommentIcon
-                    onClick={onClick}
-                    areVisibleComments={false}
-                />
+                <Icons.ShowCommentIcon areVisibleComments={false} />
             );
 
             const svg = container.querySelector('svg');
@@ -221,10 +194,7 @@ describe('Icons', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
             const { container } = render(
-                <Icons.ShowCommentIcon
-                    onClick={onClick}
-                    areVisibleComments={true}
-                />
+                <Icons.ShowCommentIcon areVisibleComments={true} />
             );
 
             const svg = container.querySelector('svg');
@@ -236,9 +206,7 @@ describe('Icons', () => {
         test('has correct fill color for light theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'light' });
 
-            const { container } = render(
-                <Icons.TrashIcon onClick={() => undefined} />
-            );
+            const { container } = render(<Icons.TrashIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', '#151A2D');
@@ -247,9 +215,7 @@ describe('Icons', () => {
         test('has correct fill color for dark theme', () => {
             mockUseTheme.mockReturnValue({ theme: 'dark' });
 
-            const { container } = render(
-                <Icons.TrashIcon onClick={() => undefined} />
-            );
+            const { container } = render(<Icons.TrashIcon />);
 
             const path = container.querySelector('path');
             expect(path).toHaveAttribute('fill', 'white');

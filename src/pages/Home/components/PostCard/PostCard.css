@@ -54,6 +54,14 @@
     cursor: pointer;
 }
 
+.toggle-comments-btn,
+.toggle-comments-btn:hover,
+.delete-comment-btn,
+.delete-comment-btn:hover {
+    background-color: unset;
+    padding: 0;
+}
+
 @media (max-width: 768px) {
     .post-card {
         background-color: var(--bg-secondary-color);

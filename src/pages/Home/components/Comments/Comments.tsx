@@ -64,13 +64,17 @@ export function CommentList({
                     $areVisibleComments={areVisibleComments}
                     $isNew={index === comments.length - 1}
                 >
-                    <p>
+                    <p tabIndex={0} aria-label={comment.text}>
                         #{index + 1}. {comment.text}
                     </p>
                     {user?.id === comment.authorId && (
-                        <Icons.TrashIcon
+                        <button
                             onClick={() => onDeleteComment(comment.id)}
-                        />
+                            aria-label={`delete comment ${comment.text}`}
+                            className="delete-comment-btn"
+                        >
+                            <Icons.TrashIcon />
+                        </button>
                     )}
                 </CommentItem>
             ))}

@@ -9,11 +9,21 @@ function Profile() {
         <>
             <Header />
             <main className="profile-page">
-                <div className="tabs-container">
-                    <NavLink to="profile" className={'tab'}>
+                <div className="tabs-container" role="tablist">
+                    <NavLink
+                        to="profile"
+                        className={'tab'}
+                        role="tab"
+                        aria-selected="true"
+                    >
                         {t('nav.profile')}
                     </NavLink>
-                    <NavLink to={'statistics'} className={'tab'}>
+                    <NavLink
+                        to={'statistics'}
+                        className={'tab'}
+                        role="tab"
+                        aria-selected="false"
+                    >
                         {t('nav.statistics')}
                     </NavLink>
                 </div>

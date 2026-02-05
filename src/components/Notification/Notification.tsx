@@ -12,7 +12,7 @@ export function CustomNotification({
             <div
                 className={`notification-container ${type === 'success' ? '' : 'error'}`}
             >
-                <p>{message}</p>
+                <p role="alert">{message}</p>
                 <p className="close-natification-btn" onClick={onClose}>
                     ×
                 </p>

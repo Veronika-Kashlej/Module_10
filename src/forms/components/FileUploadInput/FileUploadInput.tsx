@@ -88,6 +88,13 @@ export function FileUploadInput({ onFileSelect }: FileUploadInputProps) {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onClick={handleClick}
+                tabIndex={0}
+                aria-label={
+                    selectedFile
+                        ? `Chosen file: ${selectedFile.name}. Click to change`
+                        : 'Add image. JPG, PNG no more than 10MB'
+                }
+                aria-live="assertive"
             >
                 <Icons.FileDownloadIcon />
                 <div className="file-upload-text">

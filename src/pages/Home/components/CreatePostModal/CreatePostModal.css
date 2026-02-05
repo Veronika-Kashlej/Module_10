@@ -37,6 +37,11 @@
 
 .close-modal-btn {
     cursor: pointer;
+    background-color: unset;
+}
+
+.close-modal-btn:hover {
+    background-color: unset;
 }
 
 .modal button {

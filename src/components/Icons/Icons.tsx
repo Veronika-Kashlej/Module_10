@@ -1,16 +1,14 @@
 import { useTheme } from '../../store/contexts/ThemeContext';
 
 interface LikeIconProps {
-    onClick: () => void;
     isLiked: boolean;
 }
 
-function LikeIcon({ onClick, isLiked }: LikeIconProps) {
+function LikeIcon({ isLiked }: LikeIconProps) {
     const { theme } = useTheme();
 
     return (
         <svg
-            onClick={onClick}
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -29,7 +27,7 @@ function LikeIcon({ onClick, isLiked }: LikeIconProps) {
 }
 
 interface CrossIconProps {
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 function CrossIcon({ onClick }: CrossIconProps) {
@@ -38,7 +36,6 @@ function CrossIcon({ onClick }: CrossIconProps) {
     return (
         <svg
             onClick={onClick}
-            className="close-modal-btn"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -167,18 +164,13 @@ function PencilIcon() {
 
 interface ShowCommentIconProps {
     areVisibleComments: boolean;
-    onClick: () => void;
 }
 
-function ShowCommentIcon({
-    areVisibleComments,
-    onClick,
-}: ShowCommentIconProps) {
+function ShowCommentIcon({ areVisibleComments }: ShowCommentIconProps) {
     const { theme } = useTheme();
 
     return (
         <svg
-            onClick={onClick}
             style={{
                 transform: areVisibleComments ? 'none' : 'rotate(180deg)',
             }}
@@ -196,16 +188,11 @@ function ShowCommentIcon({
     );
 }
 
-interface TrashIconProps {
-    onClick: () => void;
-}
-
-function TrashIcon({ onClick }: TrashIconProps) {
+function TrashIcon() {
     const { theme } = useTheme();
 
     return (
         <svg
-            onClick={onClick}
             className="trash-icon"
             width="24"
             height="24"

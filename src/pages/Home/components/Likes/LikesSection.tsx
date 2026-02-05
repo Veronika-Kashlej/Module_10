@@ -52,11 +52,25 @@ export function LikesSection({ post, likedPosts }: LikesSectionProps) {
         }
     }, [isLiked, isAnimating, post.id, likesCount]);
 
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                handleLikePost();
+            }
+        },
+        [handleLikePost]
+    );
+
     return (
         <div className="likes-block">
             <IconButton
                 onClick={handleLikePost}
+                onKeyDown={handleKeyDown}
                 disabled={isAnimating}
+                aria-label={isLiked ? 'dislike post' : 'like post'}
+                component="button"
+                type="button"
                 sx={{
                     padding: '4px',
                     animation: isAnimating
@@ -72,7 +86,7 @@ export function LikesSection({ post, likedPosts }: LikesSectionProps) {
                     },
                 }}
             >
-                <Icons.LikeIcon onClick={handleLikePost} isLiked={isLiked} />
+                <Icons.LikeIcon isLiked={isLiked} />
             </IconButton>
             <p>{likesCount} likes</p>
         </div>
