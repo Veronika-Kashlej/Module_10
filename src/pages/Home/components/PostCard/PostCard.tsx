@@ -78,10 +78,11 @@ export const PostCard = memo(function PostCard({
                                         ? 'hide comments'
                                         : 'show comments'
                                 }
-                            ></button>
-                            <Icons.ShowCommentIcon
-                                areVisibleComments={areVisibleComments}
-                            />
+                            >
+                                <Icons.ShowCommentIcon
+                                    areVisibleComments={areVisibleComments}
+                                />
+                            </button>
                         </>
                     ) : (
                         <p>You have to login to see the comments</p>
