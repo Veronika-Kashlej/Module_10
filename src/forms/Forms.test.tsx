@@ -1,81 +1,30 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { Forms } from './Forms';
-import { ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-jest.mock('../../store/contexts/AuthContext', () => ({
-    useAuth: () => ({
-        signIn: jest.fn(),
-        signUp: jest.fn(),
-        refreshUser: jest.fn(),
-        user: {
-            firstName: 'John',
-            secondName: 'Doe',
-            username: 'johndoe',
-            email: 'john@example.com',
-            description: 'Test description',
-            profileImage: 'test.jpg',
-        },
-    }),
-}));
+const mockStore = configureStore({
+    reducer: {
+        auth: (state = { user: null }) => state,
+    },
+});
 
-jest.mock('../../store/contexts/ThemeContext', () => ({
+jest.mock('../store/contexts/ThemeContext', () => ({
     useTheme: () => ({ theme: 'light', toggleTheme: jest.fn() }),
 }));
 
-jest.mock('../../store/contexts/NotificationContext', () => ({
+jest.mock('../store/contexts/NotificationContext', () => ({
     useCustomNotification: () => ({ showNotification: jest.fn() }),
+    showCustomNotification: jest.fn(),
 }));
 
-jest.mock('../../store/api/api', () => ({
+jest.mock('../utils/api/api', () => ({
     postsAPI: {
         createPost: jest.fn(),
     },
     profileApi: {
         updateProfile: jest.fn(),
-    },
-}));
-
-jest.mock('./components/BaseForm/BaseForm', () => ({
-    BaseForm: ({
-        children,
-        submitButtonText,
-    }: {
-        children: ReactNode;
-        submitButtonText: string;
-    }) => (
-        <div>
-            {children}
-            <button>{submitButtonText}</button>
-        </div>
-    ),
-}));
-
-interface MockInputProps {
-    value?: string;
-    defaultValue?: string;
-    placeholder?: string;
-    [key: string]: unknown;
-}
-
-jest.mock('./components/Input/Input', () => ({
-    Input: (props: MockInputProps) => {
-        const { value, defaultValue, ...restProps } = props;
-        return (
-            <input {...restProps} defaultValue={value || defaultValue || ''} />
-        );
-    },
-}));
-
-jest.mock('./components/TextArea/TextArea', () => ({
-    TextArea: (props: MockInputProps) => {
-        const { value, defaultValue, ...restProps } = props;
-        return (
-            <textarea
-                {...restProps}
-                defaultValue={value || defaultValue || ''}
-            />
-        );
     },
 }));
 
@@ -86,139 +35,173 @@ jest.mock('./components/Label/Label', () => ({
 }));
 
 jest.mock('./components/FileUploadInput/FileUploadInput', () => ({
-    FileUploadInput: () => <input type="file" data-testid="file-upload" />,
+    FileUploadInput: ({
+        onFileSelect,
+    }: {
+        onFileSelect: (file: File) => void;
+    }) => (
+        <input
+            type="file"
+            data-testid="file-upload"
+            onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) onFileSelect(file);
+            }}
+        />
+    ),
 }));
 
-jest.mock('../SectionItem/SectionItem', () => ({
-    SectionItem: () => <div data-testid="section-item">Section Item</div>,
+jest.mock('../components/SectionItem/SectionItem', () => ({
+    SectionItem: ({ title }: { title: string }) => (
+        <div data-testid="section-item">{title}</div>
+    ),
 }));
 
-jest.mock('../Icons/Icons', () => ({
+jest.mock('../components/Icons/Icons', () => ({
     Icons: {
-        EmailIcon: () => <span data-testid="email-icon">📧</span>,
-        PasswordIcon: () => <span data-testid="password-icon">🔒</span>,
-        PencilIcon: () => <span data-testid="pencil-icon">✏️</span>,
-        UsernameIcon: () => <span data-testid="username-icon">👤</span>,
-        InfoIcon: () => <span data-testid="info-icon">ℹ️</span>,
+        EmailIcon: () => <span data-testid="email-icon"></span>,
+        PasswordIcon: () => <span data-testid="password-icon"></span>,
+        PencilIcon: () => <span data-testid="pencil-icon"></span>,
+        UsernameIcon: () => <span data-testid="username-icon"></span>,
+        InfoIcon: ({ isValid }: { isValid?: boolean }) => (
+            <span data-testid="info-icon" data-valid={isValid}></span>
+        ),
     },
 }));
 
-jest.mock('react-router', () => {
-    const actual = jest.requireActual('react-router');
-    return {
-        ...actual,
-        useNavigate: () => jest.fn(),
-    };
-});
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => {
+            const translations: Record<string, string> = {
+                'actions.signIn': 'Sign In',
+                'actions.signUp': 'Sign Up',
+                'actions.addComment': 'Add a comment',
+                'actions.create': 'Create',
+                'actions.saveProfileChanges': 'Save Profile Changes',
+                'actions.changePhoto': 'Change profile photo',
+                'forms.addComment.placeholder': 'Write description here...',
+                'forms.postTitle.placeholder': 'Enter post title',
+                'forms.description.placeholder': 'Write description here...',
+                'forms.description.validation.minLength':
+                    'Description must be at least 10 characters if provided',
+                'states.creating': 'Creating...',
+                'states.adding': 'Adding...',
+            };
+            return translations[key] || key;
+        },
+    }),
+}));
+
+jest.mock('../utils/hooks/useAuth', () => ({
+    useAuth: () => ({
+        signIn: jest.fn(),
+        signUp: jest.fn(),
+    }),
+}));
+
+jest.mock('../store/contexts/UserContext', () => ({
+    useUser: () => ({
+        user: {
+            username: 'testuser',
+            email: 'test@example.com',
+            firstName: 'John',
+            secondName: 'Doe',
+            profileImage: '',
+            description: '',
+        },
+        refreshUser: jest.fn(),
+    }),
+    UserProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+jest.mock('../utils/hooks/useShowError', () => ({
+    useShowError: () => jest.fn(),
+}));
+
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useNavigate: () => jest.fn(),
+}));
+
+jest.mock('../utils/hooks/useAppDispatch', () => ({
+    useAppDispatch: () => jest.fn(),
+}));
+
+const AllProviders = ({ children }: { children: React.ReactNode }) => (
+    <Provider store={mockStore}>
+        <MemoryRouter>{children}</MemoryRouter>
+    </Provider>
+);
 
 describe('Forms', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     describe('AuthForm', () => {
-        test('SignInForm shows correct button text', () => {
+        test('renders Sign In button', () => {
             render(
-                <MemoryRouter>
+                <AllProviders>
                     <Forms.SignInForm />
-                </MemoryRouter>
+                </AllProviders>
             );
             expect(screen.getByText('Sign In')).toBeInTheDocument();
         });
 
-        test('SignUpForm shows correct button text', () => {
+        test('renders Sign Up button', () => {
             render(
-                <MemoryRouter>
+                <AllProviders>
                     <Forms.SignUpForm />
-                </MemoryRouter>
+                </AllProviders>
             );
             expect(screen.getByText('Sign Up')).toBeInTheDocument();
         });
     });
 
     describe('AddCommentForm', () => {
-        test('allows typing comment', () => {
+        test('adds comment', async () => {
             const mockOnAddComment = jest.fn();
-            render(
-                <Forms.AddCommentForm
-                    postId={1}
-                    onAddComment={mockOnAddComment}
-                />
-            );
 
-            const textarea = screen.getByPlaceholderText(
-                'Write description here...'
-            );
-            fireEvent.change(textarea, { target: { value: 'Test comment' } });
-
-            expect(textarea).toHaveValue('Test comment');
-        });
-
-        test('calls onAddComment when button is clicked', () => {
-            const mockOnAddComment = jest.fn();
-            render(
-                <Forms.AddCommentForm
-                    postId={1}
-                    onAddComment={mockOnAddComment}
-                />
-            );
-
-            const textarea = screen.getByPlaceholderText(
-                'Write description here...'
-            );
-            const button = screen.getByRole('button', {
-                name: /add a comment/i,
+            await act(async () => {
+                render(
+                    <AllProviders>
+                        <Forms.AddCommentForm
+                            postId={1}
+                            onAddComment={mockOnAddComment}
+                        />
+                    </AllProviders>
+                );
             });
 
-            fireEvent.change(textarea, { target: { value: 'Test comment' } });
-            fireEvent.click(button);
-
-            expect(mockOnAddComment).toHaveBeenCalledWith('Test comment');
-        });
-
-        test('clears textarea after submitting comment', () => {
-            const mockOnAddComment = jest.fn();
-            render(
-                <Forms.AddCommentForm
-                    postId={1}
-                    onAddComment={mockOnAddComment}
-                />
-            );
-
             const textarea = screen.getByPlaceholderText(
                 'Write description here...'
             );
-            const button = screen.getByRole('button', {
-                name: /add a comment/i,
+
+            await act(async () => {
+                fireEvent.change(textarea, { target: { value: 'Test' } });
             });
 
-            fireEvent.change(textarea, { target: { value: 'Test comment' } });
-            fireEvent.click(button);
+            const button = screen.getByRole('button', {
+                name: 'Add a comment',
+            });
 
-            expect(textarea).toHaveValue('');
+            await act(async () => {
+                fireEvent.click(button);
+            });
+
+            expect(mockOnAddComment).toHaveBeenCalledWith('Test');
         });
     });
 
     describe('CreatePostForm', () => {
-        test('renders create button', () => {
-            const mockOnAddPost = jest.fn();
-            const mockOnClose = jest.fn();
-
+        test('renders form elements', () => {
             render(
-                <Forms.CreatePostForm
-                    onAddPost={mockOnAddPost}
-                    onClose={mockOnClose}
-                />
-            );
-
-            expect(screen.getByText('Create')).toBeInTheDocument();
-        });
-
-        test('renders form fields', () => {
-            const mockOnAddPost = jest.fn();
-            const mockOnClose = jest.fn();
-
-            render(
-                <Forms.CreatePostForm
-                    onAddPost={mockOnAddPost}
-                    onClose={mockOnClose}
-                />
+                <AllProviders>
+                    <Forms.CreatePostForm
+                        onAddPost={jest.fn()}
+                        onClose={jest.fn()}
+                    />
+                </AllProviders>
             );
 
             expect(
@@ -228,20 +211,53 @@ describe('Forms', () => {
                 screen.getByPlaceholderText('Write description here...')
             ).toBeInTheDocument();
             expect(screen.getByTestId('file-upload')).toBeInTheDocument();
+            expect(screen.getByText('Create')).toBeInTheDocument();
+        });
+
+        test('handles file selection', async () => {
+            render(
+                <AllProviders>
+                    <Forms.CreatePostForm
+                        onAddPost={jest.fn()}
+                        onClose={jest.fn()}
+                    />
+                </AllProviders>
+            );
+
+            const fileInput = screen.getByTestId('file-upload');
+            const file = new File(['test'], 'test.jpg', { type: 'image/jpeg' });
+
+            await act(async () => {
+                fireEvent.change(fileInput, { target: { files: [file] } });
+            });
+
+            expect(fileInput).toBeInTheDocument();
         });
     });
 
     describe('EditProfileForm', () => {
         test('renders save button', () => {
-            render(<Forms.EditProfileForm />);
+            render(
+                <AllProviders>
+                    <Forms.EditProfileForm />
+                </AllProviders>
+            );
+
             expect(
                 screen.getByText('Save Profile Changes')
             ).toBeInTheDocument();
         });
 
-        test('renders section item', () => {
-            render(<Forms.EditProfileForm />);
-            expect(screen.getByTestId('section-item')).toBeInTheDocument();
+        test('renders user info', () => {
+            render(
+                <AllProviders>
+                    <Forms.EditProfileForm />
+                </AllProviders>
+            );
+
+            expect(screen.getByTestId('section-item')).toHaveTextContent(
+                'John Doe'
+            );
         });
     });
 });

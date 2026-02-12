@@ -2,7 +2,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Preferences } from './Preferences';
 import { useTheme } from '../../../../store/contexts/ThemeContext';
 
-jest.mock('../../../../../../components/Switcher/Switcher', () => ({
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => {
+            const translations: Record<string, string> = {
+                'pages.profile.preferences.title': 'Preferences',
+                'pages.profile.preferences.themes.light': 'Light theme',
+                'pages.profile.preferences.themes.dark': 'Dark theme',
+            };
+            return translations[key] || key;
+        },
+    }),
+}));
+
+jest.mock('../../../../components/Switcher/Switcher', () => ({
     Switcher: ({ onClick }: { onClick: () => void }) => (
         <button data-testid="switcher" onClick={onClick}>
             Switcher
@@ -10,7 +23,7 @@ jest.mock('../../../../../../components/Switcher/Switcher', () => ({
     ),
 }));
 
-jest.mock('../../../../../../store/contexts/ThemeContext');
+jest.mock('../../../../store/contexts/ThemeContext');
 const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>;
 
 describe('Preferences Component', () => {

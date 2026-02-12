@@ -2,6 +2,18 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import Profile from './Profile';
 
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => {
+            const translations: Record<string, string> = {
+                'nav.profile': 'Profile info',
+                'nav.statistics': 'Statistics',
+            };
+            return translations[key] || key;
+        },
+    }),
+}));
+
 jest.mock('./components/ProfileInfo/ProfileInfo', () => ({
     ProfileInfo: () => (
         <div data-testid="profile-info">Profile Info Content</div>
@@ -14,6 +26,11 @@ jest.mock('./components/Statistics/Statistics', () => ({
 
 jest.mock('../../components/Header/Header', () => ({
     Header: () => <header data-testid="header">Header</header>,
+}));
+
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    Outlet: () => <div data-testid="outlet" />,
 }));
 
 describe('Profile Component', () => {
@@ -29,7 +46,7 @@ describe('Profile Component', () => {
 
     test('renders tabs with correct labels', () => {
         render(
-            <MemoryRouter>
+            <MemoryRouter initialEntries={['/profile']}>
                 <Profile />
             </MemoryRouter>
         );
@@ -37,13 +54,13 @@ describe('Profile Component', () => {
         expect(screen.getByText('Profile info')).toBeInTheDocument();
         expect(screen.getByText('Statistics')).toBeInTheDocument();
 
-        const tabs = screen.getAllByRole('button');
+        const tabs = screen.getAllByRole('tab');
         expect(tabs).toHaveLength(2);
     });
 
     test('shows Profile info tab as active by default', () => {
         render(
-            <MemoryRouter>
+            <MemoryRouter initialEntries={['/profile']}>
                 <Profile />
             </MemoryRouter>
         );
@@ -53,12 +70,13 @@ describe('Profile Component', () => {
 
         expect(profileTab).toHaveClass('active');
         expect(statisticsTab).not.toHaveClass('active');
-        expect(screen.getByTestId('profile-info')).toBeInTheDocument();
+
+        expect(screen.getByTestId('outlet')).toBeInTheDocument();
     });
 
-    test('switches to Statistics tab when clicked', () => {
+    test('navigates to Statistics tab when clicked', () => {
         render(
-            <MemoryRouter>
+            <MemoryRouter initialEntries={['/profile']}>
                 <Profile />
             </MemoryRouter>
         );
@@ -68,25 +86,42 @@ describe('Profile Component', () => {
 
         expect(statisticsTab).toHaveClass('active');
         expect(screen.getByText('Profile info')).not.toHaveClass('active');
-        expect(screen.getByTestId('statistics')).toBeInTheDocument();
+        expect(screen.getByTestId('outlet')).toBeInTheDocument();
     });
 
-    test('switches back to Profile info tab when clicked', () => {
+    test('navigates back to Profile info tab when clicked', () => {
         render(
-            <MemoryRouter>
+            <MemoryRouter initialEntries={['/statistics']}>
                 <Profile />
             </MemoryRouter>
         );
 
-        const statisticsTab = screen.getByText('Statistics');
-        fireEvent.click(statisticsTab);
-        expect(screen.getByTestId('statistics')).toBeInTheDocument();
+        expect(screen.getByTestId('outlet')).toBeInTheDocument();
 
         const profileTab = screen.getByText('Profile info');
         fireEvent.click(profileTab);
 
         expect(profileTab).toHaveClass('active');
-        expect(statisticsTab).not.toHaveClass('active');
-        expect(screen.getByTestId('profile-info')).toBeInTheDocument();
+        expect(screen.getByText('Statistics')).not.toHaveClass('active');
+        expect(screen.getByTestId('outlet')).toBeInTheDocument();
+    });
+
+    test('has correct ARIA attributes', () => {
+        render(
+            <MemoryRouter initialEntries={['/profile']}>
+                <Profile />
+            </MemoryRouter>
+        );
+
+        const tabsContainer = screen.getByRole('tablist');
+        expect(tabsContainer).toBeInTheDocument();
+
+        const profileTab = screen.getByText('Profile info');
+        const statisticsTab = screen.getByText('Statistics');
+
+        expect(profileTab).toHaveAttribute('aria-selected', 'true');
+        expect(statisticsTab).toHaveAttribute('aria-selected', 'false');
+        expect(profileTab).toHaveAttribute('role', 'tab');
+        expect(statisticsTab).toHaveAttribute('role', 'tab');
     });
 });

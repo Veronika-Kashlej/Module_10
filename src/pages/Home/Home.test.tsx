@@ -1,18 +1,20 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import Home from './Home';
-import { LikedPost, Post } from '@/store/types';
 import { postsAPI } from '../../utils/api/api';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from '../../utils/hooks/useAuth';
+import { Post } from '../../store/types';
+import { AxiosResponse } from 'axios';
 
-jest.mock('../../store/contexts/AuthContext', () => ({
-    useAuth: jest.fn(),
-}));
-
-jest.mock('../../store/api/api', () => ({
+jest.mock('../../utils/api/api', () => ({
     postsAPI: {
         getPosts: jest.fn(),
         getCurrentUsersLikedPosts: jest.fn(),
     },
+}));
+
+jest.mock('../../utils/hooks/useAuth', () => ({
+    useAuth: jest.fn(),
 }));
 
 jest.mock('../../components/Header/Header', () => ({
@@ -20,16 +22,19 @@ jest.mock('../../components/Header/Header', () => ({
 }));
 
 jest.mock('./components/CreatePostSection/CreatePostSection', () => ({
-    CreatePostSection: () => (
-        <div data-testid="create-post-section">Create Post</div>
+    CreatePostSection: ({ onAddPost }: { onAddPost: () => void }) => (
+        <div data-testid="create-post-section">
+            Create Post
+            <button onClick={onAddPost} data-testid="add-post-btn">
+                Add Post
+            </button>
+        </div>
     ),
 }));
 
 jest.mock('./components/PostCard/PostCard', () => ({
-    PostCard: ({ post }: { post: { id: string; title: string } }) => (
-        <div data-testid={`post-card-${post.id}`}>
-            Post: {post.title || post.id}
-        </div>
+    PostCard: ({ post }: { post: { id: number; title: string } }) => (
+        <div data-testid={`post-card-${post.id}`}>Post: {post.title}</div>
     ),
 }));
 
@@ -49,6 +54,18 @@ jest.mock('./components/CommunitiesSection/CommunitiesSection', () => ({
     ),
 }));
 
+jest.mock(
+    '../../components/ErrorBoundaryFallback/ErrorBoundaryFallback',
+    () => ({
+        ErrorBoundaryFallback: () => (
+            <div data-testid="error-fallback">Error</div>
+        ),
+    })
+);
+
+const mockUseAuth = useAuth as jest.Mock;
+const mockPostsAPI = postsAPI as jest.Mocked<typeof postsAPI>;
+
 const mockWindowInnerWidth = (width: number) => {
     Object.defineProperty(window, 'innerWidth', {
         writable: true,
@@ -57,20 +74,40 @@ const mockWindowInnerWidth = (width: number) => {
     });
 };
 
-const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
-const mockPostsAPI = postsAPI as jest.Mocked<typeof postsAPI>;
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
+
+const createMockAxiosResponse = <T,>(data: T): AxiosResponse<T> => ({
+    data,
+    status: 200,
+    statusText: 'OK',
+    headers: {},
+    config: {} as any,
+});
 
 describe('Home Component', () => {
-    const mockPosts: Partial<Post>[] = [
+    const mockPosts: Post[] = [
         {
             id: 1,
             title: 'First Post',
             content: 'Content 1',
             likedByUsers: [],
             image: '',
-            creationDate: '',
+            creationDate: '2024-01-01',
             authorId: 1,
             commentsCount: 0,
+            authorPhoto: '',
+            likesCount: 0,
+            modifiedDate: '',
         },
         {
             id: 2,
@@ -78,67 +115,65 @@ describe('Home Component', () => {
             content: 'Content 2',
             likedByUsers: [],
             image: '',
-            creationDate: '',
+            creationDate: '2024-01-02',
             authorId: 2,
             commentsCount: 0,
+            authorPhoto: '',
+            likesCount: 0,
+            modifiedDate: '',
         },
     ];
 
-    const mockLikedPosts: Partial<LikedPost>[] = [{ postId: 1, userId: 1 }];
+    const mockLikedPosts = [{ postId: 1, userId: 1, likedAt: '2024-01-01' }];
 
     beforeEach(() => {
         jest.clearAllMocks();
+        queryClient.clear();
         mockWindowInnerWidth(1200);
+
+        mockUseAuth.mockReturnValue({
+            isAuthenticated: true,
+            signIn: jest.fn(),
+            signUp: jest.fn(),
+            logout: jest.fn(),
+        });
     });
 
     test('renders header and loading skeletons initially for authenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        const unresolvedPromise = new Promise(() => undefined);
-        mockPostsAPI.getPosts.mockReturnValue(unresolvedPromise as any);
-        mockPostsAPI.getCurrentUsersLikedPosts.mockReturnValue(
-            unresolvedPromise as any
-        );
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
 
-        expect(screen.getByTestId('header')).toBeInTheDocument();
+        mockPostsAPI.getPosts.mockReturnValue(new Promise(() => {}));
+        mockPostsAPI.getCurrentUsersLikedPosts.mockReturnValue(
+            new Promise(() => {})
+        );
 
-        const skeletons = screen.getAllByTestId('post-skeleton');
-        expect(skeletons).toHaveLength(3);
+        render(<Home />, { wrapper });
+
+        expect(screen.getByTestId('header')).toBeInTheDocument();
+        expect(screen.getAllByTestId('post-skeleton')).toHaveLength(3);
     });
 
     test('renders posts after loading for authenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        mockPostsAPI.getPosts.mockResolvedValue({ data: mockPosts } as any);
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: mockLikedPosts,
-        } as any);
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
+
+        mockPostsAPI.getPosts.mockResolvedValue(
+            createMockAxiosResponse(mockPosts)
+        );
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse(mockLikedPosts)
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(
@@ -161,20 +196,16 @@ describe('Home Component', () => {
     test('renders posts after loading for unauthenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        mockPostsAPI.getPosts.mockResolvedValue({ data: mockPosts } as any);
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
+
+        mockPostsAPI.getPosts.mockResolvedValue(
+            createMockAxiosResponse(mockPosts)
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(
@@ -185,10 +216,8 @@ describe('Home Component', () => {
         expect(
             screen.queryByTestId('create-post-section')
         ).not.toBeInTheDocument();
-
         expect(screen.getByTestId('post-card-1')).toBeInTheDocument();
         expect(screen.getByTestId('post-card-2')).toBeInTheDocument();
-
         expect(
             screen.queryByTestId('suggested-people')
         ).not.toBeInTheDocument();
@@ -200,23 +229,19 @@ describe('Home Component', () => {
     test('fetches liked posts only when authenticated', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        mockPostsAPI.getPosts.mockResolvedValue({ data: mockPosts } as any);
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: mockLikedPosts,
-        } as any);
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
+
+        mockPostsAPI.getPosts.mockResolvedValue(
+            createMockAxiosResponse(mockPosts)
+        );
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse(mockLikedPosts)
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(mockPostsAPI.getPosts).toHaveBeenCalled();
@@ -227,20 +252,16 @@ describe('Home Component', () => {
     test('does not fetch liked posts when unauthenticated', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        mockPostsAPI.getPosts.mockResolvedValue({ data: mockPosts } as any);
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
+
+        mockPostsAPI.getPosts.mockResolvedValue(
+            createMockAxiosResponse(mockPosts)
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(mockPostsAPI.getPosts).toHaveBeenCalled();
@@ -253,43 +274,25 @@ describe('Home Component', () => {
     test('handles API errors gracefully', async () => {
         const consoleErrorSpy = jest
             .spyOn(console, 'error')
-            .mockImplementation(() => undefined);
+            .mockImplementation(() => {});
 
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
+            logout: jest.fn(),
+        });
 
         mockPostsAPI.getPosts.mockRejectedValue(new Error('Failed to fetch'));
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: [],
-        } as any);
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse([])
+        );
 
-        await act(async () => {
-            render(<Home />);
-        });
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
-            expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'Failed to fetch posts:',
-                expect.any(Error)
-            );
+            expect(screen.getByTestId('error-fallback')).toBeInTheDocument();
         });
-
-        await waitFor(() => {
-            expect(
-                screen.queryByTestId('post-skeleton')
-            ).not.toBeInTheDocument();
-        });
-
-        expect(screen.queryByTestId('post-card-1')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('post-card-2')).not.toBeInTheDocument();
 
         consoleErrorSpy.mockRestore();
     });
@@ -297,25 +300,19 @@ describe('Home Component', () => {
     test('applies correct styles based on window width for authenticated user', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
+            logout: jest.fn(),
+        });
 
-        mockPostsAPI.getPosts.mockResolvedValue({ data: [] } as any);
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: [],
-        } as any);
+        mockPostsAPI.getPosts.mockResolvedValue(createMockAxiosResponse([]));
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse([])
+        );
 
         mockWindowInnerWidth(1200);
 
-        const { rerender } = await act(async () => {
-            return render(<Home />);
-        });
+        const { rerender } = render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(
@@ -328,9 +325,7 @@ describe('Home Component', () => {
 
         mockWindowInnerWidth(1000);
 
-        await act(async () => {
-            rerender(<Home />);
-        });
+        rerender(<Home />);
 
         expect(mainElement).toHaveStyle('justify-content: center');
     });
@@ -338,22 +333,16 @@ describe('Home Component', () => {
     test('applies center style for unauthenticated user regardless of width', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: false,
-            user: null,
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
+            logout: jest.fn(),
+        });
 
-        mockPostsAPI.getPosts.mockResolvedValue({ data: [] } as any);
+        mockPostsAPI.getPosts.mockResolvedValue(createMockAxiosResponse([]));
 
         mockWindowInnerWidth(1200);
 
-        await act(async () => {
-            render(<Home />);
-        });
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(
@@ -368,62 +357,48 @@ describe('Home Component', () => {
     test('refreshes posts when handleAddPost is called', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        let callCount = 0;
-        mockPostsAPI.getPosts.mockImplementation(() => {
-            callCount++;
-            return Promise.resolve({
-                data: mockPosts.slice(0, callCount),
-            } as any);
+            logout: jest.fn(),
         });
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: [],
-        } as any);
 
-        await act(async () => {
-            render(<Home />);
-        });
+        mockPostsAPI.getPosts.mockResolvedValue(
+            createMockAxiosResponse(mockPosts)
+        );
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse([])
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
-            expect(
-                screen.queryByTestId('post-skeleton')
-            ).not.toBeInTheDocument();
+            expect(screen.getByTestId('post-card-1')).toBeInTheDocument();
         });
 
-        expect(callCount).toBe(1);
+        expect(mockPostsAPI.getPosts).toHaveBeenCalledTimes(1);
 
-        const createPostSection = screen.getByTestId('create-post-section');
-        expect(createPostSection).toBeInTheDocument();
+        const addPostButton = screen.getByTestId('add-post-btn');
+        addPostButton.click();
+
+        await waitFor(() => {
+            expect(mockPostsAPI.getPosts).toHaveBeenCalledTimes(2);
+        });
     });
 
     test('renders empty state when no posts', async () => {
         mockUseAuth.mockReturnValue({
             isAuthenticated: true,
-            user: { id: 1 },
             signIn: jest.fn(),
             signUp: jest.fn(),
-            signOut: jest.fn(),
-            refreshUser: jest.fn(),
-            getCurrentUser: jest.fn(),
-            isLoading: false,
-        } as any);
-
-        mockPostsAPI.getPosts.mockResolvedValue({ data: [] } as any);
-        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue({
-            data: [],
-        } as any);
-
-        await act(async () => {
-            render(<Home />);
+            logout: jest.fn(),
         });
+
+        mockPostsAPI.getPosts.mockResolvedValue(createMockAxiosResponse([]));
+        mockPostsAPI.getCurrentUsersLikedPosts.mockResolvedValue(
+            createMockAxiosResponse([])
+        );
+
+        render(<Home />, { wrapper });
 
         await waitFor(() => {
             expect(
@@ -432,5 +407,6 @@ describe('Home Component', () => {
         });
 
         expect(screen.queryByTestId('post-card-1')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('post-card-2')).not.toBeInTheDocument();
     });
 });

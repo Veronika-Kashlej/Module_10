@@ -6,17 +6,17 @@ import {
     act,
 } from '@testing-library/react';
 import { LikesSection } from './LikesSection';
-import { LikedPost } from '../../../../store/types';
+import { Post, LikedPost, User } from '../../../../store/types';
 import { postsAPI } from '../../../../utils/api/api';
 
-jest.mock('../../../../../../store/api/api', () => ({
+jest.mock('../../../../utils/api/api', () => ({
     postsAPI: {
         likePost: jest.fn(),
         dislikePost: jest.fn(),
     },
 }));
 
-jest.mock('../../../../../../components/Icons/Icons', () => ({
+jest.mock('../../../../components/Icons/Icons', () => ({
     Icons: {
         LikeIcon: ({
             onClick,
@@ -25,51 +25,102 @@ jest.mock('../../../../../../components/Icons/Icons', () => ({
             onClick: () => void;
             isLiked: boolean;
         }) => (
-            <button
+            <div
                 data-testid="like-icon"
                 onClick={onClick}
                 data-liked={isLiked}
+                role="button"
+                tabIndex={0}
+                style={{ cursor: 'pointer' }}
             >
-                {isLiked ? '❤️' : '🤍'}
-            </button>
+                {isLiked ? 'red' : 'white'}
+            </div>
         ),
     },
 }));
 
+jest.mock('@mui/material', () => ({
+    IconButton: ({
+        children,
+        onClick,
+        'aria-label': ariaLabel,
+    }: {
+        children: React.ReactNode;
+        onClick: () => void;
+        'aria-label': string;
+    }) => (
+        <button
+            data-testid="icon-button"
+            onClick={onClick}
+            aria-label={ariaLabel}
+        >
+            {children}
+        </button>
+    ),
+}));
+
 describe('LikesSection Component', () => {
-    const mockPost = {
+    const mockAuthor: User = {
+        id: 1,
+        firstName: 'John',
+        secondName: 'Doe',
+        username: 'johndoe',
+        email: 'john@example.com',
+        profileImage: 'profile.jpg',
+        description: 'Test user',
+        creationDate: '2023-01-01T00:00:00.000Z',
+        modifiedDate: '',
+        lastLogin: '',
+    };
+
+    const mockPost: Post = {
         id: 1,
         title: 'Test Post',
         content: 'Test content',
-        likedByUsers: [{ id: 1, username: 'user1' }],
-        comments: [],
-        image: '',
-        createdAt: '',
-        updatedAt: '',
+        likedByUsers: [mockAuthor, mockAuthor],
+        image: 'test-image.jpg',
+        creationDate: '2023-01-01T00:00:00.000Z',
         authorId: 1,
-        author: { id: 1, username: 'author' },
-    } as any;
+        commentsCount: 0,
+        authorPhoto: '',
+        modifiedDate: '',
+        likesCount: 0,
+    };
 
     const mockLikedPosts: LikedPost[] = [];
 
     beforeEach(() => {
         jest.clearAllMocks();
+
+        (postsAPI.likePost as jest.Mock).mockResolvedValue({
+            data: { success: true },
+        });
+
+        (postsAPI.dislikePost as jest.Mock).mockResolvedValue({
+            data: { success: true },
+        });
     });
 
     test('renders like button and likes count', () => {
         render(<LikesSection post={mockPost} likedPosts={mockLikedPosts} />);
 
         expect(screen.getByTestId('like-icon')).toBeInTheDocument();
-        expect(screen.getByText('1 likes')).toBeInTheDocument();
+        expect(screen.getByText('2 likes')).toBeInTheDocument();
     });
 
     test('shows liked state when post is already liked', () => {
-        const likedPost = { postId: 1, userId: 1, likedAt: '' } as any;
+        const likedPost: LikedPost = {
+            postId: 1,
+            userId: 1,
+            id: 1,
+            creationDate: '',
+        };
+
         render(<LikesSection post={mockPost} likedPosts={[likedPost]} />);
 
         const likeIcon = screen.getByTestId('like-icon');
         expect(likeIcon).toHaveAttribute('data-liked', 'true');
-        expect(likeIcon).toHaveTextContent('❤️');
+        expect(likeIcon).toHaveTextContent('red');
     });
 
     test('shows not liked state when post is not liked', () => {
@@ -77,12 +128,10 @@ describe('LikesSection Component', () => {
 
         const likeIcon = screen.getByTestId('like-icon');
         expect(likeIcon).toHaveAttribute('data-liked', 'false');
-        expect(likeIcon).toHaveTextContent('🤍');
+        expect(likeIcon).toHaveTextContent('white');
     });
 
     test('likes post when not liked', async () => {
-        (postsAPI.likePost as jest.Mock).mockResolvedValue({});
-
         render(<LikesSection post={mockPost} likedPosts={[]} />);
 
         const likeIcon = screen.getByTestId('like-icon');
@@ -93,7 +142,7 @@ describe('LikesSection Component', () => {
 
         await waitFor(() => {
             expect(postsAPI.likePost).toHaveBeenCalledWith(1);
-            expect(screen.getByText('2 likes')).toBeInTheDocument();
+            expect(screen.getByText('3 likes')).toBeInTheDocument();
         });
 
         expect(screen.getByTestId('like-icon')).toHaveAttribute(
@@ -103,8 +152,12 @@ describe('LikesSection Component', () => {
     });
 
     test('dislikes post when already liked', async () => {
-        const likedPost = { postId: 1, userId: 1, likedAt: '' } as any;
-        (postsAPI.dislikePost as jest.Mock).mockResolvedValue({});
+        const likedPost: LikedPost = {
+            postId: 1,
+            userId: 1,
+            id: 1,
+            creationDate: '',
+        };
 
         render(<LikesSection post={mockPost} likedPosts={[likedPost]} />);
 
@@ -116,7 +169,7 @@ describe('LikesSection Component', () => {
 
         await waitFor(() => {
             expect(postsAPI.dislikePost).toHaveBeenCalledWith(1);
-            expect(screen.getByText('0 likes')).toBeInTheDocument();
+            expect(screen.getByText('1 likes')).toBeInTheDocument();
         });
 
         expect(screen.getByTestId('like-icon')).toHaveAttribute(
@@ -126,17 +179,108 @@ describe('LikesSection Component', () => {
     });
 
     test('updates likes count correctly from initial state', () => {
-        const postWithLikes = {
+        const postWithManyLikes: Post = {
             ...mockPost,
             likedByUsers: [
-                { id: 1, username: 'user1' },
-                { id: 2, username: 'user2' },
-                { id: 3, username: 'user3' },
+                mockAuthor,
+                mockAuthor,
+                mockAuthor,
+                mockAuthor,
+                mockAuthor,
             ],
         };
 
-        render(<LikesSection post={postWithLikes} likedPosts={[]} />);
+        render(<LikesSection post={postWithManyLikes} likedPosts={[]} />);
 
-        expect(screen.getByText('3 likes')).toBeInTheDocument();
+        expect(screen.getByText('5 likes')).toBeInTheDocument();
+    });
+
+    test('handles like API error gracefully', async () => {
+        const consoleErrorSpy = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+
+        (postsAPI.likePost as jest.Mock).mockRejectedValue(
+            new Error('Failed to like post')
+        );
+
+        render(<LikesSection post={mockPost} likedPosts={[]} />);
+
+        const likeIcon = screen.getByTestId('like-icon');
+
+        expect(screen.getByText('2 likes')).toBeInTheDocument();
+
+        await act(async () => {
+            fireEvent.click(likeIcon);
+        });
+
+        expect(screen.getByText('2 likes')).toBeInTheDocument();
+        expect(likeIcon).toHaveAttribute('data-liked', 'false');
+        expect(postsAPI.likePost).toHaveBeenCalledWith(1);
+
+        consoleErrorSpy.mockRestore();
+    });
+
+    test('handles dislike API error gracefully', async () => {
+        const consoleErrorSpy = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+
+        const likedPost: LikedPost = {
+            postId: 1,
+            userId: 1,
+            id: 1,
+            creationDate: '',
+        };
+
+        (postsAPI.dislikePost as jest.Mock).mockRejectedValue(
+            new Error('Failed to dislike post')
+        );
+
+        render(<LikesSection post={mockPost} likedPosts={[likedPost]} />);
+
+        const likeIcon = screen.getByTestId('like-icon');
+
+        expect(screen.getByText('2 likes')).toBeInTheDocument();
+        expect(likeIcon).toHaveAttribute('data-liked', 'true');
+
+        await act(async () => {
+            fireEvent.click(likeIcon);
+        });
+
+        expect(screen.getByText('2 likes')).toBeInTheDocument();
+        expect(likeIcon).toHaveAttribute('data-liked', 'true');
+        expect(postsAPI.dislikePost).toHaveBeenCalledWith(1);
+
+        consoleErrorSpy.mockRestore();
+    });
+
+    test('displays correct likes count when post has no likes', () => {
+        const postWithoutLikes: Post = {
+            ...mockPost,
+            likedByUsers: [],
+        };
+
+        render(<LikesSection post={postWithoutLikes} likedPosts={[]} />);
+
+        expect(screen.getByText('0 likes')).toBeInTheDocument();
+    });
+
+    test('displays correct likes count when post has one like', () => {
+        const postWithOneLike: Post = {
+            ...mockPost,
+            likedByUsers: [mockAuthor],
+        };
+
+        render(<LikesSection post={postWithOneLike} likedPosts={[]} />);
+
+        expect(screen.getByText('1 likes')).toBeInTheDocument();
+    });
+
+    test('IconButton receives correct aria-label', () => {
+        render(<LikesSection post={mockPost} likedPosts={[]} />);
+
+        const iconButton = screen.getByTestId('icon-button');
+        expect(iconButton).toHaveAttribute('aria-label', 'like post');
     });
 });

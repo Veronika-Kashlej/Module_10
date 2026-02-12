@@ -21,6 +21,7 @@ describe('CustomNotification', () => {
         const container = screen
             .getByText('Test')
             .closest('.notification-container');
+        expect(container).toHaveClass('notification-container');
         expect(container).not.toHaveClass('error');
     });
 
@@ -34,17 +35,31 @@ describe('CustomNotification', () => {
     });
 
     test('closes when clicking close button', () => {
-        render(<CustomNotification message="Test" type="success" />);
+        const mockOnClose = jest.fn();
 
-        expect(screen.getByText('Test')).toBeInTheDocument();
+        render(
+            <CustomNotification
+                message="Test"
+                type="success"
+                onClose={mockOnClose}
+            />
+        );
 
-        fireEvent.click(screen.getByText('×'));
+        const closeButton = screen.getByText('×');
+        fireEvent.click(closeButton);
 
-        expect(screen.queryByText('Test')).not.toBeInTheDocument();
+        expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
     test('renders close button', () => {
         render(<CustomNotification message="Test" type="success" />);
         expect(screen.getByText('×')).toBeInTheDocument();
+    });
+
+    test('close button has correct class name', () => {
+        render(<CustomNotification message="Test" type="success" />);
+
+        const closeButton = screen.getByText('×');
+        expect(closeButton).toHaveClass('close-natification-btn');
     });
 });

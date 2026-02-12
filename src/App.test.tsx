@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import App from './App';
 
+jest.mock('./pages/Profile/components/Statistics/Statistics', () => ({
+    Statistics: () => <div data-testid="statistics-page">Statistics Page</div>,
+}));
+
 jest.mock('./pages/SignUp/SignUp', () => ({
     __esModule: true,
     default: () => <div data-testid="signup-page">SignUp Page</div>,
@@ -17,15 +21,15 @@ jest.mock('./pages/Profile/Profile', () => ({
     default: () => <div data-testid="profile-page">Profile Page</div>,
 }));
 
+jest.mock('./pages/Profile/components/ProfileInfo/ProfileInfo', () => ({
+    ProfileInfo: () => (
+        <div data-testid="profile-info-page">Profile Info Page</div>
+    ),
+}));
+
 jest.mock('./pages/NotFound/NotFound', () => ({
     __esModule: true,
     default: () => <div data-testid="notfound-page">Not Found Page</div>,
-}));
-
-jest.mock('./store/contexts/AuthContext', () => ({
-    AuthProvider: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid="auth-provider">{children}</div>
-    ),
 }));
 
 jest.mock('./store/contexts/ThemeContext', () => ({
@@ -40,6 +44,12 @@ jest.mock('./store/contexts/NotificationContext', () => ({
     }: {
         children: React.ReactNode;
     }) => <div data-testid="notification-provider">{children}</div>,
+}));
+
+jest.mock('./store/contexts/UserContext', () => ({
+    UserProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="auth-provider">{children}</div>
+    ),
 }));
 
 jest.mock('./components/Footer/Footer', () => ({

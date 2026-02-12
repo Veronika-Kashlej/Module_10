@@ -1,8 +1,22 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FileUploadInput } from './FileUploadInput';
 
-jest.mock('../../../Icons/Icons', () => ({
+jest.mock('../../../components/Icons/Icons', () => ({
     Icons: { FileDownloadIcon: () => <div>Icon</div> },
+}));
+
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => {
+            const translations: Record<string, string> = {
+                'forms.selectImage.label':
+                    'Select a file or drag and drop here',
+                'forms.selectImage.subtitle': 'JPG, or PNG, no more than 10MB',
+                'forms.selectImage.validation.size': 'Unsupported file format',
+            };
+            return translations[key] || key;
+        },
+    }),
 }));
 
 describe('FileUploadInput', () => {
@@ -69,7 +83,7 @@ describe('FileUploadInput', () => {
 
         fireEvent.change(fileInput);
 
-        expect(screen.getByText(/The file is too large/)).toBeInTheDocument();
+        expect(screen.getByText(/Unsupported file format/)).toBeInTheDocument();
         expect(mockOnFileSelect).not.toHaveBeenCalled();
     });
 
