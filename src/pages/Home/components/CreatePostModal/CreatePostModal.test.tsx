@@ -142,7 +142,7 @@ describe('CreatePostModal Component', () => {
     });
 
     test('has correct structure with overlay and modal', () => {
-        const { container } = render(
+        render(
             <CreatePostModal onClose={mockOnClose} onAddPost={mockOnAddPost} />
         );
 

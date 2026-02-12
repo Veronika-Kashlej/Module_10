@@ -6,7 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 const mockStore = configureStore({
     reducer: {
-        auth: (state = { user: null }, action) => state,
+        auth: (state = { user: null }) => state,
     },
 });
 
