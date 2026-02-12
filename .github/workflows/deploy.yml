@@ -26,7 +26,7 @@ jobs:
               run: npm run lint
 
             - name: Run Tests
-              run: npm test
+              run: npm test -- --watchAll=false
 
     build-and-push:
         needs: ci-checks
