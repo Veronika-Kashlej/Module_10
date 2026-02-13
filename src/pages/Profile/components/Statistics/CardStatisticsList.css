@@ -1,0 +1,42 @@
+.cards-statistics-list {
+    display: flex;
+    gap: 32px;
+    margin: 0 auto 24px auto;
+}
+
+.card-statistics {
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary-color);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    font-family: 'Inter', sans-serif;
+    flex: 1;
+}
+
+.card-statistics-title {
+    font-size: 16px;
+    line-height: 150%;
+    font-weight: 600;
+}
+
+.card-statistics-count {
+    font-size: 40px;
+    line-height: 110%;
+    font-weight: 600;
+}
+
+.card-statistics-progress {
+    font-size: 16px;
+    line-height: 150%;
+    font-weight: 500;
+    color: var(--small-text-color);
+}
+
+@media (max-width: 768px) {
+    .cards-statistics-list {
+        flex-direction: column;
+    }
+}

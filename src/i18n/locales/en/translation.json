@@ -1,0 +1,155 @@
+{
+    "nav": {
+        "profile": "Profile Info",
+        "statistics": "Statistics"
+    },
+    "actions": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "logout": "Logout",
+        "create": "Create",
+        "share": "Tell everyone",
+        "saveProfileChanges": "Save Profile Changes",
+        "changePhoto": "Change profile photo",
+        "addComment": "Add a comment"
+    },
+    "states": {
+        "process": "Processing...",
+        "save": "Saving...",
+        "loading": "Loading...",
+        "adding": "Adding...",
+        "creating": "Creating..."
+    },
+    "messages": {
+        "success": {
+            "signIn": "You signed in successfully",
+            "signUp": "You signed up successfully",
+            "createPost": "Post created successfully",
+            "changeProfile": "Profile changes saved successfully",
+            "logout": "You logged out successfully"
+        },
+        "error": {
+            "defaultError": "Something went wrong"
+        }
+    },
+    "pages": {
+        "signIn": {
+            "title": "Sign in into an account",
+            "subtitle": "Enter your email and password to sign in into this app",
+            "form": {},
+            "smallText": "Forgot to create an account?",
+            "linkToSignUp": "Sign up"
+        },
+        "signUp": {
+            "title": "Create an account",
+            "subtitle": "Enter your email and password to sign up for this app",
+            "form": {},
+            "legal": {
+                "prefix": "By clicking continue, you agree to our",
+                "terms": "Terms of Service",
+                "conjunction": "and",
+                "privacy": "Privacy Policy"
+            },
+            "smallText": "Already have an account?",
+            "linkToSignIn": "Sign in"
+        },
+        "profile": {
+            "editProfile": {
+                "title": "Edit Profile"
+            },
+            "preferences": {
+                "title": "Preferences",
+                "themes": {
+                    "dark": "Dark theme",
+                    "light": "Light theme"
+                }
+            },
+            "actions": {
+                "title": "Actions"
+            }
+        },
+        "statistics": {
+            "titles": {
+                "posts": "Posts",
+                "likes": "Likes",
+                "comments": "Comments"
+            },
+            "progress": "from last month"
+        },
+        "error": {
+            "title": "Oops... Something bad has just happened"
+        },
+        "notFound": {
+            "title": "Page not found"
+        },
+        "home": {
+            "suggestedPeople": {
+                "title": "Suggested people"
+            },
+            "communities": {
+                "title": "Communities you might like"
+            },
+            "createPost": {
+                "title": "What's happening?"
+            },
+            "postModal": {
+                "title": "Create a new post"
+            }
+        }
+    },
+    "forms": {
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email",
+            "validation": {
+                "required": "Email is required",
+                "invalide": "Invalide email adress"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter passwordl",
+            "validation": {
+                "required": "Password is required",
+                "minLength": "Password must be at least 6 characters"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "validation": {
+                "required": "Username is required",
+                "minLength": "Username must be at least 3 characters",
+                "maxLength": "Username must be less than 30 characters",
+                "format": "Username can only contain letters, numbers, underscores, dots, and hyphens"
+            }
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Write description here...",
+            "validation": {
+                "required": "Description is required",
+                "minLength": "Description must be at least 10 characters if provided",
+                "maxLength": "Max 200 chars"
+            }
+        },
+        "addComment": {
+            "label": "Add a comment",
+            "placeholder": "Write description here..."
+        },
+        "postTitle": {
+            "label": "Post Title",
+            "placeholder": "Enter post title",
+            "validation": {
+                "required": "Title is required"
+            }
+        },
+        "selectImage": {
+            "label": "Select a file or drag and drop here",
+            "subtitle": "JPG, or PNG, no more than 10MB",
+            "validation": {
+                "size": "The file is too large. Maximum size: 10MB",
+                "format": "Unsupported file format"
+            }
+        }
+    }
+}
